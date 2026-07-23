@@ -1,4 +1,4 @@
-name = "dwt-lernskript"
+name = "probability-theory"
 compatibility_date = "2026-07-23"
 
 ## Static-only site — no server-side Worker code, just the built HTML.
