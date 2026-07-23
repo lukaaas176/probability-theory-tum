@@ -1,0 +1,14 @@
+name = "dwt-lernskript"
+compatibility_date = "2026-07-23"
+
+## Static-only site — no server-side Worker code, just the built HTML.
+[assets]
+directory = "dist"
+not_found_handling = "single-page-application"
+
+# Best-effort: Cloudflare's Workers Builds (Git integration) may read this,
+# but it's more reliable to also set "Build command" to the same line, and
+# "Build output directory" to "dist", directly in the Cloudflare dashboard
+# when connecting the repo — see README.md's deployment section.
+[build]
+command = "bash web/cloudflare-build.sh"

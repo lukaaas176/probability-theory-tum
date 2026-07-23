@@ -1,0 +1,1100 @@
+/*
+  Probability Theory — Interactive Lernskript
+  Design system stylesheet ("The Quiet Study Guide")
+
+  This file is inlined verbatim into a <style> tag by web/build.py.
+  It targets the exact static DOM produced by the Typst HTML export
+  (web/_body.html) plus the JS-enhanced states documented inline below.
+
+  Contents
+    1.  Design tokens (custom properties) — light + dark
+    2.  Reset / base
+    3.  Typography primitives
+    4.  App shell layout (topbar, sidebar, content, drawer)
+    5.  Sidebar navigation (toc)
+    6.  Titlepage
+    7.  Reading content (headings, prose, lists, tables, teil divider)
+    8.  Callouts (definition / merke)
+    9.  Quiz (section, question, answer, reveal button, rating buttons)
+    10. Buttons & small utilities
+    11. Focus, motion, reduced-motion
+    12. Responsive breakpoints
+
+  JS contract this stylesheet assumes (none of this is guessed at random —
+  it follows the pinned naming contract in the build spec):
+    - #sidebar gets class "is-open" and #sidebar-backdrop gets class
+      "is-visible" while the mobile drawer is open; #sidebar-toggle's
+      aria-expanded mirrors that state.
+    - The currently scroll-spied chapter link gets class "is-current" on
+      its <a> inside .toc-chapter.
+    - .quiz-answer toggles class "revealed" (not the `hidden` attribute).
+    - .quiz-question gets class "rated" + data-rating mirroring storage.
+    - .rating-btn gets class "rating-btn--active" for the saved rating.
+*/
+
+/* ---------------------------------------------------------------------
+   1. Design tokens
+   ------------------------------------------------------------------ */
+
+:root,
+html[data-theme="light"] {
+  color-scheme: light;
+
+  /* Type */
+  --font-serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --font-sans: system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  --fs-tiny: 0.8125rem;
+  --fs-small: 0.9rem;
+  --fs-body: 1rem;
+  --fs-h4: 1.05rem;
+  --fs-h3: 1.3rem;
+  --fs-h2: 1.7rem;
+  --fs-h2-teil: 2rem;
+  --fs-h1: 2.4rem;
+  --lh-body: 1.65;
+  --lh-heading: 1.25;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+
+  /* Shape */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Layout */
+  --topbar-h: 60px;
+  --sidebar-w: 280px;
+  --content-max-w: 74ch;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 150ms;
+  --t-base: 220ms;
+
+  /* Z-index scale */
+  --z-topbar: 60;
+  --z-backdrop: 50;
+  --z-drawer: 70;
+  --z-confetti: 90;
+
+  /* Neutral surfaces — warm paper / ink pair */
+  --color-bg: #f6f4f0;
+  --color-surface: #ffffff;
+  --color-surface-alt: #eeece6;
+  --color-ink: #1c1c1a;
+  --color-ink-soft: #4a4844;
+  --color-border: #ddd8d0;
+  --color-border-strong: #8f8578;
+
+  /* Functional brand accents — inherited unchanged from the printed Skript */
+  --color-blue: #1d4e89;
+  --color-green: #0f7a3d;
+  --color-orange: #b5560a;
+  --color-violet: #6d28d9;
+  --color-on-accent: #ffffff;
+  --color-focus: #1d4e89;
+
+  /* Subtle accent-hue tints (callouts, revealed answers, rated questions) */
+  --tint-blue: #eaf1f9;
+  --tint-green: #eaf5ee;
+  /* Slightly lighter than a first pass (#fdf6ec) — that value put the orange
+     callout title text at ~4.55:1, a razor-thin margin over the 4.5:1 AA
+     floor. Lightening the tint (not the accent hex, which stays exactly the
+     PDF's #b5560a) gives it real headroom. */
+  --tint-orange: #fef8ef;
+  --tint-violet: #f1ecfb;
+
+  --overlay-scrim: rgba(20, 18, 15, 0.4);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg: #15171a;
+  --color-surface: #1c1f24;
+  --color-surface-alt: #23262c;
+  --color-ink: #e8e6e1;
+  --color-ink-soft: #a8a49c;
+  --color-border: #33363c;
+  --color-border-strong: #6b6e75;
+
+  --color-blue: #7db1ea;
+  --color-green: #4fbf7f;
+  --color-orange: #e0954a;
+  --color-violet: #b79cf0;
+  --color-on-accent: #12151a;
+  --color-focus: #7db1ea;
+
+  --tint-blue: #1b2838;
+  --tint-green: #16281f;
+  --tint-orange: #2a2013;
+  --tint-violet: #241d33;
+
+  --overlay-scrim: rgba(0, 0, 0, 0.55);
+}
+
+/* "auto" preference: resolve from the OS while JS hasn't (or can't) settle
+   data-theme to a concrete value yet. */
+@media (prefers-color-scheme: dark) {
+  html[data-theme="auto"],
+  html:not([data-theme]) {
+    color-scheme: dark;
+
+    --color-bg: #15171a;
+    --color-surface: #1c1f24;
+    --color-surface-alt: #23262c;
+    --color-ink: #e8e6e1;
+    --color-ink-soft: #a8a49c;
+    --color-border: #33363c;
+    --color-border-strong: #6b6e75;
+
+    --color-blue: #7db1ea;
+    --color-green: #4fbf7f;
+    --color-orange: #e0954a;
+    --color-violet: #b79cf0;
+    --color-on-accent: #12151a;
+    --color-focus: #7db1ea;
+
+    --tint-blue: #1b2838;
+    --tint-green: #16281f;
+    --tint-orange: #2a2013;
+    --tint-violet: #241d33;
+
+    --overlay-scrim: rgba(0, 0, 0, 0.55);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   2. Reset / base
+   ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--color-blue);
+  color: var(--color-on-accent);
+}
+
+/* ---------------------------------------------------------------------
+   3. Typography primitives
+   ------------------------------------------------------------------ */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  line-height: var(--lh-heading);
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------------
+   4. App shell layout
+   ------------------------------------------------------------------ */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-topbar);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--topbar-h);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.topbar-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.1rem;
+  white-space: nowrap;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.layout {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-backdrop);
+  background: var(--overlay-scrim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-base) var(--ease-out);
+}
+
+.sidebar-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+  padding: var(--space-4) 0 var(--space-8);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  max-width: var(--content-max-w);
+  margin: 0 auto;
+  padding: var(--space-6) clamp(var(--space-4), 4vw, var(--space-8));
+}
+
+/* ---------------------------------------------------------------------
+   5. Sidebar navigation (toc)
+   ------------------------------------------------------------------ */
+
+.toc {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-teil {
+  margin: var(--space-5) var(--space-4) var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-tiny);
+  color: var(--color-ink-soft);
+}
+
+.toc-teil:first-child {
+  margin-top: var(--space-2);
+}
+
+.toc-chapter {
+  margin: 0;
+}
+
+.toc-chapter > a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  min-height: 44px;
+  color: var(--color-ink);
+  text-decoration: none;
+  font-size: var(--fs-small);
+  line-height: 1.3;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out);
+}
+
+.toc-chapter > a:hover {
+  background: var(--color-surface-alt);
+}
+
+/* Active nav item: background tint + color + weight only — no side-stripe
+   border, per the absolute ban on colored border-left/right accents. */
+.toc-chapter > a.is-current {
+  background: var(--tint-blue);
+  color: var(--color-blue);
+  font-weight: 700;
+}
+
+.toc-mastery {
+  display: inline-block;
+  margin: 0 var(--space-4) var(--space-1);
+  font-size: var(--fs-tiny);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-soft);
+  background: var(--color-surface-alt);
+  border-radius: 999px;
+  padding: 0.15em 0.6em;
+}
+
+/* .toc-mastery is a sibling of the <a>, not nested inside it (see
+   buildSidebar() in app.js) — a descendant selector here would never match. */
+.toc-chapter > a.is-current + .toc-mastery {
+  color: var(--color-blue);
+  background: var(--color-surface);
+}
+
+.toc-progress {
+  height: 4px;
+  margin: 0 var(--space-4) var(--space-2);
+  background: var(--color-surface-alt);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.toc-progress-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--color-blue);
+  border-radius: inherit;
+  transition: transform var(--t-base) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toc-progress-fill {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   6. Titlepage
+   ------------------------------------------------------------------ */
+
+.titlepage {
+  margin: 0 0 var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.titlepage .title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  margin: 0 0 var(--space-2);
+  color: var(--color-blue);
+}
+
+.titlepage .subtitle {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  margin: 0 0 var(--space-4);
+  color: var(--color-ink);
+}
+
+.titlepage .tagline {
+  font-style: italic;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--space-4);
+}
+
+.titlepage .disclaimer {
+  font-size: var(--fs-tiny);
+  color: var(--color-ink-soft);
+  max-width: 60ch;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ---------------------------------------------------------------------
+   7. Reading content
+   ------------------------------------------------------------------ */
+
+/* .content itself is the capped, centered reading column (see rule above);
+   everything inside — prose, tables, the quiz section — simply fills it at
+   100%, so nothing needs its own conflicting max-width/margin:auto pair. */
+
+.content h2 {
+  font-size: var(--fs-h2);
+  color: var(--color-blue);
+  margin: var(--space-8) 0 var(--space-4);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.content > h2:first-of-type {
+  border-top: none;
+  padding-top: 0;
+  margin-top: var(--space-6);
+}
+
+/* Teil dividers: a bare <h2> immediately followed by <p class="teil-desc">.
+   Progressive enhancement via :has() — degrades to the normal chapter
+   heading style below in browsers without :has() support, which is still
+   fully legible. */
+.content h2:has(+ .teil-desc) {
+  text-align: center;
+  font-size: var(--fs-h2-teil);
+  border-top: none;
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+}
+
+.content > h2:has(+ .teil-desc):first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.teil-desc {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--space-6);
+}
+
+.content h3 {
+  font-size: var(--fs-h3);
+  color: var(--color-ink);
+  margin: var(--space-6) 0 var(--space-3);
+}
+
+.content h4 {
+  font-size: var(--fs-h4);
+  font-style: italic;
+  color: var(--color-ink);
+  margin: var(--space-5) 0 var(--space-2);
+}
+
+h2,
+h3,
+h4 {
+  scroll-margin-top: calc(var(--topbar-h) + var(--space-4));
+}
+
+.content p {
+  margin: 0 0 var(--space-4);
+}
+
+.content ul,
+.content ol {
+  margin: 0 0 var(--space-4);
+  padding-left: 1.4em;
+}
+
+.content li {
+  margin-bottom: var(--space-2);
+}
+
+.content a {
+  color: var(--color-blue);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+.content strong {
+  font-weight: 700;
+}
+
+.content table {
+  border-collapse: collapse;
+  margin: var(--space-2) auto var(--space-5);
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.content th,
+.content td {
+  border: 1px solid var(--color-border);
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  vertical-align: top;
+}
+
+.content thead th {
+  background: var(--color-surface-alt);
+}
+
+.content sub {
+  font-size: 0.75em;
+}
+
+/* ---------------------------------------------------------------------
+   8. Callouts (definition / satz / beweis / beispiel / bemerkung / merke)
+   ------------------------------------------------------------------ */
+
+/*
+  Deviation-from-print note: the PDF renders these boxes with a colored
+  left-border stripe. That pattern is intentionally banned in this web UI.
+  Signal is re-expressed instead as (a) a full 1px hairline border in the
+  accent hue on *all four sides*, (b) a subtle accent-tinted background,
+  and (c) a small non-stripe leading dot marker ahead of the title text.
+*/
+
+.callout {
+  position: relative;
+  margin: var(--space-5) 0;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid;
+}
+
+/* The leading dot marker sits on the TITLE, not the .callout container: the
+   Typst HTML export sometimes wraps the title <strong> in a block-level <p>,
+   and an inline-block ::before on the container would then render on its own
+   line above that block. Anchoring it to the inline .callout-title keeps the
+   dot inline right before the title text for every callout type. */
+.callout-title::before {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  margin-right: 0.5em;
+  vertical-align: middle;
+  transform: translateY(-0.1em);
+}
+
+.callout-definition {
+  background: var(--tint-blue);
+  border-color: var(--color-blue);
+}
+.callout-definition .callout-title::before {
+  background: var(--color-blue);
+}
+.callout-definition .callout-title {
+  color: var(--color-blue);
+}
+
+.callout-merke {
+  background: var(--tint-orange);
+  border-color: var(--color-orange);
+}
+.callout-merke .callout-title::before {
+  background: var(--color-orange);
+}
+.callout-merke .callout-title {
+  color: var(--color-orange);
+}
+
+/* Sätze / Lemmata / Korollare / Folgerungen — violet, the formal-results hue */
+.callout-satz {
+  background: var(--tint-violet);
+  border-color: var(--color-violet);
+}
+.callout-satz .callout-title::before {
+  background: var(--color-violet);
+}
+.callout-satz .callout-title {
+  color: var(--color-violet);
+}
+
+/* Beispiele / Bemerkungen — neutral, no accent hue (keeps the color budget tight) */
+.callout-beispiel,
+.callout-bemerkung {
+  background: var(--color-surface-alt);
+  border-color: var(--color-border-strong);
+}
+.callout-beispiel .callout-title::before,
+.callout-bemerkung .callout-title::before {
+  background: var(--color-border-strong);
+}
+.callout-beispiel .callout-title,
+.callout-bemerkung .callout-title {
+  color: var(--color-ink);
+}
+
+/* Beweise — subtlest of all: no leading dot, italic lead-in, thin edge, trailing ∎ */
+.callout-beweis {
+  background: transparent;
+  border-color: var(--color-border);
+}
+.callout-beweis .callout-title::before {
+  display: none;
+}
+.callout-beweis .callout-title {
+  color: var(--color-ink-soft);
+  font-style: italic;
+  font-weight: 600;
+}
+.callout-beweis .qed {
+  margin-left: 0.35em;
+  color: var(--color-ink-soft);
+}
+
+/* ---------------------------------------------------------------------
+   Mathematics (MathML) — Typst exports formulas as native MathML, which the
+   browser renders with no JavaScript or web fonts.
+   ------------------------------------------------------------------ */
+math {
+  font-size: 1.05em;
+  color: inherit; /* dark-mode-safe: follows the surrounding text color */
+}
+math[display="block"] {
+  display: block;
+  overflow-x: auto;  /* wide equations scroll instead of stretching the page */
+  overflow-y: hidden;
+  max-width: 100%;
+  margin: var(--space-4) 0;
+  padding-bottom: 3px; /* room for the scrollbar without clipping descenders */
+}
+
+.callout-title {
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------------
+   9. Quiz
+   ------------------------------------------------------------------ */
+
+.quiz-section {
+  margin: var(--space-8) 0;
+  padding: var(--space-5) clamp(var(--space-4), 4vw, var(--space-6));
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.quiz-section > h3:first-child {
+  margin-top: 0;
+}
+
+.quiz-question {
+  margin: var(--space-5) 0 var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.quiz-section > .quiz-question:first-of-type {
+  margin-top: var(--space-3);
+  padding-top: 0;
+  border-top: none;
+}
+
+/* Rated indicator: mirrors saved progress WITHOUT auto-revealing the
+   answer. Signalled by background tint + a leading glyph — never a
+   border stripe — so color is always backed by a redundant non-color cue. */
+.quiz-question.rated {
+  padding: var(--space-3) var(--space-4);
+  border-top-color: transparent;
+}
+
+.quiz-question.rated::before {
+  font-weight: 700;
+  margin-right: 0.5em;
+}
+
+.quiz-question.rated[data-rating="again"] {
+  background: var(--tint-orange);
+}
+.quiz-question.rated[data-rating="again"]::before {
+  content: "✖";
+  color: var(--color-orange);
+}
+
+.quiz-question.rated[data-rating="know"] {
+  background: var(--tint-green);
+}
+.quiz-question.rated[data-rating="know"]::before {
+  content: "✓";
+  color: var(--color-green);
+}
+
+.quiz-question.rated[data-rating="sure"] {
+  background: var(--tint-green);
+}
+.quiz-question.rated[data-rating="sure"]::before {
+  content: "★";
+  color: var(--color-green);
+}
+
+/* display: flex (a block-level box), not inline-flex, so the button always
+   starts its own line below the question — never squeezed inline after the
+   last word or wrapping mid-sentence depending on question length. */
+.reveal-btn {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.4em;
+  min-height: 44px;
+  margin: var(--space-2) 0 0;
+  padding: var(--space-1) var(--space-2);
+  background: transparent;
+  color: var(--color-blue);
+  border: none;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-out);
+}
+
+.reveal-btn:hover {
+  background: var(--tint-blue);
+}
+
+.reveal-btn::after {
+  content: "▾";
+  display: inline-block;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+
+.reveal-btn[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+/* Revealed answer: same full-border + tint treatment as the callouts,
+   in Solution Green — the printed Skript's own solution-box color. */
+.quiz-answer {
+  display: none;
+  margin: 0 0 var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: var(--tint-green);
+  border: 1px solid var(--color-green);
+  border-radius: var(--radius-md);
+}
+
+.quiz-answer.revealed {
+  display: block;
+  animation: quiz-answer-in var(--t-base) var(--ease-out);
+}
+
+@keyframes quiz-answer-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quiz-answer > strong:first-child {
+  color: var(--color-green);
+}
+
+.rating-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.rating-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
+}
+
+.rating-btn:hover {
+  background: var(--color-surface-alt);
+}
+
+/* Active states reuse only the three registered functional hues — "again"
+   is a solid Merke-Orange fill; "know"/"sure" are both Solution Green,
+   differentiated by fill strength (outline vs solid) rather than a new
+   color, so confidence reads as a gradient without inventing a 4th hue. */
+.rating-btn[data-rating="again"].rating-btn--active {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--color-on-accent);
+}
+
+.rating-btn[data-rating="know"].rating-btn--active {
+  background: var(--tint-green);
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+
+.rating-btn[data-rating="sure"].rating-btn--active {
+  background: var(--color-green);
+  border-color: var(--color-green);
+  color: var(--color-on-accent);
+}
+
+/* ---------------------------------------------------------------------
+   10. Buttons & small utilities
+   ------------------------------------------------------------------ */
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-out);
+}
+
+.icon-btn:hover {
+  background: var(--color-surface-alt);
+}
+
+.more-menu-wrap {
+  position: relative;
+}
+
+.more-menu {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: var(--z-topbar);
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  padding: var(--space-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.more-menu[hidden] {
+  display: none;
+}
+
+.more-menu-item {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  color: var(--color-blue);
+  border: none;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease-out);
+}
+
+.more-menu-item:hover {
+  background: var(--tint-blue);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link: visually hidden until focused, then a normal focusable chip at
+   the top-left so keyboard users can jump past the ~23-item TOC (WCAG 2.4.1).
+   Overrides .visually-hidden's clipping on :focus. */
+.skip-link:focus {
+  position: fixed;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-drawer);
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  overflow: visible;
+  clip: auto;
+  white-space: nowrap;
+  background: var(--color-surface);
+  color: var(--color-blue);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------------
+   11. Focus, motion, reduced-motion
+   ------------------------------------------------------------------ */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* One-off chapter-complete celebration (app.js: celebrateChapterComplete()).
+   The single deliberate exception to "not a gamified quiz app" — restricted
+   to the app's own three functional accent colors, one brief burst, never a
+   persistent layer. app.js skips creating this entirely under
+   prefers-reduced-motion; the rule above is the backstop if it didn't. */
+.confetti-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-confetti);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -16px;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  opacity: 0.9;
+  animation-name: confetti-fall;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.7, 1);
+  animation-fill-mode: forwards;
+  will-change: transform;
+}
+
+@keyframes confetti-fall {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0.9;
+  }
+  to {
+    transform: translate3d(calc(var(--drift, 0) * 100px), 105vh, 0) rotate(600deg);
+    opacity: 0.4;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   12. Responsive breakpoints
+   ------------------------------------------------------------------ */
+
+/* Below 1024px: sidebar becomes a JS-toggled off-canvas drawer. */
+@media (max-width: 1023px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: var(--z-drawer);
+    width: min(320px, 85vw);
+    transform: translateX(-100%);
+    transition: transform var(--t-base) var(--ease-out);
+    box-shadow: none;
+  }
+
+  .sidebar.is-open {
+    transform: translateX(0);
+  }
+}
+
+/* 1024px and up: sidebar is a fixed-visible left column; drawer machinery
+   is inert. */
+@media (min-width: 1024px) {
+  .sidebar {
+    position: sticky;
+    top: var(--topbar-h);
+    height: calc(100vh - var(--topbar-h));
+  }
+
+  .sidebar-backdrop {
+    display: none;
+  }
+
+  #sidebar-toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Match the specificity of the base type-scale declaration
+     (:root, html[data-theme="light"]). app.js always stamps a concrete
+     data-theme, so a bare :root here would lose to the theme selector and the
+     mobile reduction would silently never apply. */
+  :root,
+  html[data-theme="light"],
+  html[data-theme="dark"] {
+    --fs-h1: 1.9rem;
+    --fs-h2: 1.4rem;
+    --fs-h2-teil: 1.6rem;
+    --fs-h3: 1.15rem;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    row-gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .content {
+    padding: var(--space-5) var(--space-3);
+  }
+
+  .callout,
+  .quiz-section {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  /* .topbar-actions no longer needs wrap handling here — consolidating the
+     secondary actions into #more-menu means it only ever holds two 44px
+     icon buttons (theme toggle, menu toggle), which never overflow even at
+     320px. */
+}

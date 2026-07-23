@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Probability Theory — Interactive Lernskript</title>
+<style>
+__STYLE__
+</style>
+</head>
+<body>
+<a class="visually-hidden skip-link" href="#content">Skip to content</a>
+<div class="app">
+  <header class="topbar">
+    <button type="button" id="sidebar-toggle" class="icon-btn" aria-label="Open chapter navigation" aria-expanded="false" aria-controls="sidebar">
+      <span aria-hidden="true">☰</span>
+    </button>
+    <div class="topbar-title">Probability Theory</div>
+    <div class="topbar-actions">
+      <button type="button" id="theme-toggle" class="icon-btn" aria-label="Change theme"></button>
+      <div class="more-menu-wrap">
+        <button type="button" id="more-menu-toggle" class="icon-btn" aria-label="More actions" aria-expanded="false" aria-controls="more-menu">
+          <span aria-hidden="true">⋮</span>
+        </button>
+        <div id="more-menu" class="more-menu" hidden>
+          <a id="pdf-download-link" class="more-menu-item" download="DWT_Skript.pdf" href="data:application/pdf;base64,__PDF_BASE64__">Download PDF</a>
+          <button type="button" id="copy-link-btn" class="more-menu-item">Copy link</button>
+          <button type="button" id="reset-btn" class="more-menu-item">Reset progress</button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="layout">
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+    <nav id="sidebar" class="sidebar" aria-label="Chapters"></nav>
+    <main id="content" class="content" tabindex="-1">
+__TYPST_BODY__
+    </main>
+  </div>
+</div>
+<script>
+__SCRIPT__
+</script>
+</body>
+</html>
