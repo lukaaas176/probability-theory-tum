@@ -87,8 +87,8 @@ The defining restriction — no dependence on $theta$ — is what makes a statis
 
 #example(title: "statistics")[
 For a real-valued sample $X_1, dots, X_n$:
-- the *sample mean* $overline(X)_n := frac(1, n) sum_(i=1)^n X_i$;
-- the *sample variance* $S_n^2 := frac(1, n - 1) sum_(i=1)^n (X_i - overline(X)_n)^2$ (the division by $n - 1$, rather than $n$, is #emph[Bessel's correction]);
+- the *sample mean* $accent(X, macron)_n := frac(1, n) sum_(i=1)^n X_i$;
+- the *sample variance* $S_n^2 := frac(1, n - 1) sum_(i=1)^n (X_i - accent(X, macron)_n)^2$ (the division by $n - 1$, rather than $n$, is #emph[Bessel's correction]);
 - the *maximum* $X_((n)) := max(X_1, dots, X_n)$;
 - even a constant such as $T(X_1, dots, X_n) = pi$, or a single coordinate $T(X_1, dots, X_n) = X_6$, is technically a statistic.
 
@@ -96,7 +96,7 @@ The sample mean and sample variance are the data-side analogues of the expectati
 ]
 
 #remark[
-The sample size $n$ is #emph[implicit] in the definition: a statistic is really defined for a fixed $n$. When we want to vary $n$ we write $T_n$ to make the dependence explicit — as in $overline(X)_n$ — but note that not every statistic has a natural "version for any $n$" (the constant $pi$ trivially does, the coordinate $X_6$ does not).
+The sample size $n$ is #emph[implicit] in the definition: a statistic is really defined for a fixed $n$. When we want to vary $n$ we write $T_n$ to make the dependence explicit — as in $accent(X, macron)_n$ — but note that not every statistic has a natural "version for any $n$" (the constant $pi$ trivially does, the coordinate $X_6$ does not).
 ]
 
 A statistic becomes an #emph[estimator] the moment we use it as a guess for an unknown quantity.
@@ -169,7 +169,7 @@ and the log-likelihood is
 $
 ell(theta | x) = k ln(theta) + (n - k) ln(1 - theta).
 $
-As a function of $theta$ this is maximized at $theta = k \/ n = overline(x)_n$, the observed fraction of heads — the intuitive "best guess" for the coin's bias, and (as Chapter 11 will confirm) exactly its maximum-likelihood estimate.
+As a function of $theta$ this is maximized at $theta = k \/ n = accent(x, macron)_n$, the observed fraction of heads — the intuitive "best guess" for the coin's bias, and (as Chapter 11 will confirm) exactly its maximum-likelihood estimate.
 ]
 
 #example(title: "likelihood for a normal distribution")[
@@ -201,14 +201,14 @@ A statistical model, as defined here, carries no $n$: it describes a single rand
 #question[Write down a statistical model for $n$ coin flips using a Bernoulli family, and identify the parameter space.]
 #answer[Model each flip as $X_i tilde "Ber"(theta)$ i.i.d., $i = 1, dots, n$. The resulting model for the $n$-fold experiment is $(Omega = {0, 1}^n, cal(A) = cal(P)({0, 1}^n), ("Ber"(theta)^(⊗ n))_(theta in [0, 1]))$, with joint mass function $ PP_theta (x_1, dots, x_n) = theta^(sum_(i=1)^n x_i) (1 - theta)^(n - sum_(i=1)^n x_i) $ for $(x_1, dots, x_n) in {0, 1}^n$. The parameter space is $Theta = [0, 1]$, with $theta$ the probability of heads on a single flip.]
 
-#question[Define a statistic. Why must it not depend on the unknown parameter $theta$, and is the sample mean $overline(X)_n$ a statistic?]
-#answer[A statistic is a measurable function $T : Omega^n -> RR^k$ of the sample that does not depend on $theta$. The restriction is essential because $theta$ is unknown: only quantities computable from the data alone are observable and therefore usable. The sample mean $overline(X)_n = frac(1, n) sum_(i=1)^n X_i$ depends only on the data, so it is a statistic (indeed a common estimator of the mean).]
+#question[Define a statistic. Why must it not depend on the unknown parameter $theta$, and is the sample mean $accent(X, macron)_n$ a statistic?]
+#answer[A statistic is a measurable function $T : Omega^n -> RR^k$ of the sample that does not depend on $theta$. The restriction is essential because $theta$ is unknown: only quantities computable from the data alone are observable and therefore usable. The sample mean $accent(X, macron)_n = frac(1, n) sum_(i=1)^n X_i$ depends only on the data, so it is a statistic (indeed a common estimator of the mean).]
 
 #question[Define identifiability of a parameter of interest $gamma$, give the equivalent contrapositive form, and explain why it matters.]
 #answer[$gamma$ is identifiable if $gamma(theta_1) != gamma(theta_2)$ implies $P_(theta_1) != P_(theta_2)$ for all $theta_1, theta_2 in Theta$; equivalently, if $P_(theta_1) = P_(theta_2)$ implies $gamma(theta_1) = gamma(theta_2)$. It matters because an unidentifiable parameter cannot be determined uniquely even with infinitely much data — different parameter values produce identical distributions, so the data can never separate them.]
 
 #question[For an i.i.d. sample $X_1, dots, X_n tilde "Ber"(theta)$ with $k = sum_(i=1)^n x_i$ heads, write the likelihood $L(theta | x)$ and the log-likelihood $ell(theta | x)$.]
-#answer[The likelihood is $L(theta | x) = product_(i=1)^n theta^(x_i) (1 - theta)^(1 - x_i) = theta^k (1 - theta)^(n - k)$, and the log-likelihood is $ell(theta | x) = k ln(theta) + (n - k) ln(1 - theta)$. It is maximized at $theta = k \/ n = overline(x)_n$.]
+#answer[The likelihood is $L(theta | x) = product_(i=1)^n theta^(x_i) (1 - theta)^(1 - x_i) = theta^k (1 - theta)^(n - k)$, and the log-likelihood is $ell(theta | x) = k ln(theta) + (n - k) ln(1 - theta)$. It is maximized at $theta = k \/ n = accent(x, macron)_n$.]
 
 #question[True or false: the likelihood function $L(theta | x)$ is a probability density over $theta$. Justify.]
 #answer[False. $L(theta | x)$ is a function of the parameter $theta$ with the data $x$ held fixed; it need not integrate to $1$ over $theta$ and carries no interpretation as a density in $theta$. (It is built from the density/mass function $p(x | theta)$ of the data, not of the parameter.) It also exists only relative to observed data, so it is not a property of the model alone.]
