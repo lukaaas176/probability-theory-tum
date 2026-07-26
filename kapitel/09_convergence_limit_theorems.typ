@@ -147,7 +147,7 @@ read as "approximately distributed like", equivalently $sqrt(n)(bar(X)_n - mu) -
 Two cautions and a pointer.
 - The compact form $bar(X)_n ->^d cal(N)(mu, sigma^2 \/ n)$ is often written but is #emph[not] literally correct: convergence in distribution requires a #emph[fixed] limit, whereas the right-hand side still depends on $n$ (and degenerates to a point mass at $mu$ as $n -> oo$, consistent with the laws of large numbers). The precise statement is the standardized one, $Z_n ->^d cal(N)(0, 1)$.
 - The i.i.d. assumption can be relaxed. The Lindeberg–Feller CLT covers independent but not identically distributed summands provided no single term dominates the total variance, and further versions handle certain dependent sequences. This robustness is why the normal distribution is so pervasive.
-- These approximations underpin confidence intervals and hypothesis tests for means (Chapters 12 and 13); the ubiquitous "standard-error bars" in plots are an implicit appeal to the CLT.
+- These approximations underpin hypothesis tests and confidence intervals for means (Chapters 12 and 13); the ubiquitous "standard-error bars" in plots are an implicit appeal to the CLT.
 ]
 
 #example(title: "a worked CLT approximation")[

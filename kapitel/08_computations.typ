@@ -163,7 +163,7 @@ where $i = sqrt(-1)$. Explicitly,
 $
 phi_X (t) = sum_(x) e^(i t x) p_X (x) quad ("discrete"), quad quad phi_X (t) = integral_(-oo)^oo e^(i t x) f_X (x) dif x quad ("continuous") .
 $
-It exists for #emph[every] random variable and every $t$, because $abs(e^(i t X)) = 1$ makes the expectation of a bounded quantity.
+It exists for #emph[every] random variable and every $t$, because $abs(e^(i t X)) = 1$ means we are always taking the expectation of a bounded (indeed unit-modulus) quantity.
 ]
 
 #proposition(name: "properties of characteristic functions")[
@@ -189,7 +189,7 @@ For $X ~ cal(N)(mu, sigma^2)$ the characteristic function is
 $
 phi_X (t) = EE[e^(i t X)] = exp(i mu t - 1/2 sigma^2 t^2) .
 $
-In particular the standard normal $cal(N)(0, 1)$ has $phi(t) = e^(-t^2 \/ 2)$, and property 2 recovers the general case: $phi_(sigma Z + mu) (t) = e^(i t mu) phi_Z (sigma t) = e^(i mu t) e^(-sigma^2 t^2 \/ 2)$.
+In particular, writing $Z ~ cal(N)(0, 1)$ for the standard normal, $phi_Z (t) = e^(-t^2 \/ 2)$, and since $X = sigma Z + mu$, property 2 recovers the general case: $phi_X (t) = phi_(sigma Z + mu) (t) = e^(i t mu) phi_Z (sigma t) = e^(i mu t) e^(-sigma^2 t^2 \/ 2)$.
 ]
 
 A closely related transform trades the imaginary exponent for a real one.
@@ -204,7 +204,7 @@ Beyond the lecture notes, the discrete counterpart worth knowing is the *probabi
 
 == Using transforms for sums
 
-The product rule turns the recognition of sums into algebra: form the product of characteristic functions and read off which distribution it belongs to. The following reproduces, transform-side, results that would be painful by direct convolution.
+The product rule turns the recognition of sums into algebra: form the product of characteristic functions and read off which distribution it belongs to. The following reproduces, transform-side, results that would be painful to obtain by direct convolution.
 
 #example(title: "sums of independent random variables via cf")[
 #emph[Poissons.] With $X ~ "Poi"(lambda)$ one computes $phi_X (t) = exp(lambda (e^(i t) - 1))$. For independent $X ~ "Poi"(lambda)$ and $Y ~ "Poi"(mu)$,
@@ -229,23 +229,23 @@ Let $X ~ cal(N)(mu, sigma^2)$. Then for $a in RR without {0}$ and $b in RR$,
 $
 a X + b ~ cal(N)(a mu + b, a^2 sigma^2) .
 $
-In particular the standardization $(X - mu) \/ sigma ~ cal(N)(0, 1)$. If moreover $X ~ cal(N)(mu_1, sigma_1^2)$ and $Y ~ cal(N)(mu_2, sigma_2^2)$ are independent, then
+In particular the standardization $(X - mu) \/ sigma ~ cal(N)(0, 1)$. If moreover $Y ~ cal(N)(mu_2, sigma_2^2)$ is independent of $X$, then
 $
-X + Y ~ cal(N)(mu_1 + mu_2, sigma_1^2 + sigma_2^2) .
+X + Y ~ cal(N)(mu + mu_2, sigma^2 + sigma_2^2) .
 $
 ]
 
 #proof[
 The affine statement is the change-of-variables corollary applied to the normal density (or property 2 of the cf: $phi_(a X + b) (t) = e^(i t b) phi_X (a t) = exp(i (a mu + b) t - 1/2 a^2 sigma^2 t^2)$, the cf of $cal(N)(a mu + b, a^2 sigma^2)$). For the sum, multiply characteristic functions:
 $
-phi_(X + Y) (t) = exp(i mu_1 t - 1/2 sigma_1^2 t^2) exp(i mu_2 t - 1/2 sigma_2^2 t^2) = exp(i (mu_1 + mu_2) t - 1/2 (sigma_1^2 + sigma_2^2) t^2) ,
+phi_(X + Y) (t) = exp(i mu t - 1/2 sigma^2 t^2) exp(i mu_2 t - 1/2 sigma_2^2 t^2) = exp(i (mu + mu_2) t - 1/2 (sigma^2 + sigma_2^2) t^2) ,
 $
-which is the cf of $cal(N)(mu_1 + mu_2, sigma_1^2 + sigma_2^2)$; uniqueness finishes the proof.
+which is the cf of $cal(N)(mu + mu_2, sigma^2 + sigma_2^2)$; uniqueness finishes the proof.
 ]
 
 The same closure holds in $RR^d$. A multivariate Gaussian $X ~ cal(N)(mu, Sigma)$ with mean $mu in RR^d$ and covariance $Sigma in RR^(d times d)$ (symmetric positive definite) has density
 $
-f_X (x) = 1/((2 pi)^(d \/ 2) abs(Sigma)^(1 \/ 2)) exp(-1/2 (x - mu)^top Sigma^(-1) (x - mu)) ,
+f_X (x) = 1/((2 pi)^(d \/ 2) (det Sigma)^(1 \/ 2)) exp(-1/2 (x - mu)^top Sigma^(-1) (x - mu)) ,
 $
 and for any matrix $A$ and vector $b$ the affine image is again Gaussian, $A X + b ~ cal(N)(A mu + b, A Sigma A^top)$.
 

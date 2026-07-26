@@ -62,7 +62,7 @@ Common point estimates derived from the posterior $pi(theta | x)$ are:
 ]
 
 #remark[
-The MAP estimate maximizes $p(x | theta) pi(theta)$. Dropping the prior — or using a flat prior $pi(theta) prop 1$ — makes this identical to maximizing the likelihood, so the MAP reduces to the maximum-likelihood estimate of Chapter 11. In this sense the MLE is a Bayesian point estimate under a non-informative prior, and the prior is exactly the extra ingredient that regularizes the estimate toward prior belief. This closeness to the familiar MLE is why the MAP is perhaps the most common Bayesian point estimate.
+The MAP estimate maximizes $p(x | theta) pi(theta)$. Dropping the prior — or using a flat prior $pi(theta) prop 1$ — makes this identical to maximizing the likelihood, so the MAP reduces to the maximum-likelihood estimate of Chapter 11. In this sense the MLE is the special case of the MAP estimate that arises under a non-informative prior; more generally, whenever the prior is informative, it is exactly the extra ingredient that regularizes the estimate toward the prior belief. This closeness to the familiar MLE is why the MAP is perhaps the most common Bayesian point estimate.
 ]
 
 == Conjugate priors and the Beta--Binomial model
@@ -100,7 +100,7 @@ Flip a coin $n = 10$ times and observe $x = 8$ heads. Take the flat prior $pi(th
 $
 pi(theta | x) = "Beta"(1 + 8, 1 + 10 - 8) = "Beta"(9, 3) .
 $
-Reading point estimates off this posterior,
+Reading point estimates off this posterior — recall that for $alpha, beta > 1$ a $"Beta"(alpha, beta)$ distribution has mean $alpha \/ (alpha + beta)$ and mode $(alpha - 1) \/ (alpha + beta - 2)$ —
 $
 hat(theta)_"mean" = frac(a + x, a + b + n) = frac(9, 12) = 0.75 , quad quad hat(theta)_"map" = frac(a + x - 1, a + b + n - 2) = frac(8, 10) = 0.8 .
 $

@@ -158,9 +158,10 @@ $
 provided this expectation exists.
 ]
 
-A positive covariance means $X$ tends to be above its mean exactly when $Y$ is above its mean (they move together); a negative covariance means they move oppositely. Setting $Y = X$ recovers the variance, $"Cov"(X, X) = "Var"(X)$. For random #emph[vectors] $X = (X_1, dots, X_m)^top$ and $Y = (Y_1, dots, Y_n)^top$ one collects all pairwise covariances into a *covariance matrix* with entries $("Cov"(X_i, Y_j))_(i, j)$, but the scalar case is all we need here. As with the variance, expanding the product gives a shortcut formula.
+A positive covariance means $X$ and $Y$ tend to lie on the same side of their means at the same time — both above, or both below (they move together); a negative covariance means they tend to lie on opposite sides. Setting $Y = X$ recovers the variance, $"Cov"(X, X) = "Var"(X)$. For random #emph[vectors] $X = (X_1, dots, X_m)^top$ and $Y = (Y_1, dots, Y_n)^top$ one collects all pairwise covariances into a *cross-covariance matrix* with entries $("Cov"(X_i, Y_j))_(i, j)$ (when $Y = X$ this reduces to the ordinary, symmetric *covariance matrix* of $X$), but the scalar case is all we need here. As with the variance, expanding the product gives a shortcut formula.
 
 #proposition(name: "computational formula for covariance")[
+For any square-integrable $X$ and $Y$,
 $
 "Cov"(X, Y) = EE[X Y] - EE[X] thin EE[Y] .
 $

@@ -7,7 +7,7 @@ Chapter 2 built the general apparatus — a sample space $Omega$, a $sigma$-alge
 == Discrete probability spaces and the pmf
 
 #definition(title: "Discrete probability space, probability mass function (pmf)")[
-Let $Omega$ be an *at most countable* set. A probability measure $P$ on $(Omega, cal(A) := cal(P)(Omega))$ is called a *discrete probability measure*, and the triple $(Omega, cal(A), P)$ a *discrete probability space*. The map
+Let $Omega$ be an *at most countable* set. A probability measure $PP$ on $(Omega, cal(A) := cal(P)(Omega))$ is called a *discrete probability measure*, and the triple $(Omega, cal(A), PP)$ a *discrete probability space*. The map
 $
 p : Omega -> [0, 1], quad omega |-> p(omega) := P({omega})
 $
@@ -84,14 +84,14 @@ Equivalently, the number of sixes is $"Bin"(6, 1/6)$-distributed and $p = 1 - P(
 
 == The key discrete distributions
 
-We now list the distributions you must recognize on sight. Throughout, $p in [0, 1]$ is a success probability and we (following the notes) reuse the letter $p$ for both the parameter and the pmf; the meaning is clear from context. We write $NN = {0, 1, 2, dots}$.
+We now list the distributions you must recognize on sight. Throughout, $p in [0, 1]$ is a success probability, and we reuse the letter $p$ for both the parameter and the pmf; the meaning is clear from context. We write $NN = {0, 1, 2, dots}$.
 
 === Bernoulli and the Bernoulli process
 
 #definition(title: "Bernoulli distribution and Bernoulli process")[
 For $p in [0, 1]$, the *Bernoulli distribution* $"Ber"(p)$ on $Omega = {0, 1}$ has pmf
 $
-p_(("Ber"(p)))(omega) = cases(p & "if" omega = 1\, (1 - p) & "if" omega = 0).
+p_(("Ber"(p)))(omega) = cases(p & "if" omega = 1, (1 - p) & "if" omega = 0).
 $
 More generally, for $n in NN_(>0)$ the *Bernoulli process* $"Ber"(n, p)$ on $Omega = {0, 1}^n$ records the full sequence of $n$ independent trials:
 $

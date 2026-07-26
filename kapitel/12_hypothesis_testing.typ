@@ -111,7 +111,7 @@ Fix $alpha in [0, 1]$.
 The lecture's informal description of a test is: reduce the data to a statistic $T(x)$, work out how surprising the observed value is #emph[if the null were true], and reject when it is surprising beyond a pre-set threshold. The number that measures "how surprising" is the p-value.
 
 #definition(title: "p-value")[
-Let $T$ be a test statistic whose distribution under $H_0$ is known, with observed value $t_"obs" = T(x)$. The *p-value* is the probability, computed #emph[under the null $H_0$], of observing a value of $T$ at least as extreme as $t_"obs"$ in the direction of the alternative. For a right-sided alternative,
+Let $T$ be a test statistic whose distribution under $H_0$ is known, with observed value $t_"obs" = T(x)$. The *p-value* is the probability, computed #emph[under the null $H_0$], of observing a value of $T$ at least as extreme as $t_"obs"$ in the direction of the alternative. For a one-sided alternative favoring large values of $T$,
 $
 "p-value" = P_(H_0)(T >= t_"obs") ,
 $
@@ -161,7 +161,7 @@ Writing down the decision rule $phi$ directly is awkward. In practice one extrac
 #definition(title: "Recipe for constructing a test")[
 + Choose a real-valued *test statistic* $T : Omega^n -> RR$ that summarizes the sample (e.g. the sample mean when testing a mean, the sample variance when testing a variance).
 + Determine, at least approximately, the *distribution of $T(X)$ under $H_0$* (its *null distribution*) — either exactly, or via the central limit theorem for large $n$.
-+ Fix a level $alpha$ and define the *rejection region* $R$ through quantiles of the null distribution. The threshold is the *critical value* and $R$ the *critical region*. For a composite null the level is $alpha = sup_(theta in Theta_0) G_phi (theta)$, so it is governed by the *null boundary*.
++ Fix a level $alpha$ and define the *rejection region* $R$ through quantiles of the null distribution. The threshold is the *critical value* and $R$ the *critical region*. For a composite null the level is $alpha = sup_(theta in Theta_0) G_phi (theta)$; when the power function $G_phi$ is monotone in $theta$ on $Theta_0$ (as in the one-sided examples below), this supremum is attained at the boundary, so the level is governed by the *null boundary*.
 + Set $phi(x) = bb(1)_R (T(x))$, i.e. $phi(x) = 1$ if $T(x) in R$ (reject) and $0$ otherwise.
 ]
 
@@ -169,7 +169,7 @@ Writing down the decision rule $phi$ directly is awkward. In practice one extrac
 Let $Theta subset.eq RR$.
 - A *one-sided* (one-tailed) test is used for a directional alternative, $H_1 : theta > theta_0$ or $H_1 : theta < theta_0$; the rejection region sits entirely in one tail of the null distribution.
 - A *two-sided* (two-tailed) test is used for a non-directional alternative, $H_1 : theta != theta_0$; the rejection region is split between both tails, using the $alpha \/ 2$ and $1 - alpha \/ 2$ quantiles.
-For a given $alpha$, a one-sided test is more powerful for detecting an effect in its chosen direction but has no power against the opposite direction.
+For a given $alpha$, a one-sided test is more powerful for detecting an effect in its chosen direction, but its power against an effect in the opposite direction never exceeds $alpha$ itself — it is effectively blind to that side.
 ]
 
 === The z-test for a normal mean
@@ -182,7 +182,7 @@ Rejecting when $Lambda(x) > k$ is, after taking logarithms and using $mu_1 > mu_
 $
 Z = frac(macron(X)_n - mu_0, sigma \/ sqrt(n)) ~ cal(N)(0, 1)
 $
-is standard normal, so $c = mu_0 + z_alpha dot sigma \/ sqrt(n)$, where $z_alpha$ denotes the $1 - alpha$ quantile of $cal(N)(0,1)$, i.e. $P(Z >= z_alpha) = alpha$. The resulting UMP test — the *one-sided z-test* — rejects $H_0$ when
+is standard normal, so $c = mu_0 + z_alpha dot sigma \/ sqrt(n)$, where $z_alpha$ denotes the $1 - alpha$ quantile of $cal(N)(0,1)$, i.e. $P(Z >= z_alpha) = alpha$. Crucially, $c$ depends only on $mu_0$, $sigma$, $n$ and $alpha$ — not on the particular value $mu_1$ — so this same rejection region is simultaneously most powerful against #emph[every] $mu_1 > mu_0$, i.e. it is most powerful for the whole composite alternative $H_1 : mu > mu_0$. The resulting UMP test — the *one-sided z-test* — rejects $H_0$ when
 $
 macron(x)_n > mu_0 + z_alpha frac(sigma, sqrt(n)) quad "equivalently" quad z_"obs" > z_alpha .
 $

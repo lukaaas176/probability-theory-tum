@@ -4,7 +4,7 @@
 
 Chapter 10 set up the language of statistical inference: a parametric statistical model $(Omega, cal(A), P_Theta)$, a #emph[statistic] $T : Omega^n -> RR^k$ computed from the observed sample, a #emph[parameter of interest] $gamma(theta)$, and the #emph[likelihood function] $L(theta | x)$. That chapter answered "what could we possibly want to infer, and from what?" This chapter answers the most basic inferential question of all: given the data, produce a single #emph[best guess] for the unknown parameter. Such a guess is called a #emph[point estimate], as opposed to the whole-interval answer of Chapter 13 or the yes/no verdict of Chapter 12.
 
-Three questions organize the chapter. First, what #emph[is] an estimator? (Any statistic aimed at $gamma$ — so the real work is choosing a good one.) Second, how do we decide whether an estimator is good — the vocabulary of bias, variance, mean squared error, consistency and efficiency. Third, are there general recipes for #emph[constructing] good estimators rather than guessing them? — the maximum-likelihood estimator and the method of moments.
+Three questions organize the chapter. First, what #emph[is] an estimator? (Any statistic aimed at $gamma$ — so the real work is choosing a good one.) Second, how do we decide whether an estimator is good? — the vocabulary of bias, variance, mean squared error, consistency and efficiency. Third, are there general recipes for #emph[constructing] good estimators rather than guessing them? — the maximum-likelihood estimator and the method of moments.
 
 == Estimators and estimates
 
@@ -188,7 +188,7 @@ hat(mu)_"mle" = frac(1, n) sum_(i=1)^n x_i = bar(x)_n ,
 quad
 hat(sigma)^2_"mle" = frac(1, n) sum_(i=1)^n (x_i - bar(x)_n)^2 .
 $
-The MLE of the mean coincides with the (unbiased) sample mean, but the MLE of the variance is the #emph[naive] estimator $hat(sigma)^2$ from before — it divides by $n$, not $n - 1$, and is therefore biased.
+At this critical point $partial^2 ell \/ partial mu^2 = -n \/ sigma^2 < 0$, $partial^2 ell \/ partial (sigma^2)^2 = -n \/ (2 (sigma^2)^2) < 0$, and the mixed partial vanishes, so the Hessian is negative definite there, confirming a maximum. The MLE of the mean coincides with the (unbiased) sample mean, but the MLE of the variance is the #emph[naive] estimator $hat(sigma)^2$ from before — it divides by $n$, not $n - 1$, and is therefore biased.
 ]
 
 The pattern across these derivations is summarized in the following table of maximum-likelihood estimators for the standard i.i.d. models (no closed form need exist in general — sometimes the MLE must be found numerically).
@@ -210,7 +210,7 @@ The MLE gives no free guarantees at finite $n$ (the Gaussian variance case shows
 #remark[
 Under regularity conditions, the maximum-likelihood estimator is
 + *consistent:* $hat(theta)_"mle" attach(arrow.r.long, t: "P") theta$;
-+ *asymptotically normal:* $sqrt(n)(hat(theta)_"mle" - theta) attach(arrow.r.long, t: "d") cal(N)(0, V(theta))$ with $V(theta) = cal(I)(theta)^(-1)$, the inverse Fisher information (below);
++ *asymptotically normal:* $hat(theta)_"mle" attach(arrow.r.long, t: "d") cal(N)(theta, cal(I)(theta)^(-1))$ for large $n$, where $cal(I)(theta)$ is the Fisher information of the full sample (below), so that the asymptotic variance of $hat(theta)_"mle"$ matches the Cramér--Rao bound exactly;
 + *asymptotically efficient:* it attains the smallest possible asymptotic variance in a large class of estimators;
 + *invariant:* if $hat(theta)_"mle"$ estimates $theta$ and $g$ is a function, then $g(hat(theta)_"mle")$ is the MLE of $g(theta)$ — e.g. the MLE of the standard deviation is $sqrt(hat(sigma)^2_"mle")$.
 ]

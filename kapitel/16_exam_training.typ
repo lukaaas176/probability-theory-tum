@@ -105,9 +105,9 @@ $
 PP(A | K = 1) = (10 dot 0.035 (0.92)^9)/(0.8 (0.92)^9) = 0.35/0.8 = 7/16 .
 $
 
-*(iii)* By the law of total expectation, splitting on the line and using $EE["Bin"(n,p)] = n p$,
+*(iii)* Writing $K = sum_(i=1)^10 X_i$ with $X_i$ the indicator that LED $i$ is defective, the law of total expectation applied to each $X_i$ (conditioning on which line LED $i$ came from) and summed over the $10$ iid LEDs gives
 $
-EE[K] = EE[K | A] PP(A) + EE[K | B] PP(B) = 10 dot 0.05 dot 0.7 + 10 dot 0.15 dot 0.3 = 0.35 + 0.45 = 0.8 .
+EE[K] = sum_(i=1)^10 (p_A PP(A) + p_B PP(B)) = 10 dot 0.05 dot 0.7 + 10 dot 0.15 dot 0.3 = 0.35 + 0.45 = 0.8 .
 $
 (Equivalently $EE[K] = 10 dot 0.08 = 0.8$.)
 

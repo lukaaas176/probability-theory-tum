@@ -33,7 +33,7 @@ There is no probability of something happening #emph[per se] — only a probabil
 ]
 
 #remark[
-One is tempted to conclude that if only we knew enough (down to quantum effects), nothing would be "truly" random and all uncertainty could be banished. The view that the universe is fully determined by its state is called #emph[determinism]. In practice we never have that complete knowledge, so we encode our ignorance with probabilities regardless — which is exactly what the rest of this course makes precise, starting with Kolmogorov's axioms in Chapter 2.
+One is tempted to conclude that if only we knew enough about the underlying mechanism, nothing would be "truly" random and all uncertainty could be banished — though the quantum-mechanics bullet above is a reminder that even complete knowledge may not remove all randomness. The view that the universe is fully determined by its state is called #emph[determinism]. In practice we never have that complete knowledge, so we encode our ignorance with probabilities regardless — which is exactly what the rest of this course makes precise, starting with Kolmogorov's axioms in Chapter 2.
 ]
 
 Chapter 2 turns these intuitions into mathematics: a #emph[probability space], the triple that pins down what the possible outcomes are, which events we can assign probabilities to, and how those probabilities behave.

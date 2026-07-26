@@ -2,7 +2,7 @@
 
 = Basic probability inequalities
 
-Chapter 6 computed the expectation and variance of specific distributions. Very often, though, the exact distribution of a quantity is unknown or too unwieldy to integrate, yet we still need to control how much probability mass can sit far out in the tails, or far from the mean. This chapter collects three inequalities that deliver such control from #emph[minimal] information — a mean, a variance, or mere convexity — with no need for the full distribution. They are the workhorses behind concentration results and, as the last section previews, behind the weak law of large numbers in Chapter 9.
+Chapter 6 computed the expectation and variance of specific distributions. Very often, though, the exact distribution of a quantity is unknown or too unwieldy to integrate, yet we still need to control how much probability mass can sit far out in the tails, or far from the mean. This chapter collects three inequalities that deliver such control from #emph[minimal] information — a mean, a variance, or mere convexity — with no need for the full distribution. They are the workhorses behind concentration results, previewed in the chapter's final section, and behind the weak law of large numbers in Chapter 9, previewed already in the section on Chebyshev's inequality below.
 
 The common theme is a trade-off: the less we assume about $X$, the weaker (looser) the resulting bound. Markov's inequality assumes almost nothing and is correspondingly crude; Chebyshev's adds a variance and controls two-sided deviations; Jensen's exploits convexity to move an expectation through a nonlinear map.
 
@@ -11,7 +11,7 @@ The common theme is a trade-off: the less we assume about $X$, the weaker (loose
 Markov's inequality bounds the probability that a non-negative random variable exceeds a threshold, using #emph[only] its mean. Intuitively: if the average is small, the variable cannot spend too much probability far above it.
 
 #theorem(name: "Markov's inequality")[
-Let $(Omega, cal(A), PP)$ be a probability space, $X : Omega -> RR$ a random variable, and $f : S_X -> RR_(>=0)$ a monotonically increasing function on the image $S_X = "im"(X) = X(Omega) subset.eq RR$. Then for every $epsilon in RR$ with $f(epsilon) > 0$,
+Let $(Omega, cal(A), PP)$ be a probability space, $X : Omega -> RR$ a random variable, and $f$ a monotonically increasing, non-negative function defined on an interval $I subset.eq RR$ that contains the image $S_X = "im"(X) = X(Omega)$. Then for every $epsilon in I$ with $f(epsilon) > 0$,
 $
 PP(X >= epsilon) <= frac(1, f(epsilon)) EE[f(X)] .
 $
@@ -40,7 +40,7 @@ Suppose the average daily number of hits on a website is $EE[X] = 50$. Because t
 $
 PP(X >= 150) <= frac(EE[X], 150) = frac(50, 150) = frac(1, 3) .
 $
-So at least one hundred fifty hits occurs with probability at most $1 \/ 3$ — a guarantee obtained without knowing anything about the shape of the traffic distribution.
+So a day with at least one hundred fifty hits occurs with probability at most $1 \/ 3$ — a guarantee obtained without knowing anything about the shape of the traffic distribution.
 ]
 
 == Chebyshev's inequality
@@ -55,7 +55,7 @@ $
 ]
 
 #proof[
-Apply Markov's inequality with the monotone map $f(x) = x^2$ to the deviation $X - EE[X]$, at threshold $epsilon$. Since $abs(X - EE[X]) >= epsilon$ and $(X - EE[X])^2 >= epsilon^2$ describe the same event,
+Apply Markov's inequality with the monotone map $f(x) = x^2$ to the non-negative variable $abs(X - EE[X])$, at threshold $epsilon$. Since $abs(X - EE[X]) >= epsilon$ and $(X - EE[X])^2 >= epsilon^2$ describe the same event,
 $
 PP(abs(X - EE[X]) >= epsilon) = PP((X - EE[X])^2 >= epsilon^2) <= frac(EE[(X - EE[X])^2], epsilon^2) = frac("Var"(X), epsilon^2) ,
 $
@@ -91,7 +91,7 @@ The sample mean concentrates on the true mean — this is convergence in probabi
 The third inequality is of a different flavour: it relates the expectation of a #emph[transformed] variable, $EE[g(X)]$, to the transformation of the expectation, $g(EE[X])$, whenever $g$ is convex.
 
 #definition(title: "Convex function")[
-A function $g : RR -> RR$ is *convex* if for all $x_1, x_2 in RR$ and $t in [0, 1]$,
+A function $g : I -> RR$, defined on an interval $I subset.eq RR$ (in particular $I = RR$), is *convex* if for all $x_1, x_2 in I$ and $t in [0, 1]$,
 $
 g(t x_1 + (1 - t) x_2) <= t thin g(x_1) + (1 - t) thin g(x_2) ,
 $
@@ -99,7 +99,7 @@ that is, every chord of the graph lies on or above the graph. It is *concave* if
 ]
 
 #theorem(name: "Jensen's inequality")[
-Let $X$ be a random variable with finite mean $EE[X]$ and let $g : RR -> RR$ be convex. Then
+Let $X$ be a random variable with finite mean $EE[X]$, taking values in an interval $I subset.eq RR$, and let $g : I -> RR$ be convex. Then
 $
 g(EE[X]) <= EE[g(X)] .
 $

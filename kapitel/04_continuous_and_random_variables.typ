@@ -86,7 +86,7 @@ is a probability measure on $(Omega', cal(A)')$, the #emph[(probability) distrib
 The distribution $P_X$ is the pushforward $P compose X^(-1)$ of $P$ along $X$. Two more notions we will use constantly:
 
 #definition(title: "identically distributed, cdf and pdf of an RV")[
-Random variables $(X_i)_(i in I)$ are #emph[identically distributed] if $P_(X_i) = P$ for the same law $P$ and all $i$ (their base spaces may differ). For a real-valued RV $X$, its #emph[cumulative distribution function] is $F_X := F_(P_X)$, and if $F_X$ is (weakly) differentiable — so $P_X$ is continuous — its #emph[probability density function] is $p_X := F_X'$.
+Random variables $(X_i)_(i in I)$ are #emph[identically distributed] if there is a single law $Q$ with $P_(X_i) = Q$ for all $i$ (their base spaces may differ). For a real-valued RV $X$, its #emph[cumulative distribution function] is $F_X (x) := P(X <= x)$ (i.e. the cdf of its law $P_X$), and if $F_X$ is (weakly) differentiable — so $P_X$ is continuous — its #emph[probability density function] is $p_X := F_X'$.
 ]
 
 #corollary[

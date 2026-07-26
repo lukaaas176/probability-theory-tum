@@ -18,7 +18,7 @@ Throughout, $p in [0, 1]$ is a success probability, $n, r in NN_(>0)$, and $lamb
   [$"Geo"(p)$], [$NN_(>0)$], [$(1 - p)^(k - 1) p$], [$frac(1, p)$], [$frac(1 - p, p^2)$],
   [$"NegBin"(r, p)$], [$NN_(>= r)$], [$binom(k - 1, r - 1) p^r (1 - p)^(k - r)$], [$frac(r, p)$], [$frac(r (1 - p), p^2)$],
   [$"Poi"(lambda)$], [$NN$], [$frac(e^(-lambda) lambda^k, k!)$], [$lambda$], [$lambda$],
-  [$"Hyp"(N, K, n)$], [${max(0, n {+} K {-} N), dots, min(n, K)}$], [$frac(binom(K, k) binom(N - K, n - k), binom(N, n))$], [$frac(n K, N)$], [$n frac(K, N) (1 - frac(K, N)) frac(N - n, N - 1)$],
+  [$"Hyp"(N, K, n)$], [${max(0, n + K - N), dots, min(n, K)}$], [$frac(binom(K, k) binom(N - K, n - k), binom(N, n))$], [$frac(n K, N)$], [$n frac(K, N) (1 - frac(K, N)) frac(N - n, N - 1)$],
 )
 
 #remark[

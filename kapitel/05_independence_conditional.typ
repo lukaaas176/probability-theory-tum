@@ -32,7 +32,7 @@ Once several random variables share a space, two dual questions arise: how are t
 Let $X := (X_i)_(i in I)$, regarded as an $(Omega_I, cal(A)_I)$-valued random variable. Its induced measure $P_X := PP compose X^(-1)$ on $(Omega_I, cal(A)_I)$ is the *joint distribution* of the family $(X_i)_(i in I)$. For each $i in I$ the induced measure $P_(X_i) := PP compose X_i^(-1)$ is the *marginal distribution* of $X_i$ (with respect to $P_X$).
 ]
 
-For the two most important cases — finitely many discrete variables, or finitely many real-valued ones — the joint distribution is described by a single product-shaped function, and the marginals are recovered by summing or integrating out the other coordinates.
+For the two most important cases — finitely many discrete variables, or finitely many real-valued ones — the joint distribution is described by a single function of the whole tuple (a joint pmf, cdf, or pdf, not necessarily a product of one-dimensional pieces), and the marginals are recovered by summing or integrating out the other coordinates.
 
 #example(title: "product pmf and product pdf")[
 Let $p_1, dots, p_n$ be pmfs on $Omega$. Their *product pmf* on $Omega^n$ is
@@ -71,7 +71,7 @@ PP(A | B) := frac(PP(A inter B), PP(B)) .
 $
 ]
 
-The requirement $PP(B) > 0$ is essential: conditioning on a null event is undefined at this level of the theory. Geometrically, $PP(A | B)$ measures the fraction of $B$'s probability mass that also lies in $A$; dividing by $PP(B)$ guarantees $PP(B | B) = 1$, so the conditioned assignment is again a bona fide probability.
+The requirement $PP(B) > 0$ is essential: conditioning on a null event is undefined at this level of the theory. Geometrically, $PP(A | B)$ measures the fraction of $B$'s probability mass that also lies in $A$; dividing by $PP(B)$ guarantees $PP(Omega | B) = 1$, so the conditioned assignment is again a bona fide probability.
 
 #proposition(name: "conditioning yields a probability measure")[
 Let $B in cal(A)$ with $PP(B) > 0$. Then the map
@@ -250,7 +250,7 @@ Independence of $X$ and $Y$ is then the statement that the conditional coincides
 #definition(title: "Conditional independence")[
 Let $X, Y, Z$ be random variables on the same probability space. Then $X$ and $Y$ are *conditionally independent given $Z$*, written $X perp perp Y | Z$, if the conditional joint distribution factorizes: whenever the densities exist,
 $
-p(x, y | z) = p(x | z) thin p(y | z) quad "for (Lebesgue-almost) all" x, y ,
+p(x, y | z) = p(x | z) thin p(y | z) quad "for (Lebesgue-almost) all" x, y "and (Lebesgue-almost) all" z ,
 $
 so that, once $Z$ is known, $X$ carries no further information about $Y$.
 ]
@@ -266,7 +266,7 @@ p(x_1, dots, x_n) = product_(i in [n]) p_X (x_i) .
 $
 ]
 
-An i.i.d. sequence is precisely what the product-space machinery of the first section produces from a single distribution: taking identical factors $(Omega, cal(A), PP_X)$ and forming the product probability space $(Omega^n, cal(A)^(⊗ n), PP_X^(⊗ n))$ realizes $n$ independent draws from $P_X$ as the coordinate variables. The card example of Chapter 1 — infinitely many independent shuffles modelled on $Omega^NN$ — is this construction with an infinite index set.
+An i.i.d. sequence is precisely what the product-space machinery of the first section produces from a single distribution: taking identical factors $(Omega, cal(A), P_X)$ and forming the product probability space $(Omega^n, cal(A)^(⊗ n), P_X^(⊗ n))$ realizes $n$ independent draws from $P_X$ as the coordinate variables. The card example of Chapter 1 — infinitely many independent shuffles modelled on $Omega^NN$ — is this construction with an infinite index set.
 
 #keyfact[
 For an i.i.d. sample $X_1, dots, X_n tilde^"i.i.d." P_X$, the joint density factorizes into a single repeated factor, so the *likelihood* of observed data is $L(theta | x_1, dots, x_n) = product_(i=1)^n p(x_i | theta)$ — a product, not a sum. This single fact is what makes maximum-likelihood estimation, the laws of large numbers, and the central limit theorem tractable; it is the default modelling assumption in statistics and machine learning.

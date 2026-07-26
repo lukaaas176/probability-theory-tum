@@ -13,7 +13,7 @@ Picture two clouds. On the left sit #emph[general principles]: the assumed groun
 ]
 
 #example(title: "what we want from statistical inference")[
-Suppose we observe a sequence of $n$ coin flips $x_1, dots, x_n in {0, 1}$ (with $1$ = heads). Three natural questions already preview the next four chapters:
+Suppose we observe a sequence of $n$ coin flips $x_1, dots, x_n in {0, 1}$ (with $1$ = heads). Three natural questions already preview the next three chapters:
 - #emph[Point estimation] (Chapter 11): what is the probability $theta$ of heads for this coin — a single best guess?
 - #emph[Hypothesis testing] (Chapter 12): can we decide, with some confidence, whether the coin is fair ($theta = 1\/2$) against the alternative that it is biased?
 - #emph[Interval estimation] (Chapter 13): what is a plausible #emph[range] of values for $theta$, and how confident are we in it?
