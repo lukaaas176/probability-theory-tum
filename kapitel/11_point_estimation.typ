@@ -36,7 +36,7 @@ To compare estimators we need numerical measures of quality. All of them are com
 Let $hat(theta) = hat(theta)_n$ be an estimator for $theta in Theta$.
 + *Bias.* $"Bias"[hat(theta)] := EE[hat(theta)] - theta$. The estimator is *unbiased* if $"Bias"[hat(theta)] = 0$, i.e. $EE[hat(theta)] = theta$ for #emph[all] $theta in Theta$.
 + *Variance.* $"Var"[hat(theta)] := EE[(hat(theta) - EE[hat(theta)])^2]$; for a vector parameter this becomes the covariance matrix $"Cov"[hat(theta), hat(theta)]$.
-+ *Mean squared error.* $"MSE"[hat(theta)] := EE[(hat(theta) - theta)^2]$, the average squared distance from the truth. For a vector parameter, $"MSE"[hat(theta)] = EE[||hat(theta) - theta||_2^2]$.
++ *Mean squared error.* $"MSE"[hat(theta)] := EE[(hat(theta) - theta)^2]$, the average squared distance from the truth. For a vector parameter, $"MSE"[hat(theta)] = EE[ ||hat(theta) - theta||_2^2 ]$.
 + *Consistency.* $hat(theta)_n$ is *consistent* if $hat(theta)_n attach(arrow.r.long, t: "P") theta$ (convergence in probability, Chapter 9), and *strongly consistent* if $hat(theta)_n attach(arrow.r.long, t: "a.s.") theta$.
 + *Asymptotic normality.* $hat(theta)_n$ is *asymptotically normal* if there is a quantity $V(theta)$ with $sqrt(n)(hat(theta)_n - theta) attach(arrow.r.long, t: "d") cal(N)(0, V(theta))$; then $V(theta)$ is the *asymptotic variance* and, for large $n$, $hat(theta)_n approx cal(N)(theta, V(theta) \/ n)$.
 + *Efficiency.* Among all #emph[unbiased] estimators, one achieving the smallest possible variance is a *minimum variance unbiased estimator (MVUE)*.
@@ -74,12 +74,12 @@ Two properties deserve emphasis because they are easy to confuse. #emph[Unbiased
 The sample mean is the estimator against which all others are measured, and it behaves impeccably.
 
 #example(title: "properties of the sample mean")[
-Let $X_1, dots, X_n$ be i.i.d. with mean $mu$ and finite variance $sigma^2 > 0$ (the underlying distribution need #emph[not] be Gaussian). Consider $hat(mu) = bar(X)_n = frac(1,n) sum_(i=1)^n X_i$ as an estimator for $gamma(theta) = mu$.
-- *Unbiased:* by linearity, $EE[bar(X)_n] = frac(1,n) sum_(i=1)^n EE[X_i] = mu$, so $"Bias"[bar(X)_n] = 0$.
-- *Strongly consistent:* the weak and strong laws of large numbers (Chapter 9) give $bar(X)_n attach(arrow.r.long, t: "P") mu$ and $bar(X)_n attach(arrow.r.long, t: "a.s.") mu$.
-- *Variance:* by independence, $"Var"[bar(X)_n] = frac(1, n^2) sum_(i=1)^n "Var"[X_i] = sigma^2 \/ n$, which shrinks as $n$ grows.
-- *MSE:* being unbiased, $"MSE"[bar(X)_n] = "Var"[bar(X)_n] = sigma^2 \/ n$.
-- *Asymptotically normal:* the central limit theorem gives $sqrt(n)(bar(X)_n - mu) attach(arrow.r.long, t: "d") cal(N)(0, sigma^2)$, so the asymptotic variance is $V(theta) = sigma^2$.
+Let $X_1, dots, X_n$ be i.i.d. with mean $mu$ and finite variance $sigma^2 > 0$ (the underlying distribution need #emph[not] be Gaussian). Consider $hat(mu) = overline(X)_n = frac(1,n) sum_(i=1)^n X_i$ as an estimator for $gamma(theta) = mu$.
+- *Unbiased:* by linearity, $EE[overline(X)_n] = frac(1,n) sum_(i=1)^n EE[X_i] = mu$, so $"Bias"[overline(X)_n] = 0$.
+- *Strongly consistent:* the weak and strong laws of large numbers (Chapter 9) give $overline(X)_n attach(arrow.r.long, t: "P") mu$ and $overline(X)_n attach(arrow.r.long, t: "a.s.") mu$.
+- *Variance:* by independence, $"Var"[overline(X)_n] = frac(1, n^2) sum_(i=1)^n "Var"[X_i] = sigma^2 \/ n$, which shrinks as $n$ grows.
+- *MSE:* being unbiased, $"MSE"[overline(X)_n] = "Var"[overline(X)_n] = sigma^2 \/ n$.
+- *Asymptotically normal:* the central limit theorem gives $sqrt(n)(overline(X)_n - mu) attach(arrow.r.long, t: "d") cal(N)(0, sigma^2)$, so the asymptotic variance is $V(theta) = sigma^2$.
 The sample mean is efficient (an MVUE) in the Gaussian model, but need not be efficient for other distributions.
 ]
 
@@ -88,17 +88,17 @@ For the variance the situation is subtler, and explains the mysterious "$n - 1$"
 #example(title: "the sample variance and Bessel's correction")[
 With $X_1, dots, X_n$ i.i.d. of mean $mu$ and variance $sigma^2$, define the *sample variance*
 $
-S_n^2 := frac(1, n - 1) sum_(i=1)^n (X_i - bar(X)_n)^2
+S_n^2 := frac(1, n - 1) sum_(i=1)^n (X_i - overline(X)_n)^2
 quad "and the naive estimator" quad
-hat(sigma)^2 := frac(1, n) sum_(i=1)^n (X_i - bar(X)_n)^2 .
+hat(sigma)^2 := frac(1, n) sum_(i=1)^n (X_i - overline(X)_n)^2 .
 $
 The key algebraic identity is
 $
-sum_(i=1)^n (X_i - bar(X)_n)^2 = sum_(i=1)^n (X_i - mu)^2 - n (bar(X)_n - mu)^2 .
+sum_(i=1)^n (X_i - overline(X)_n)^2 = sum_(i=1)^n (X_i - mu)^2 - n (overline(X)_n - mu)^2 .
 $
-Taking expectations and using $EE[(X_i - mu)^2] = sigma^2$ and $EE[(bar(X)_n - mu)^2] = "Var"[bar(X)_n] = sigma^2 \/ n$,
+Taking expectations and using $EE[(X_i - mu)^2] = sigma^2$ and $EE[(overline(X)_n - mu)^2] = "Var"[overline(X)_n] = sigma^2 \/ n$,
 $
-EE[sum_(i=1)^n (X_i - bar(X)_n)^2] = n sigma^2 - n dot frac(sigma^2, n) = (n - 1) sigma^2 .
+EE[sum_(i=1)^n (X_i - overline(X)_n)^2] = n sigma^2 - n dot frac(sigma^2, n) = (n - 1) sigma^2 .
 $
 Dividing by $n - 1$ therefore gives $EE[S_n^2] = sigma^2$: the sample variance is *unbiased* in any model — this division by $n - 1$ is *Bessel's correction*. The naive estimator instead has $EE[hat(sigma)^2] = frac(n - 1, n) sigma^2 < sigma^2$, so it is biased and systematically underestimates the variance. Both are consistent, since the correction factor tends to $1$.
 ]
@@ -109,7 +109,7 @@ Finally, a pair of examples showing that unbiasedness and consistency are genuin
 
 #example(title: "biased-but-consistent vs. unbiased-but-inconsistent")[
 Let $X_1, dots, X_n$ be i.i.d. with mean $mu$ and variance $sigma^2 > 0$.
-- *Biased but consistent:* $hat(mu)_n := bar(X)_n + frac(1, n)$ has $EE[hat(mu)_n] = mu + frac(1, n) != mu$, so it is biased for every finite $n$. Yet $bar(X)_n attach(arrow.r.long, t: "P") mu$ and $frac(1, n) -> 0$, so $hat(mu)_n attach(arrow.r.long, t: "P") mu$ is consistent.
+- *Biased but consistent:* $hat(mu)_n := overline(X)_n + frac(1, n)$ has $EE[hat(mu)_n] = mu + frac(1, n) != mu$, so it is biased for every finite $n$. Yet $overline(X)_n attach(arrow.r.long, t: "P") mu$ and $frac(1, n) -> 0$, so $hat(mu)_n attach(arrow.r.long, t: "P") mu$ is consistent.
 - *Unbiased but not consistent:* $tilde(mu)_n := X_1$ (ignore all but the first observation) has $EE[tilde(mu)_n] = mu$, hence is unbiased for every $n$. But it never concentrates — $"Var"[tilde(mu)_n] = sigma^2 > 0$ does not vanish — so $tilde(mu)_n$ does #emph[not] converge to $mu$ and is inconsistent.
 ]
 
@@ -146,7 +146,7 @@ frac(partial ell, partial p) = frac(s, p) - frac(n - s, 1 - p) = 0
 quad ==> quad
 (1 - p) s = p (n - s)
 quad ==> quad
-hat(p)_"mle" = frac(s, n) = frac(1, n) sum_(i=1)^n x_i = bar(x)_n .
+hat(p)_"mle" = frac(s, n) = frac(1, n) sum_(i=1)^n x_i = overline(x)_n .
 $
 The second derivative $-s \/ p^2 - (n - s) \/ (1 - p)^2 < 0$ confirms a maximum. The MLE is simply the observed success frequency — and since the number of successes in $n$ i.i.d. Bernoulli trials is $"Bin"(n, p)$, this is exactly the MLE for the Binomial proportion as well.
 ]
@@ -164,7 +164,7 @@ The final sum does not depend on $lambda$, so it drops out on differentiation:
 $
 frac(partial ell, partial lambda) = -n + frac(1, lambda) sum_(i=1)^n x_i = 0
 quad ==> quad
-hat(lambda)_"mle" = frac(1, n) sum_(i=1)^n x_i = bar(x)_n .
+hat(lambda)_"mle" = frac(1, n) sum_(i=1)^n x_i = overline(x)_n .
 $
 Since $partial^2 ell \/ partial lambda^2 = - (sum_(i=1)^n x_i) \/ lambda^2 < 0$, this is a maximum. The MLE of the Poisson rate is the sample mean.
 ]
@@ -182,11 +182,11 @@ frac(partial ell, partial mu) = frac(1, sigma^2) (sum_(i=1)^n x_i - n mu) ,
 quad
 frac(partial ell, partial sigma^2) = - frac(n, 2 sigma^2) + frac(1, 2 (sigma^2)^2) sum_(i=1)^n (x_i - mu)^2 .
 $
-Setting $partial ell \/ partial mu = 0$ yields $hat(mu)_"mle" = bar(x)_n$; substituting this into $partial ell \/ partial sigma^2 = 0$ yields
+Setting $partial ell \/ partial mu = 0$ yields $hat(mu)_"mle" = overline(x)_n$; substituting this into $partial ell \/ partial sigma^2 = 0$ yields
 $
-hat(mu)_"mle" = frac(1, n) sum_(i=1)^n x_i = bar(x)_n ,
+hat(mu)_"mle" = frac(1, n) sum_(i=1)^n x_i = overline(x)_n ,
 quad
-hat(sigma)^2_"mle" = frac(1, n) sum_(i=1)^n (x_i - bar(x)_n)^2 .
+hat(sigma)^2_"mle" = frac(1, n) sum_(i=1)^n (x_i - overline(x)_n)^2 .
 $
 At this critical point $partial^2 ell \/ partial mu^2 = -n \/ sigma^2 < 0$, $partial^2 ell \/ partial (sigma^2)^2 = -n \/ (2 (sigma^2)^2) < 0$, and the mixed partial vanishes, so the Hessian is negative definite there, confirming a maximum. The MLE of the mean coincides with the (unbiased) sample mean, but the MLE of the variance is the #emph[naive] estimator $hat(sigma)^2$ from before — it divides by $n$, not $n - 1$, and is therefore biased.
 ]
@@ -196,10 +196,10 @@ The pattern across these derivations is summarized in the following table of max
 #table(
   columns: 3,
   [*Model*], [*Parameter*], [*Maximum-likelihood estimator*],
-  [$"Ber"(p)$], [$p$], [$bar(X)_n$],
-  [$"Poi"(lambda)$], [$lambda$], [$bar(X)_n$],
-  [$"Exp"(lambda)$], [$lambda$], [$1 \/ bar(X)_n$],
-  [$cal(N)(mu, sigma^2)$], [$(mu, sigma^2)$], [$(bar(X)_n, thin frac(1, n) sum_(i=1)^n (X_i - bar(X)_n)^2)$],
+  [$"Ber"(p)$], [$p$], [$overline(X)_n$],
+  [$"Poi"(lambda)$], [$lambda$], [$overline(X)_n$],
+  [$"Exp"(lambda)$], [$lambda$], [$1 \/ overline(X)_n$],
+  [$cal(N)(mu, sigma^2)$], [$(mu, sigma^2)$], [$(overline(X)_n, thin frac(1, n) sum_(i=1)^n (X_i - overline(X)_n)^2)$],
   [$"Unif"(0, theta)$], [$theta$], [$X_((n)) = max_i X_i$],
 )
 
@@ -210,7 +210,7 @@ The MLE gives no free guarantees at finite $n$ (the Gaussian variance case shows
 #remark[
 Under regularity conditions, the maximum-likelihood estimator is
 + *consistent:* $hat(theta)_"mle" attach(arrow.r.long, t: "P") theta$;
-+ *asymptotically normal:* $hat(theta)_"mle" attach(arrow.r.long, t: "d") cal(N)(theta, cal(I)(theta)^(-1))$ for large $n$, where $cal(I)(theta)$ is the Fisher information of the full sample (below), so that the asymptotic variance of $hat(theta)_"mle"$ matches the Cramér--Rao bound exactly;
++ *asymptotically normal:* for large $n$, $hat(theta)_"mle" approx cal(N)(theta, cal(I)(theta)^(-1))$, where $cal(I)(theta)$ is the Fisher information of the full sample (below), so that the asymptotic variance of $hat(theta)_"mle"$ matches the Cramér--Rao bound exactly;
 + *asymptotically efficient:* it attains the smallest possible asymptotic variance in a large class of estimators;
 + *invariant:* if $hat(theta)_"mle"$ estimates $theta$ and $g$ is a function, then $g(hat(theta)_"mle")$ is the MLE of $g(theta)$ — e.g. the MLE of the standard deviation is $sqrt(hat(sigma)^2_"mle")$.
 ]
@@ -226,7 +226,7 @@ so the MLE is #emph[biased] (it can never exceed the true $theta$). Rescaling re
 $
 "Var"[hat(theta)_2] = frac(theta^2, n (n + 2)) ,
 $
-which for $n > 1$ beats the moment-style unbiased estimator $hat(theta)_1 := 2 bar(X)_n$ with $"Var"[hat(theta)_1] = theta^2 \/ (3 n)$, since $n(n + 2) > 3 n$. In fact $hat(theta)_2$ is the unique MVUE for $theta$ — a reminder that the sample mean, though often good, is sometimes not the best.
+which for $n > 1$ beats the moment-style unbiased estimator $hat(theta)_1 := 2 overline(X)_n$ with $"Var"[hat(theta)_1] = theta^2 \/ (3 n)$, since $n(n + 2) > 3 n$. In fact $hat(theta)_2$ is the unique MVUE for $theta$ — a reminder that the sample mean, though often good, is sometimes not the best.
 ]
 
 #remark[
@@ -246,11 +246,11 @@ and solve the resulting system for $theta$. The solution $hat(theta)_"mom"$ is t
 ]
 
 #example(title: "method of moments for common models")[
-- *Poisson.* Here $EE[X] = lambda$, so the single equation $lambda = bar(X)_n$ gives $hat(lambda)_"mom" = bar(X)_n$ — identical to the MLE.
-- *Exponential.* Here $EE[X] = 1 \/ lambda$, so $1 \/ lambda = bar(X)_n$ gives $hat(lambda)_"mom" = 1 \/ bar(X)_n$ — again the MLE.
-- *Normal.* Two parameters need two moments: $EE[X] = mu$ and $EE[X^2] = mu^2 + sigma^2$. The first gives $hat(mu)_"mom" = bar(X)_n$; the second gives
+- *Poisson.* Here $EE[X] = lambda$, so the single equation $lambda = overline(X)_n$ gives $hat(lambda)_"mom" = overline(X)_n$ — identical to the MLE.
+- *Exponential.* Here $EE[X] = 1 \/ lambda$, so $1 \/ lambda = overline(X)_n$ gives $hat(lambda)_"mom" = 1 \/ overline(X)_n$ — again the MLE.
+- *Normal.* Two parameters need two moments: $EE[X] = mu$ and $EE[X^2] = mu^2 + sigma^2$. The first gives $hat(mu)_"mom" = overline(X)_n$; the second gives
 $
-hat(sigma)^2_"mom" = frac(1, n) sum_(i=1)^n X_i^2 - bar(X)_n^2 = frac(1, n) sum_(i=1)^n (X_i - bar(X)_n)^2 ,
+hat(sigma)^2_"mom" = frac(1, n) sum_(i=1)^n X_i^2 - overline(X)_n^2 = frac(1, n) sum_(i=1)^n (X_i - overline(X)_n)^2 ,
 $
 the same (biased) variance estimate as the MLE.
 ]
@@ -282,23 +282,23 @@ An unbiased estimator that #emph[attains] this bound is called *efficient*; an e
 #question[Define the bias of an estimator $hat(theta)$ and state the bias--variance decomposition of its mean squared error. What does the decomposition say for an unbiased estimator?]
 #answer[The bias is $"Bias"[hat(theta)] = EE[hat(theta)] - theta$, and $hat(theta)$ is unbiased if this is $0$ for all $theta$. The decomposition is $"MSE"[hat(theta)] = EE[(hat(theta) - theta)^2] = "Var"[hat(theta)] + ("Bias"[hat(theta)])^2$. For an unbiased estimator the squared-bias term is $0$, so $"MSE"[hat(theta)] = "Var"[hat(theta)]$.]
 
-#question[Let $X_1, dots, X_n$ be i.i.d. with mean $mu$ and variance $sigma^2 > 0$, and let $hat(mu) = bar(X)_n$. Compute its bias, variance and MSE, and say why it is (strongly) consistent.]
-#answer[By linearity $EE[bar(X)_n] = mu$, so the bias is $0$. By independence $"Var"[bar(X)_n] = sigma^2 \/ n$, and since it is unbiased $"MSE"[bar(X)_n] = "Var"[bar(X)_n] = sigma^2 \/ n$. The strong law of large numbers gives $bar(X)_n attach(arrow.r.long, t: "a.s.") mu$, hence also convergence in probability, so $bar(X)_n$ is strongly consistent.]
+#question[Let $X_1, dots, X_n$ be i.i.d. with mean $mu$ and variance $sigma^2 > 0$, and let $hat(mu) = overline(X)_n$. Compute its bias, variance and MSE, and say why it is (strongly) consistent.]
+#answer[By linearity $EE[overline(X)_n] = mu$, so the bias is $0$. By independence $"Var"[overline(X)_n] = sigma^2 \/ n$, and since it is unbiased $"MSE"[overline(X)_n] = "Var"[overline(X)_n] = sigma^2 \/ n$. The strong law of large numbers gives $overline(X)_n attach(arrow.r.long, t: "a.s.") mu$, hence also convergence in probability, so $overline(X)_n$ is strongly consistent.]
 
 #question[Derive the maximum-likelihood estimator of $p$ for an i.i.d. Bernoulli sample $X_1, dots, X_n ~ "Ber"(p)$.]
-#answer[With $s = sum_i x_i$, the likelihood is $L(p | x) = p^s (1 - p)^(n - s)$, so $ell(p | x) = s ln p + (n - s) ln(1 - p)$. Setting $frac(partial ell, partial p) = frac(s, p) - frac(n - s, 1 - p) = 0$ gives $(1 - p) s = p(n - s)$, i.e. $hat(p)_"mle" = s \/ n = bar(x)_n$. The negative second derivative confirms a maximum, so the MLE is the observed success frequency.]
+#answer[With $s = sum_i x_i$, the likelihood is $L(p | x) = p^s (1 - p)^(n - s)$, so $ell(p | x) = s ln p + (n - s) ln(1 - p)$. Setting $frac(partial ell, partial p) = frac(s, p) - frac(n - s, 1 - p) = 0$ gives $(1 - p) s = p(n - s)$, i.e. $hat(p)_"mle" = s \/ n = overline(x)_n$. The negative second derivative confirms a maximum, so the MLE is the observed success frequency.]
 
 #question[For an i.i.d. Poisson sample, show that the maximum-likelihood estimator and the method-of-moments estimator of $lambda$ coincide.]
-#answer[MLE: $ell(lambda | x) = -n lambda + (sum_i x_i) ln lambda - sum_i ln(x_i !)$, and $frac(partial ell, partial lambda) = -n + frac(1, lambda) sum_i x_i = 0$ gives $hat(lambda)_"mle" = bar(x)_n$. Method of moments: $EE[X] = lambda$, so equating to the first sample moment $bar(X)_n$ gives $hat(lambda)_"mom" = bar(X)_n$. Both equal the sample mean.]
+#answer[MLE: $ell(lambda | x) = -n lambda + (sum_i x_i) ln lambda - sum_i ln(x_i !)$, and $frac(partial ell, partial lambda) = -n + frac(1, lambda) sum_i x_i = 0$ gives $hat(lambda)_"mle" = overline(x)_n$. Method of moments: $EE[X] = lambda$, so equating to the first sample moment $overline(X)_n$ gives $hat(lambda)_"mom" = overline(X)_n$. Both equal the sample mean.]
 
-#question[Why does the sample variance divide by $n - 1$? Show that $EE[S_n^2] = sigma^2$ while the naive estimator $hat(sigma)^2 = frac(1, n) sum_i (X_i - bar(X)_n)^2$ is biased.]
-#answer[Using $sum_i (X_i - bar(X)_n)^2 = sum_i (X_i - mu)^2 - n(bar(X)_n - mu)^2$ and taking expectations, $EE[sum_i (X_i - bar(X)_n)^2] = n sigma^2 - n(sigma^2 \/ n) = (n - 1)sigma^2$. Dividing by $n - 1$ gives $EE[S_n^2] = sigma^2$ (unbiased — Bessel's correction), whereas dividing by $n$ gives $EE[hat(sigma)^2] = frac(n - 1, n) sigma^2 < sigma^2$, so the naive estimator underestimates the variance.]
+#question[Why does the sample variance divide by $n - 1$? Show that $EE[S_n^2] = sigma^2$ while the naive estimator $hat(sigma)^2 = frac(1, n) sum_i (X_i - overline(X)_n)^2$ is biased.]
+#answer[Using $sum_i (X_i - overline(X)_n)^2 = sum_i (X_i - mu)^2 - n(overline(X)_n - mu)^2$ and taking expectations, $EE[sum_i (X_i - overline(X)_n)^2] = n sigma^2 - n(sigma^2 \/ n) = (n - 1)sigma^2$. Dividing by $n - 1$ gives $EE[S_n^2] = sigma^2$ (unbiased — Bessel's correction), whereas dividing by $n$ gives $EE[hat(sigma)^2] = frac(n - 1, n) sigma^2 < sigma^2$, so the naive estimator underestimates the variance.]
 
 #question[For $X_1, dots, X_n ~ "Unif"(0, theta)$, what is the MLE of $theta$? Is it unbiased, and how would you correct it?]
 #answer[The likelihood $theta^(-n)$ (valid for $theta >= max_i x_i$) is decreasing in $theta$, so the MLE is the sample maximum $hat(theta)_"mle" = X_((n))$. It is biased: $EE[X_((n))] = frac(n, n + 1) theta < theta$, since the maximum can never exceed $theta$. Rescaling to $hat(theta)_2 = frac(n + 1, n) X_((n))$ gives an unbiased estimator (indeed the MVUE), with $"Var"[hat(theta)_2] = theta^2 \/ (n(n + 2))$.]
 
 #question[Give an estimator that is unbiased but not consistent, and one that is biased but consistent, for a mean $mu$ (i.i.d. data, variance $sigma^2 > 0$).]
-#answer[Unbiased but inconsistent: $tilde(mu)_n = X_1$, since $EE[X_1] = mu$ yet $"Var"[X_1] = sigma^2$ never vanishes, so it does not converge to $mu$. Biased but consistent: $hat(mu)_n = bar(X)_n + frac(1, n)$, since $EE[hat(mu)_n] = mu + frac(1, n) != mu$ but $bar(X)_n attach(arrow.r.long, t: "P") mu$ and $frac(1, n) -> 0$ give $hat(mu)_n attach(arrow.r.long, t: "P") mu$.]
+#answer[Unbiased but inconsistent: $tilde(mu)_n = X_1$, since $EE[X_1] = mu$ yet $"Var"[X_1] = sigma^2$ never vanishes, so it does not converge to $mu$. Biased but consistent: $hat(mu)_n = overline(X)_n + frac(1, n)$, since $EE[hat(mu)_n] = mu + frac(1, n) != mu$ but $overline(X)_n attach(arrow.r.long, t: "P") mu$ and $frac(1, n) -> 0$ give $hat(mu)_n attach(arrow.r.long, t: "P") mu$.]
 
 #question[What is a minimum-variance unbiased estimator (MVUE), and what does the Cramér--Rao bound say about the variance of any unbiased estimator?]
 #answer[An MVUE is an unbiased estimator with the smallest possible variance among all unbiased estimators of the parameter. The Cramér--Rao bound states that any unbiased estimator $hat(theta)$ satisfies $"Var"[hat(theta)] >= 1 \/ cal(I)(theta)$, where $cal(I)(theta)$ is the Fisher information. An unbiased estimator attaining this bound is called efficient and is in particular an MVUE.]

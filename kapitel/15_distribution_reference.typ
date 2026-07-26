@@ -22,12 +22,12 @@ Throughout, $p in [0, 1]$ is a success probability, $n, r in NN_(>0)$, and $lamb
 )
 
 #remark[
-The discrete families are linked: $"Geo"(p) = "NegBin"(1, p)$; the binomial is the count $sum_i omega_i$ obtained from a Bernoulli process $"Ber"(n, p)$; $"Poi"(lambda)$ is the $n -> infinity$ limit of $"Bin"(n, lambda\/n)$ (Chapter 3, law of rare events); and $"Hyp"(N, K, n) approx "Bin"(n, K\/N)$ when $N$ is large relative to $n$ (sampling with vs. without replacement barely differ).
+The discrete families are linked: $"Geo"(p) = "NegBin"(1, p)$; the binomial is the count $sum_i omega_i$ obtained by summing $n$ independent $"Ber"(p)$ trials; $"Poi"(lambda)$ is the $n -> infinity$ limit of $"Bin"(n, lambda\/n)$ (Chapter 3, law of rare events); and $"Hyp"(N, K, n) approx "Bin"(n, K\/N)$ when $N$ is large relative to $n$ (sampling with vs. without replacement barely differ).
 ]
 
 == Continuous distributions
 
-Parameters range over $a < b$, $mu in RR$, $sigma > 0$, $alpha, beta > 0$, $lambda > 0$, $k > 0$ and $nu > 0$. Each density is understood to be $0$ outside the stated support (the lecture notes write this explicitly with an indicator $chi_Omega$). Two special functions appear in the densities below.
+Parameters range over $a < b$, $mu in RR$, $sigma > 0$, $alpha, beta > 0$, $lambda > 0$, $k > 0$ and $nu > 0$. Each density is understood to be $0$ outside the stated support (the lecture notes write this explicitly with an indicator $bb(1)_Omega$). Two special functions appear in the densities below.
 
 #definition(title: "Gamma and Beta functions")[
 For $alpha, beta > 0$,

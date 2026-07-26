@@ -76,7 +76,7 @@ When $sigma^2$ is unknown, replace it by $S_n^2$ and use the pivot
 $
 T = (macron(X)_n - mu)/(S_n\/sqrt(n)) ~ t_(n-1) ,
 $
-a Student's $t$-distribution with $n - 1$ degrees of freedom (still free of $mu$). The $100(1 - alpha)$% CI for $mu$ is
+a Student's $t$-distribution with $n - 1$ degrees of freedom — free of #emph[both] $mu$ and $sigma^2$ (a non-trivial fact: even though $S_n$ estimates $sigma$, the ratio's distribution does not depend on it), which is exactly what makes $T$ a valid pivot now that $sigma^2$ is unknown too. The $100(1 - alpha)$% CI for $mu$ is
 $
 macron(X)_n plus.minus t_(n-1, alpha/2) S_n/sqrt(n) ,
 $

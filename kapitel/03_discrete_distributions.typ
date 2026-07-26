@@ -7,7 +7,7 @@ Chapter 2 built the general apparatus — a sample space $Omega$, a $sigma$-alge
 == Discrete probability spaces and the pmf
 
 #definition(title: "Discrete probability space, probability mass function (pmf)")[
-Let $Omega$ be an *at most countable* set. A probability measure $PP$ on $(Omega, cal(A) := cal(P)(Omega))$ is called a *discrete probability measure*, and the triple $(Omega, cal(A), PP)$ a *discrete probability space*. The map
+Let $Omega$ be an *at most countable* set. A probability measure $P$ on $(Omega, cal(A) := cal(P)(Omega))$ is called a *discrete probability measure*, and the triple $(Omega, cal(A), P)$ a *discrete probability space*. The map
 $
 p : Omega -> [0, 1], quad omega |-> p(omega) := P({omega})
 $
@@ -69,7 +69,7 @@ Draw $k in NN_(>0)$ times from an urn with $n in NN_(>0)$ distinct objects, writ
   [ordered, with replacement], [$[n]^k$], [$n^k$],
   [ordered, without replacement], [${omega in [n]^k : omega_i eq.not omega_j "for" i eq.not j}$], [$n! / (n-k)!$],
   [unordered, without replacement], [${S subset.eq [n] : |S| = k}$], [$binom(n, k)$],
-  [unordered, with replacement], [${a in NN_0^n : sum_(i=1)^n a_i = k}$], [$binom(n+k-1, k)$],
+  [unordered, with replacement], [${a in NN^n : sum_(i=1)^n a_i = k}$], [$binom(n+k-1, k)$],
 )
 
 In the last row $a_i$ counts how often object $i$ was drawn. These four schemes cover a large range of sampling situations: generating a random password (ordered, with replacement), handing distinct prizes to distinct winners (ordered, without replacement), drawing lottery numbers (unordered, without replacement), and distributing identical resources among agents (unordered, with replacement).
@@ -79,7 +79,7 @@ Throw six fair dice at once and ask for $p = P("at least one six")$. Model the t
 $
 p = 1 - P(A^c) = 1 - (5^6) / (6^6) = 1 - (5/6)^6 approx 0.665.
 $
-Equivalently, the number of sixes is $"Bin"(6, 1/6)$-distributed and $p = 1 - P("Bin"(6, 1/6) = 0)$ — the bridge from raw counting to the named distributions below.
+Equivalently, if $X$ denotes the number of sixes, then $X ~ "Bin"(6, 1/6)$ and $p = 1 - P(X = 0)$ — the bridge from raw counting to the named distributions below.
 ]
 
 == The key discrete distributions
@@ -155,7 +155,7 @@ It counts the number of "special" items when drawing $n$ items *without replacem
 The *discrete uniform distribution* is just $"Lap"_Omega$ on a finite $Omega$. On $Omega = {1, dots, n}$ it has pmf $p(k) = 1\/n$; it is the model for a fair die ($n = 6$), a fair spinner, or any equally-likely finite choice.
 
 #keyfact[
-The five wait-and-count distributions differ only in *what they count* and *how sampling is done* — this is the decision you must make in every exam problem:
+The six wait-and-count distributions differ only in *what they count* and *how sampling is done* — this is the decision you must make in every exam problem:
 - $"Ber"(p)$: outcome of *one* success/failure trial.
 - $"Bin"(n, p)$: number of successes in a *fixed number* $n$ of independent trials (sampling *with* replacement / constant $p$).
 - $"Geo"(p)$: number of trials *until the first* success.

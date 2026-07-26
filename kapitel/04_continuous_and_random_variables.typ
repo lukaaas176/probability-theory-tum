@@ -54,7 +54,7 @@ In one dimension: #emph[the cdf is the integral of the pdf, and the pdf is the d
 $
 P(a <= X <= b) = integral_a^b p(x) dif x,
 $
-so for a continuous distribution every single point has probability $0$: $P(X = c) = 0$.
+so for a continuous distribution every single point has probability $0$: $P(X = c) = 0$ (here $X$ stands for any random variable with density $p$ — a notion made precise in the next section).
 ]
 
 == Random variables

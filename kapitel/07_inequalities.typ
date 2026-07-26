@@ -11,7 +11,7 @@ The common theme is a trade-off: the less we assume about $X$, the weaker (loose
 Markov's inequality bounds the probability that a non-negative random variable exceeds a threshold, using #emph[only] its mean. Intuitively: if the average is small, the variable cannot spend too much probability far above it.
 
 #theorem(name: "Markov's inequality")[
-Let $(Omega, cal(A), PP)$ be a probability space, $X : Omega -> RR$ a random variable, and $f$ a monotonically increasing, non-negative function defined on an interval $I subset.eq RR$ that contains the image $S_X = "im"(X) = X(Omega)$. Then for every $epsilon in I$ with $f(epsilon) > 0$,
+Let $(Omega, cal(A), PP)$ be a probability space, $X : Omega -> RR$ a random variable, and $f$ a monotonically increasing, non-negative function defined on an interval $I subset.eq RR$ that contains the image $"im"(X) = X(Omega)$. Then for every $epsilon in I$ with $f(epsilon) > 0$,
 $
 PP(X >= epsilon) <= frac(1, f(epsilon)) EE[f(X)] .
 $
@@ -22,7 +22,7 @@ $
 ]
 
 #proof[
-We prove the non-negative special case; the general form follows by applying it to the non-negative variable $f(X)$, since monotonicity of $f$ makes ${X >= epsilon}$ and ${f(X) >= f(epsilon)}$ the same event. Let $X >= 0$ have density $p_X$ (the discrete case is identical with sums replacing integrals). Splitting the defining integral of the mean at $epsilon > 0$ and discarding the part below $epsilon$,
+We prove the non-negative special case; the general form follows by applying it to the non-negative variable $f(X)$, since monotonicity of $f$ guarantees $X >= epsilon ==> f(X) >= f(epsilon)$, i.e. ${X >= epsilon} subset.eq {f(X) >= f(epsilon)}$, hence $PP(X >= epsilon) <= PP(f(X) >= f(epsilon))$ by monotonicity of probability. Let $X >= 0$ have density $p_X$ (the discrete case is identical with sums replacing integrals). Splitting the defining integral of the mean at $epsilon > 0$ and discarding the part below $epsilon$,
 $
 EE[X] = integral_0^oo x thin p_X (x) thin upright(d) x
 = integral_0^epsilon x thin p_X (x) thin upright(d) x + integral_epsilon^oo x thin p_X (x) thin upright(d) x

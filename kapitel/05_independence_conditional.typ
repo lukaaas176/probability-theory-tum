@@ -123,7 +123,7 @@ Conditioning becomes a computational engine once we combine it with a #emph[part
 
 #theorem(name: "law of total probability and Bayes' rule")[
 Let $B in cal(A)$ with $PP(B) > 0$ and let $I$ be a countable index set.
-+ *Law of total probability.* If ${B_i : i in I} subset.eq cal(A)$ is a measurable partition of $B$, i.e. $union.big_(i in I) B_i = B$ and $B_i inter B_j = emptyset$ for $i != j$, then for every $A in cal(A)$
++ *Law of total probability.* If ${B_i : i in I} subset.eq cal(A)$ is a measurable partition of $B$ with $PP(B_i) > 0$ for all $i in I$, i.e. $union.big_(i in I) B_i = B$ and $B_i inter B_j = emptyset$ for $i != j$, then for every $A in cal(A)$
   $
   PP(A inter B) = sum_(i in I) PP(A | B_i) thin PP(B_i) .
   $
@@ -266,14 +266,14 @@ p(x_1, dots, x_n) = product_(i in [n]) p_X (x_i) .
 $
 ]
 
-An i.i.d. sequence is precisely what the product-space machinery of the first section produces from a single distribution: taking identical factors $(Omega, cal(A), P_X)$ and forming the product probability space $(Omega^n, cal(A)^(⊗ n), P_X^(⊗ n))$ realizes $n$ independent draws from $P_X$ as the coordinate variables. The card example of Chapter 1 — infinitely many independent shuffles modelled on $Omega^NN$ — is this construction with an infinite index set.
+An i.i.d. sequence is precisely what the product-space machinery of the first section produces from a single distribution: taking identical factors $(Omega, cal(A), P_X)$ and forming the product probability space $(Omega^n, cal(A)^(⊗ n), P_X^(⊗ n))$ realizes $n$ independent draws from $P_X$ as the coordinate variables. An infinite sequence of coin tosses or card draws, modelled on $Omega^NN$, is this construction with an infinite index set.
 
 #keyfact[
 For an i.i.d. sample $X_1, dots, X_n tilde^"i.i.d." P_X$, the joint density factorizes into a single repeated factor, so the *likelihood* of observed data is $L(theta | x_1, dots, x_n) = product_(i=1)^n p(x_i | theta)$ — a product, not a sum. This single fact is what makes maximum-likelihood estimation, the laws of large numbers, and the central limit theorem tractable; it is the default modelling assumption in statistics and machine learning.
 ]
 
 #remark[
-The i.i.d. assumption is a powerful idealization, not a law of nature, and it is worth checking. It simplifies analysis (the likelihood becomes a product), and it is the classical hypothesis under which the limit theorems of Chapter 9 are stated. But it is often only approximately true: time-series data carry temporal dependence, clustered data are correlated within clusters, and even "draw a person uniformly at random" breaks i.i.d. once we sample #emph[without] replacement from a finite population (after fixing $X_1$, the second draw is no longer identically distributed). Treating dependent data as i.i.d. can produce badly overconfident inferences, so the assumption should be justified, not assumed.
+The i.i.d. assumption is a powerful idealization, not a law of nature, and it is worth checking. It simplifies analysis (the likelihood becomes a product), and it is the classical hypothesis under which the limit theorems of Chapter 9 are stated. But it is often only approximately true: time-series data carry temporal dependence, clustered data are correlated within clusters, and even "draw a person uniformly at random" breaks i.i.d. once we sample #emph[without] replacement from a finite population (after fixing $X_1$, the second draw $X_2$ is no longer #emph[independent] of it — conditionally it excludes the already-drawn person, even though each $X_i$ remains marginally uniform over the population). Treating dependent data as i.i.d. can produce badly overconfident inferences, so the assumption should be justified, not assumed.
 ]
 
 #quizblock(title: "Quiz — Independence and conditional probability")[

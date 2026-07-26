@@ -44,7 +44,7 @@ Logical statements about outcomes translate directly into set operations on even
 Note the three-level hierarchy that will run through the whole theory: an *outcome* $omega$ is an element of $Omega$; an *event* $A$ is an element of the power set $cal(P)(Omega)$ (i.e. a subset of $Omega$); and — as we will see next — the collection $cal(A)$ of #emph[all events we admit] is a subset of $cal(P)(Omega)$, hence an element of $cal(P)(cal(P)(Omega))$.
 
 #definition(title: "Set-theory notation (recap)")[
-We collect the notation used throughout the course; a fuller refresher lives in the appendix.
+We collect the notation used throughout the course, condensed here for quick reference.
 - The *power set* $cal(P)(Omega) := { A : A subset.eq Omega }$ is the set of all subsets of $Omega$ (also written $2^Omega$).
 - For $A, B subset.eq Omega$ the *relative complement* is $A backslash B := { omega in Omega : omega in A "and" omega in.not B }$, and the *complement* of $A$ is $A^c := Omega backslash A$.
 - *Intersection* $A inter B := { omega : omega in A "and" omega in B }$ and *union* $A union B := { omega : omega in A "or" omega in B }$; the sets are *disjoint* if $A inter B = emptyset$. A disjoint union is sometimes stressed by writing $A union.plus B$.
@@ -90,14 +90,14 @@ and for any countable family $(A_i)_(i in NN)$ in $cal(A)$ also $inter.big_(i in
 ]
 
 #proof[
-Since $Omega in cal(A)$, complementation gives $emptyset = Omega^c in cal(A)$. Finite unions are countable unions with all but finitely many sets equal to $emptyset$, so $A union B in cal(A)$. Countable intersections follow from de Morgan: $inter.big_i A_i = (union.big_i A_i^c)^c in cal(A)$, since each $A_i^c in cal(A)$, their union is in $cal(A)$, and so is its complement. Finally $A backslash B = A inter B^c in cal(A)$.
+Since $Omega in cal(A)$, complementation gives $emptyset = Omega^c in cal(A)$. Finite unions are countable unions with all but finitely many sets equal to $emptyset$, so $A union B in cal(A)$. Countable intersections follow from de Morgan: $inter.big_i A_i = (union.big_i A_i^c)^c in cal(A)$, since each $A_i^c in cal(A)$, their union is in $cal(A)$, and so is its complement; as with finite unions, padding a two-set family with $Omega$ (the neutral element for intersection) gives the finite case $A inter B in cal(A)$. Finally $A backslash B = A inter B^c in cal(A)$.
 ]
 
 #example(title: [$sigma$-algebras])[
 On any $Omega$:
 - ${emptyset, Omega}$ is the smallest $sigma$-algebra, the *trivial $sigma$-algebra*.
 - The power set $cal(P)(Omega)$ is the largest $sigma$-algebra. For finite or countable $Omega$ this is the standard choice.
-- For a single event $A subset.eq Omega$, $sigma({A}) = {emptyset, Omega, A, A^c}$ is the smallest $sigma$-algebra containing $A$.
+- For a single event $A subset.eq Omega$, the smallest $sigma$-algebra containing $A$ is ${emptyset, Omega, A, A^c}$ (in the notation introduced below, $sigma({A})$).
 ]
 
 How do we build a $sigma$-algebra containing some desired events without listing everything by hand? We intersect all candidates.
@@ -168,7 +168,7 @@ Let $(Omega, cal(A))$ be a measurable space. A measure $PP : cal(A) -> [0, oo]$ 
 $
 PP(Omega) = 1 .
 $
-The triple $(Omega, cal(A), PP)$ is then called a *probability space*, and $cal(A)$ is its *event space* (the set of events of interest). Non-negativity and normalization force $PP(A) in [0, 1]$ for every event $A$.
+The triple $(Omega, cal(A), PP)$ is then called a *probability space*, and $cal(A)$ is its *event space* (the set of events of interest). Being a measure — hence additive — together with normalization forces $PP(A) in [0, 1]$ for every event $A$ (see the monotonicity rule below).
 ]
 
 Unwinding the definition, a probability measure is exactly a map satisfying Kolmogorov's three axioms. Everything else in this chapter is a #emph[consequence] of them.
@@ -242,7 +242,11 @@ On a finite space with the *uniform* (Laplace) measure, every computation collap
 #answer[For uncountable $Omega$ (e.g. $[0,1]$) it is impossible to define a non-negative, normalized, countably additive and translation-invariant $PP$ on #emph[all] subsets: there exist non-measurable (Vitali-type) sets. Restricting to a $sigma$-algebra excludes these pathologies while still containing every event we care about. For finite or countable $Omega$ we may safely take $cal(A) = cal(P)(Omega)$.]
 
 #question[True or false? $cal(A) = {emptyset, {1,2}, {1,4}, {2,3}, {3,4}, {1,2,3,4}}$ is a $sigma$-algebra on $Omega = {1,2,3,4}$. Justify.]
-#answer[False. It is not closed under unions: ${1,2} union {1,4} = {1,2,4} in.not cal(A)$ (equivalently ${1,2} inter {2,3} = {2} in.not cal(A)$). It also fails to contain the complement ${1,2,3} = {4}^c$ of some of its would-be members. A single such counterexample suffices.]
+#answer[False. $Omega = {1,2,3,4} in cal(A)$, and $cal(A)$ is in fact closed under complementation — the complementary pairs present are exactly $emptyset <-> {1,2,3,4}$, ${1,2} <-> {3,4}$, ${1,4} <-> {2,3}$ — so that axiom causes no trouble. What fails is closure under unions: ${1,2}, {1,4} in cal(A)$ but
+$ {1,2} union {1,4} = {1,2,4} in.not cal(A) . $
+A single such counterexample already suffices to disprove the claim (further failures of the same kind: ${1,2} union {2,3} = {1,2,3} in.not cal(A)$ and ${1,4} union {3,4} = {1,3,4} in.not cal(A)$; only ${1,4} union {2,3} = Omega$ happens to stay inside $cal(A)$).
+
+As a consistency check: every finite algebra of sets on a 4-element $Omega$ has cardinality $2^k$ for some $k <= 4$, i.e. size in ${1,2,4,8,16}$. Here $|cal(A)| = 6$, which is not a power of $2$, confirming $cal(A)$ cannot even be an algebra — let alone a $sigma$-algebra.]
 
 #question[Prove the complement rule $PP(A^c) = 1 - PP(A)$ from the axioms.]
 #answer[$A$ and $A^c$ are disjoint and $A union A^c = Omega$. By finite additivity (a case of K3) and normalization, $1 = PP(Omega) = PP(A union A^c) = PP(A) + PP(A^c)$. Rearranging gives $PP(A^c) = 1 - PP(A)$.]

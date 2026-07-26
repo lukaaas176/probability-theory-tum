@@ -29,7 +29,7 @@ Let $(X_n)_(n in NN)$ be a sequence of real-valued random variables and let $X$ 
 
 #remark[
 The three modes express increasingly weak notions of "closeness".
-- Convergence in probability and almost sure convergence are #emph[strong]: they relate $X_n$ and $X$ as functions on the #emph[same] sample space, so for a given outcome $omega$ their actual values $X_n (omega)$ and $X(omega)$ become close. Almost sure convergence is the direct, pointwise statement that $X_n (omega) -> X(omega)$ for almost every $omega$; convergence in probability is slightly weaker but still couples the two variables on the same experiment.
+- Convergence in probability and almost sure convergence are #emph[strong]: they relate $X_n$ and $X$ as functions on the #emph[same] sample space, coupling their values outcome-by-outcome rather than only comparing distributions. Almost sure convergence is the direct, pointwise statement that $X_n (omega) -> X(omega)$ for almost every $omega$, so individual values genuinely become close; convergence in probability is slightly weaker — it only makes a large gap between $X_n (omega)$ and $X(omega)$ #emph[improbable] for large $n$, not impossible for any particular $omega$ — but still couples the two variables on the same experiment.
 - Convergence in distribution is much weaker: it compares only the #emph[cdfs]. The variables $X_n$ and $X$ need not even live on the same probability space, and their individual values may be entirely unrelated — one $X_n$ could be a laboratory measurement, another a count of microbes in a river, the limit $X$ a property of galaxies. All that matches in the limit is their overall #emph[probabilistic shape].
 ]
 
@@ -71,31 +71,31 @@ so $PP(|X_n - Y| >= 1) = 1$ never goes to $0$ and there is no convergence in pro
 
 == The laws of large numbers
 
-With convergence defined, we can state the theorems that justify estimating an unknown mean by an observed average. Both concern the *sample mean* $bar(X)_n := frac(1, n) sum_(i=1)^n X_i$.
+With convergence defined, we can state the theorems that justify estimating an unknown mean by an observed average. Both concern the *sample mean* $overline(X)_n := frac(1, n) sum_(i=1)^n X_i$.
 
 #theorem(name: "weak law of large numbers")[
 Let $X_1, X_2, dots$ be identically distributed random variables with finite mean $EE[X_i] = mu < oo$ that are pairwise uncorrelated. Then the sample mean converges in probability to the mean,
 $
-bar(X)_n ->^P mu .
+overline(X)_n ->^P mu .
 $
 ]
 
 #proof[
-(Finite-variance case.) Assume in addition $"Var"(X_i) = sigma^2 < oo$. By linearity of expectation $EE[bar(X)_n] = frac(1, n) sum_(i=1)^n EE[X_i] = mu$, and since the $X_i$ are uncorrelated the variance of the sum is the sum of the variances, so
+(Finite-variance case.) Assume in addition $"Var"(X_i) = sigma^2 < oo$. By linearity of expectation $EE[overline(X)_n] = frac(1, n) sum_(i=1)^n EE[X_i] = mu$, and since the $X_i$ are uncorrelated the variance of the sum is the sum of the variances, so
 $
-"Var"(bar(X)_n) = frac(1, n^2) sum_(i=1)^n "Var"(X_i) = frac(n sigma^2, n^2) = frac(sigma^2, n) .
+"Var"(overline(X)_n) = frac(1, n^2) sum_(i=1)^n "Var"(X_i) = frac(n sigma^2, n^2) = frac(sigma^2, n) .
 $
-Applying Chebyshev's inequality (Chapter 7) to $bar(X)_n$ gives, for every $epsilon > 0$,
+Applying Chebyshev's inequality (Chapter 7) to $overline(X)_n$ gives, for every $epsilon > 0$,
 $
-PP(|bar(X)_n - mu| >= epsilon) <= frac("Var"(bar(X)_n), epsilon^2) = frac(sigma^2, n epsilon^2) -> 0 quad (n -> oo) .
+PP(|overline(X)_n - mu| >= epsilon) <= frac("Var"(overline(X)_n), epsilon^2) = frac(sigma^2, n epsilon^2) -> 0 quad (n -> oo) .
 $
-Hence $bar(X)_n ->^P mu$. The theorem in fact holds assuming only a finite mean (the variance may be infinite), but that proof is more involved. Note that i.i.d. variables are in particular pairwise uncorrelated, so the theorem covers the i.i.d. case.
+Hence $overline(X)_n ->^P mu$. The theorem in fact holds in the #emph[i.i.d.] case assuming only a finite mean (the variance may be infinite), via a more involved proof through characteristic functions (Chapter 8) rather than Chebyshev; the weaker pairwise-uncorrelated hypothesis used above does not by itself extend this far. Note that i.i.d. variables are in particular pairwise uncorrelated, so the finite-variance argument above already applies to the i.i.d. case as well.
 ]
 
 #theorem(name: "strong law of large numbers")[
 Let $X_1, X_2, dots$ be i.i.d. random variables with finite mean $EE[X_i] = mu < oo$. Then the sample mean converges almost surely to the mean,
 $
-bar(X)_n ->^"a.s." mu .
+overline(X)_n ->^"a.s." mu .
 $
 ]
 
@@ -104,23 +104,23 @@ Comparing the two laws:
 - The strong law implies the weak law and is genuinely stronger: it says the sample mean converges to $mu$ along #emph[almost every] individual sequence of outcomes, not merely that large deviations become improbable.
 - Its proof is harder; the standard route uses the Borel–Cantelli lemmas to show that deviations from $mu$ occur only finitely often. The weak law, by contrast, also follows elegantly from characteristic functions and Lévy's continuity theorem (Chapter 8).
 - Both laws are the theoretical licence for statistics: they are the reason the average of finitely many observations tells us anything about the true mean of the population that generated them. Without them (or the concentration inequalities of Chapter 7) there would be no a-priori reason to trust a sample average at all.
-- What the laws do #emph[not] say is #emph[how] $bar(X)_n$ is distributed around $mu$ for large but finite $n$, nor how fast it converges. That is exactly the gap the central limit theorem fills.
+- What the laws do #emph[not] say is #emph[how] $overline(X)_n$ is distributed around $mu$ for large but finite $n$, nor how fast it converges. That is exactly the gap the central limit theorem fills.
 ]
 
 == The central limit theorem
 
-The laws of large numbers collapse the sample mean onto a single point. Rescaling the deviation $bar(X)_n - mu$ by the right factor reveals a universal shape underneath.
+The laws of large numbers collapse the sample mean onto a single point. Rescaling the deviation $overline(X)_n - mu$ by the right factor reveals a universal shape underneath.
 
 #theorem(name: "central limit theorem")[
-Let $X_1, X_2, dots$ be i.i.d. random variables with finite mean $EE[X_i] = mu$ and finite, non-zero variance $"Var"(X_i) = sigma^2 in RR_(>0)$. Let $S_n := sum_(i=1)^n X_i$ be the sum and $bar(X)_n = S_n \/ n$ the sample mean, and form the *standardized sum*
+Let $X_1, X_2, dots$ be i.i.d. random variables with finite mean $EE[X_i] = mu$ and finite, non-zero variance $"Var"(X_i) = sigma^2 in RR_(>0)$. Let $S_n := sum_(i=1)^n X_i$ be the sum and $overline(X)_n = S_n \/ n$ the sample mean, and form the *standardized sum*
 $
-Z_n = frac(S_n - EE[S_n], sqrt("Var"(S_n))) = frac(S_n - n mu, sigma sqrt(n)) = frac(bar(X)_n - mu, sigma \/ sqrt(n)) .
+Z_n = frac(S_n - EE[S_n], sqrt("Var"(S_n))) = frac(S_n - n mu, sigma sqrt(n)) = frac(overline(X)_n - mu, sigma \/ sqrt(n)) .
 $
 Then
 $
 Z_n ->^d cal(N)(0, 1) .
 $
-The scale $sigma \/ sqrt(n)$ that governs the spread of $bar(X)_n$ is called the *standard error*.
+The scale $sigma \/ sqrt(n)$ that governs the spread of $overline(X)_n$ is called the *standard error*.
 ]
 
 #proof[
@@ -138,14 +138,14 @@ using the limit $(1 + x \/ n)^n -> e^x$. The right-hand side $e^(-t^2 \/ 2)$ is 
 #keyfact[
 For large $n$ the central limit theorem licenses the Gaussian approximations
 $
-S_n approx cal(N)(n mu, n sigma^2), quad quad bar(X)_n approx cal(N)(mu, sigma^2 \/ n) ,
+S_n approx cal(N)(n mu, n sigma^2), quad quad overline(X)_n approx cal(N)(mu, sigma^2 \/ n) ,
 $
-read as "approximately distributed like", equivalently $sqrt(n)(bar(X)_n - mu) ->^d cal(N)(0, sigma^2)$. The striking point is that this holds #emph[whatever] the distribution of the $X_i$, as long as $mu$ and $sigma^2$ are finite — which is why Gaussians appear everywhere — and the fluctuations shrink at the $sqrt(n)$ rate encoded in the standard error $sigma \/ sqrt(n)$.
+read as "approximately distributed like", equivalently $sqrt(n)(overline(X)_n - mu) ->^d cal(N)(0, sigma^2)$. The striking point is that this holds #emph[whatever] the distribution of the $X_i$, as long as $mu$ and $sigma^2$ are finite — which is why Gaussians appear everywhere — and the fluctuations shrink at the $sqrt(n)$ rate encoded in the standard error $sigma \/ sqrt(n)$.
 ]
 
 #remark[
 Two cautions and a pointer.
-- The compact form $bar(X)_n ->^d cal(N)(mu, sigma^2 \/ n)$ is often written but is #emph[not] literally correct: convergence in distribution requires a #emph[fixed] limit, whereas the right-hand side still depends on $n$ (and degenerates to a point mass at $mu$ as $n -> oo$, consistent with the laws of large numbers). The precise statement is the standardized one, $Z_n ->^d cal(N)(0, 1)$.
+- The compact form $overline(X)_n ->^d cal(N)(mu, sigma^2 \/ n)$ is often written but is #emph[not] literally correct: convergence in distribution requires a #emph[fixed] limit, whereas the right-hand side still depends on $n$ (and degenerates to a point mass at $mu$ as $n -> oo$, consistent with the laws of large numbers). The precise statement is the standardized one, $Z_n ->^d cal(N)(0, 1)$.
 - The i.i.d. assumption can be relaxed. The Lindeberg–Feller CLT covers independent but not identically distributed summands provided no single term dominates the total variance, and further versions handle certain dependent sequences. This robustness is why the normal distribution is so pervasive.
 - These approximations underpin hypothesis tests and confidence intervals for means (Chapters 12 and 13); the ubiquitous "standard-error bars" in plots are an implicit appeal to the CLT.
 ]
@@ -159,7 +159,7 @@ To approximate $PP(S_(100) >= 60)$ we standardize and invoke the CLT:
 $
 PP(S_(100) >= 60) = PP(frac(S_(100) - 50, 5) >= frac(60 - 50, 5)) = PP(Z_(100) >= 2) approx 1 - Phi(2) ,
 $
-where $Phi$ is the standard normal cdf (Chapter 15). Since $Phi(2) approx 0.9772$, this gives $PP(S_(100) >= 60) approx 0.0228$, about $2.3%$. The same computation in the sample-mean form uses the standard error $sigma \/ sqrt(n) = 0.5 \/ 10 = 0.05$: the event $S_(100) >= 60$ is $bar(X)_(100) >= 0.6$, and $(0.6 - 0.5) \/ 0.05 = 2$ reproduces the identical $z$-score — sum and mean are two views of the one standardized quantity. The exact binomial value is $0.0284$; a continuity correction (replacing $60$ by $59.5$, i.e. $z = 1.9$) sharpens the approximation to $1 - Phi(1.9) approx 0.0287$.
+where $Phi$ is the standard normal cdf (Chapter 15). Since $Phi(2) approx 0.9772$, this gives $PP(S_(100) >= 60) approx 0.0228$, about $2.3%$. The same computation in the sample-mean form uses the standard error $sigma \/ sqrt(n) = 0.5 \/ 10 = 0.05$: the event $S_(100) >= 60$ is $overline(X)_(100) >= 0.6$, and $(0.6 - 0.5) \/ 0.05 = 2$ reproduces the identical $z$-score — sum and mean are two views of the one standardized quantity. The exact binomial value is $0.0284$; a continuity correction (replacing $60$ by $59.5$, i.e. $z = 1.9$) sharpens the approximation to $1 - Phi(1.9) approx 0.0287$.
 ]
 
 #quizblock(title: "Quiz — Convergence and limit theorems")[
@@ -173,17 +173,35 @@ where $Phi$ is the standard normal cdf (Chapter 15). Since $Phi(2) approx 0.9772
 #answer[Let $U tilde.op "Ber"(1\/2)$, $X_n := U$ and $Y := 1 - U$. Then $F_(X_n) = F_Y$ so $X_n ->^d Y$, but $|X_n - Y| = |2U - 1| = 1$ always, so $PP(|X_n - Y| >= 1) = 1 arrow.not 0$ and $X_n$ does not converge to $Y$ in probability.]
 
 #question[Prove the weak law of large numbers assuming finite variance $sigma^2$, and identify where the assumptions are used.]
-#answer[With $bar(X)_n = frac(1, n) sum_(i=1)^n X_i$, linearity gives $EE[bar(X)_n] = mu$ (uses finite mean). Pairwise uncorrelatedness makes the variance of the sum additive, so $"Var"(bar(X)_n) = frac(1, n^2) sum_(i=1)^n sigma^2 = sigma^2 \/ n$. Chebyshev's inequality gives $PP(|bar(X)_n - mu| >= epsilon) <= sigma^2 \/ (n epsilon^2) -> 0$ for every $epsilon > 0$, i.e. $bar(X)_n ->^P mu$.]
+#answer[With $overline(X)_n = frac(1, n) sum_(i=1)^n X_i$, linearity of expectation gives
+$ EE[overline(X)_n] = frac(1,n) sum_(i=1)^n EE[X_i] = mu $
+(uses finiteness of $mu$ so each $EE[X_i]$ exists, and identical distribution so every $EE[X_i]$ equals the *same* $mu$).
+
+By bilinearity of covariance, $"Var"(overline(X)_n) = frac(1, n^2) "Var"(sum_(i=1)^n X_i)$. Pairwise uncorrelatedness (implied by independence) makes all cross terms $"Cov"(X_i, X_j) = 0$ for $i eq.not j$ vanish, so the variance of the sum is additive:
+$ "Var"(sum_(i=1)^n X_i) = sum_(i=1)^n "Var"(X_i) = sum_(i=1)^n sigma^2 = n sigma^2 $
+(uses identical distribution, so every $"Var"(X_i)$ equals the *same* $sigma^2$, and finiteness of $sigma^2$ so this is a well-defined finite number rather than $infinity$). Hence
+$ "Var"(overline(X)_n) = frac(n sigma^2, n^2) = sigma^2 \/ n , $
+finite for every $n$ precisely because $sigma^2 < infinity$.
+
+Chebyshev's inequality (itself only meaningful because $EE[overline(X)_n^2] < infinity$, i.e. because the variance is finite) gives, for every $epsilon > 0$,
+$ PP(|overline(X)_n - mu| >= epsilon) <= "Var"(overline(X)_n) \/ epsilon^2 = sigma^2 \/ (n epsilon^2) -> 0 quad "as" n -> infinity , $
+i.e. $overline(X)_n ->^P mu$. The convergence of the bound to $0$ relies on $sigma^2$ being a *fixed, finite* constant that does not grow with $n$ — this is exactly the finite-variance hypothesis at work.
+
+*Where the assumptions are used:*
+- *Finite mean $mu$*: needed for $EE[overline(X)_n] = mu$ to exist at all.
+- *Identical distribution*: makes every $EE[X_i] = mu$ (so $EE[overline(X)_n]=mu$ exactly, not a mixture of different means) and every $"Var"(X_i) = sigma^2$ (so $sum_i "Var"(X_i) = n sigma^2$).
+- *Independence* (only pairwise uncorrelatedness is actually needed): kills the cross-covariance terms $"Cov"(X_i,X_j)=0$, $i eq.not j$, making the variance of the sum additive. Without it, $"Var"(overline(X)_n)$ need not shrink (e.g. if all $X_i$ are equal, $"Var"(overline(X)_n) = sigma^2$ for every $n$).
+- *Finite variance $sigma^2 < infinity$*: makes $"Var"(overline(X)_n) = sigma^2\/n$ a well-defined finite quantity, makes Chebyshev's inequality a non-vacuous bound, and — being a fixed constant independent of $n$ — is exactly why $sigma^2 \/ (n epsilon^2) -> 0$ as $n -> infinity$.]
 
 #question[How do the strong and weak laws differ, in statement and in assumptions?]
-#answer[The weak law states $bar(X)_n ->^P mu$ (large deviations become improbable) and needs only identically distributed, pairwise uncorrelated variables with finite mean. The strong law states $bar(X)_n ->^"a.s." mu$ (the average converges along almost every outcome sequence) and is usually stated for i.i.d. variables with finite mean. The strong law implies the weak law, but not conversely.]
+#answer[The weak law states $overline(X)_n ->^P mu$ (large deviations become improbable). Its standard proof (via Chebyshev, as above) needs identically distributed, pairwise uncorrelated variables with finite #emph[variance] — finite mean alone is not enough there, since the argument needs $"Var"(overline(X)_n) = sigma^2 \/ n -> 0$. A sharper version (Khinchin) needs only finite mean, but it strengthens "pairwise uncorrelated" to fully independent (i.i.d.), and is proved via characteristic functions rather than Chebyshev. The strong law states $overline(X)_n ->^"a.s." mu$ (the average converges along almost every outcome sequence) and is usually stated for i.i.d. variables with finite mean alone, with no variance assumption needed. The strong law implies the weak law, but not conversely.]
 
-#question[State the central limit theorem precisely, and give the resulting approximations for $S_n$ and $bar(X)_n$.]
-#answer[For i.i.d. $X_i$ with mean $mu$ and finite non-zero variance $sigma^2$, the standardized sum $Z_n = (S_n - n mu) \/ (sigma sqrt(n)) = (bar(X)_n - mu) \/ (sigma \/ sqrt(n))$ satisfies $Z_n ->^d cal(N)(0, 1)$. For large $n$ this gives $S_n approx cal(N)(n mu, n sigma^2)$ and $bar(X)_n approx cal(N)(mu, sigma^2 \/ n)$, equivalently $sqrt(n)(bar(X)_n - mu) ->^d cal(N)(0, sigma^2)$.]
+#question[State the central limit theorem precisely, and give the resulting approximations for $S_n$ and $overline(X)_n$.]
+#answer[For i.i.d. $X_i$ with mean $mu$ and finite non-zero variance $sigma^2$, the standardized sum $Z_n = (S_n - n mu) \/ (sigma sqrt(n)) = (overline(X)_n - mu) \/ (sigma \/ sqrt(n))$ satisfies $Z_n ->^d cal(N)(0, 1)$. For large $n$ this gives $S_n approx cal(N)(n mu, n sigma^2)$ and $overline(X)_n approx cal(N)(mu, sigma^2 \/ n)$, equivalently $sqrt(n)(overline(X)_n - mu) ->^d cal(N)(0, sigma^2)$.]
 
-#question[Why is the frequently seen statement "$bar(X)_n ->^d cal(N)(mu, sigma^2 \/ n)$" not literally correct?]
-#answer[Convergence in distribution is defined only against a #emph[fixed] limit distribution, but $cal(N)(mu, sigma^2 \/ n)$ depends on $n$. Moreover, as $n -> oo$ it degenerates to a point mass at $mu$ (as the laws of large numbers require). The correct statement rescales the deviation: $Z_n = (bar(X)_n - mu) \/ (sigma \/ sqrt(n)) ->^d cal(N)(0, 1)$.]
+#question[Why is the frequently seen statement "$overline(X)_n ->^d cal(N)(mu, sigma^2 \/ n)$" not literally correct?]
+#answer[Convergence in distribution is defined only against a #emph[fixed] limit distribution, but $cal(N)(mu, sigma^2 \/ n)$ depends on $n$. Moreover, as $n -> oo$ it degenerates to a point mass at $mu$ (as the laws of large numbers require). The correct statement rescales the deviation: $Z_n = (overline(X)_n - mu) \/ (sigma \/ sqrt(n)) ->^d cal(N)(0, 1)$.]
 
-#question[The i.i.d. random variables $X_i$ have mean $mu = 20$ and standard deviation $sigma = 5$. For a sample of size $n = 100$, approximate $PP(|bar(X)_(100) - 20| <= 1)$, and find the smallest $n$ making the standard error at most $0.25$. (Use $Phi(2) approx 0.9772$.)]
-#answer[The standard error is $sigma \/ sqrt(n) = 5 \/ 10 = 0.5$. Standardizing, $PP(|bar(X)_(100) - 20| <= 1) = PP(|Z| <= 1 \/ 0.5) = PP(|Z| <= 2) approx 2 Phi(2) - 1 approx 0.954$. For the standard error, $sigma \/ sqrt(n) <= 0.25$ means $sqrt(n) >= 5 \/ 0.25 = 20$, i.e. $n >= 400$.]
+#question[The i.i.d. random variables $X_i$ have mean $mu = 20$ and standard deviation $sigma = 5$. For a sample of size $n = 100$, approximate $PP(|overline(X)_(100) - 20| <= 1)$, and find the smallest $n$ making the standard error at most $0.25$. (Use $Phi(2) approx 0.9772$.)]
+#answer[The standard error is $sigma \/ sqrt(n) = 5 \/ 10 = 0.5$. Standardizing, $PP(|overline(X)_(100) - 20| <= 1) = PP(|Z| <= 1 \/ 0.5) = PP(|Z| <= 2) approx 2 Phi(2) - 1 approx 0.954$. For the standard error, $sigma \/ sqrt(n) <= 0.25$ means $sqrt(n) >= 5 \/ 0.25 = 20$, i.e. $n >= 400$.]
 ]

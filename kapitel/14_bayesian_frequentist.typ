@@ -100,7 +100,7 @@ Flip a coin $n = 10$ times and observe $x = 8$ heads. Take the flat prior $pi(th
 $
 pi(theta | x) = "Beta"(1 + 8, 1 + 10 - 8) = "Beta"(9, 3) .
 $
-Reading point estimates off this posterior — recall that for $alpha, beta > 1$ a $"Beta"(alpha, beta)$ distribution has mean $alpha \/ (alpha + beta)$ and mode $(alpha - 1) \/ (alpha + beta - 2)$ —
+Reading point estimates off this posterior — recall that for $a, b > 1$ a $"Beta"(a, b)$ distribution has mean $a \/ (a + b)$ and mode $(a - 1) \/ (a + b - 2)$ —
 $
 hat(theta)_"mean" = frac(a + x, a + b + n) = frac(9, 12) = 0.75 , quad quad hat(theta)_"map" = frac(a + x - 1, a + b + n - 2) = frac(8, 10) = 0.8 .
 $

@@ -40,7 +40,7 @@ A *statistical test* is a (measurable) map
 $
 phi : Omega^n -> [0, 1] .
 $
-It is called *non-randomized* if $phi(Omega^n) subset.eq {0, 1}$, and *randomized* otherwise. We focus on non-randomized tests. By convention $phi(x) = 1$ means *reject $H_0$* and $phi(x) = 0$ means *do not reject $H_0$*. The set
+It is called *non-randomized* if $phi(Omega^n) subset.eq {0, 1}$, and *randomized* otherwise. We focus on non-randomized tests. By convention $phi(x) = 1$ means *reject $H_0$* and $phi(x) = 0$ means *fail to reject $H_0$*. The set
 $
 phi^(-1)({1}) = { x in Omega^n : phi(x) = 1 }
 $
@@ -111,7 +111,7 @@ Fix $alpha in [0, 1]$.
 The lecture's informal description of a test is: reduce the data to a statistic $T(x)$, work out how surprising the observed value is #emph[if the null were true], and reject when it is surprising beyond a pre-set threshold. The number that measures "how surprising" is the p-value.
 
 #definition(title: "p-value")[
-Let $T$ be a test statistic whose distribution under $H_0$ is known, with observed value $t_"obs" = T(x)$. The *p-value* is the probability, computed #emph[under the null $H_0$], of observing a value of $T$ at least as extreme as $t_"obs"$ in the direction of the alternative. For a one-sided alternative favoring large values of $T$,
+Let $T$ be a test statistic whose distribution under $H_0$ is known, with observed value $t_"obs" = T(x)$. The *p-value* is the probability, computed #emph[under the null $H_0$], of observing a value of $T$ at least as extreme as $t_"obs"$ in the direction of the alternative; write $P_(H_0)$ for this null probability (equal to $P_(theta_0)$ when $H_0$ is simple, i.e. $Theta_0 = {theta_0}$). For a one-sided alternative favoring large values of $T$,
 $
 "p-value" = P_(H_0)(T >= t_"obs") ,
 $
@@ -256,5 +256,11 @@ The two answers are not a contradiction. $alpha$ is the long-run rate of falsely
 #answer[For a simple-vs-simple test the most powerful level-$alpha$ test is the likelihood-ratio test rejecting when $L(theta_1 | x) \/ L(theta_0 | x) > k$, with $k$ set so the size is $alpha$. Here $Lambda(x) = (lambda_1 \/ lambda_0) e^(-(lambda_1 - lambda_0) x)$ is decreasing in $x$ (as $lambda_1 > lambda_0$), so $Lambda(x) > k'$ becomes $x < c$. Setting $alpha = P_(lambda_0)(X < c) = 1 - e^(-lambda_0 c)$ gives $c = -ln(1 - alpha) \/ lambda_0 > 0$.]
 
 #question[Explain what a p-value is and give two common misinterpretations of it.]
-#answer[The p-value is the probability, computed under $H_0$, of observing a test statistic at least as extreme as the one observed (in the alternative's direction); one rejects at level $alpha$ iff p-value $<= alpha$. It is #emph[not] the probability that $H_0$ is true, and #emph[not] the probability that the result occurred "by chance" (nor one minus the probability that $H_1$ is true). It is a statement about the data assuming the null, i.e. a long-run frequency over repetitions under $H_0$.]
+#answer[The p-value is the probability, computed under $H_0$, of observing a test statistic at least as extreme as the one observed (in the alternative's direction); one rejects at level $alpha$ iff p-value $<= alpha$. It is a statement about the data #emph[assuming the null holds] — a long-run frequency over hypothetical repetitions under $H_0$ — not a statement about $theta$ or about $H_0$ itself. (Formally, if the null is simple and the test statistic's null law is continuous, the p-value is $"Unif"(0,1)$ under $H_0$, which is exactly why "reject iff p-value $<= alpha$" has type-I error rate $alpha$.)
+
+Two common misinterpretations:
+
++ #emph["The p-value is the probability that $H_0$ is true"] (equivalently: "the probability the result occurred by chance," or "$1$ minus the probability that $H_1$/the effect is real"). This confuses $PP("data" | H_0)$ with the reversed conditional $PP(H_0 | "data")$ — an inverse-probability (base-rate) fallacy. Turning one into the other requires Bayes' rule and a prior on $H_0$, which the p-value calculation never uses, and the two quantities can diverge arbitrarily: in the Jeffreys–Lindley paradox, holding a small p-value (e.g. $0.05$) fixed while the sample size $n -> infinity$ drives the Bayes factor in favor of $H_0$ to infinity, i.e. $PP(H_0 | "data") -> 1$ even though the p-value stays "significant."
+
++ #emph[A small p-value means the effect is large or important, and a large p-value ($p > alpha$) proves $H_0$, i.e. shows there is no effect]. The p-value is driven by the data only through effect size #emph[and] sample size together (roughly, through a noncentrality $delta sqrt(n)/sigma$), so it conflates the two: for #emph[any] fixed nonzero true effect $delta$, however practically negligible, the p-value $-> 0$ as $n -> infinity$ — a tiny effect becomes "significant" with enough data. Conversely, a large p-value only shows the data are #emph[compatible] with $H_0$; since the power of the test depends on $n$ and $delta$, failing to reject can simply mean the study was underpowered, not that $H_0$ is true ("absence of evidence is not evidence of absence"). Statistical significance is therefore not the same as practical/scientific significance, and non-significance is not proof of the null.]
 ]

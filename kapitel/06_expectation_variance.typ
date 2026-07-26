@@ -202,7 +202,7 @@ Let $W, X, Y, Z$ be real-valued random variables and $a, b, c, d in RR$. Assume 
 + *independence implies zero covariance:* if $X$ and $Y$ are independent, then $"Cov"(X, Y) = 0$ (the converse is false in general).
 ]
 
-Property (v) follows immediately from the product rule for independent expectations: $X$ and $Y$ independent give $EE[X Y] = EE[X] thin EE[Y]$, so $"Cov"(X, Y) = EE[X Y] - EE[X] thin EE[Y] = 0$. The warning attached to it is important: zero covariance means only the #emph[absence of a linear relationship]; two variables can be strongly dependent (e.g. $Y = X^2$ for a symmetric $X$) yet have $"Cov"(X, Y) = 0$.
+Property (v) follows immediately from the product rule for independent expectations: $X$ and $Y$ independent give $EE[X Y] = EE[X] thin EE[Y]$, so $"Cov"(X, Y) = EE[X Y] - EE[X] thin EE[Y] = 0$. The warning attached to it is important: zero covariance means only the #emph[absence of a linear relationship]; two variables can be strongly dependent (e.g. $Y = X^2$ for $X$ symmetric about $0$, so that $EE[X] = EE[X^3] = 0$) yet have $"Cov"(X, Y) = 0$.
 
 Covariance carries the units of $X$ times the units of $Y$, which makes its raw magnitude hard to interpret. Dividing out the two standard deviations produces a dimensionless number always lying in $[-1, 1]$.
 
