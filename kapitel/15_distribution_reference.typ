@@ -2,11 +2,11 @@
 
 = Distribution reference and formula sheet
 
-This chapter is a consolidated quick-reference. It gathers, in one place, every named distribution the course uses — the discrete families from Chapter 3 and the continuous families from Chapter 4 — together with the expectation and variance rules, the inequalities and the limit theorems introduced across Chapters 5-9. Nothing here is new: the parametrizations match the lecture notes exactly, expectation $EE[X]$ and variance $"Var"(X)$ are defined in Chapter 6, and every derivation lives in its home chapter. Use this sheet for rapid recall before the exam; the two-line rules of thumb for #emph[choosing] a distribution are in the key-fact boxes of Chapters 3 and 4.
+This chapter is a consolidated quick-reference. It gathers, in one place, every named distribution the course uses — the discrete families from Chapter 3 and the continuous families from Chapter 4 — together with cdf and quantile notation, conditional-moment identities, expectation and variance rules, inequalities, and limit theorems from earlier chapters. Nothing here is new: the parametrizations match the lecture notes exactly and each result is explained in its home chapter. Use this sheet for rapid recall before the exam; the two-line rules of thumb for #emph[choosing] a distribution are in the key-fact boxes of Chapters 3 and 4.
 
 == Discrete distributions
 
-Throughout, $p in [0, 1]$ is a success probability, $n, r in NN_(>0)$, and $lambda in RR_(>0)$; for the hypergeometric $N in NN$, $K in {0, dots, N}$ and $n in {0, dots, N}$. As in Chapter 3 we reuse the letter $p$ for both the parameter and the pmf, $k$ denotes the argument of the pmf, and $NN = {0, 1, 2, dots}$. Each row is a discrete probability measure on the stated support (its complement carries mass $0$).
+Throughout, $p in [0, 1]$ is a success probability, $n, r in NN_(>0)$, and $lambda in RR_(>0)$; the geometric and negative-binomial rows require $p > 0$. For the hypergeometric $N in NN_(>0)$, $K in {0, dots, N}$ and $n in {0, dots, N}$. As in Chapter 3 we reuse the letter $p$ for both the parameter and the pmf, $k$ denotes the argument of the pmf, and $NN = {0, 1, 2, dots}$. Each row is a discrete probability measure on the stated support (its complement carries mass $0$).
 
 #table(
   columns: 5,
@@ -18,16 +18,18 @@ Throughout, $p in [0, 1]$ is a success probability, $n, r in NN_(>0)$, and $lamb
   [$"Geo"(p)$], [$NN_(>0)$], [$(1 - p)^(k - 1) p$], [$frac(1, p)$], [$frac(1 - p, p^2)$],
   [$"NegBin"(r, p)$], [$NN_(>= r)$], [$binom(k - 1, r - 1) p^r (1 - p)^(k - r)$], [$frac(r, p)$], [$frac(r (1 - p), p^2)$],
   [$"Poi"(lambda)$], [$NN$], [$frac(e^(-lambda) lambda^k, k!)$], [$lambda$], [$lambda$],
-  [$"Hyp"(N, K, n)$], [${max(0, n + K - N), dots, min(n, K)}$], [$frac(binom(K, k) binom(N - K, n - k), binom(N, n))$], [$frac(n K, N)$], [$n frac(K, N) (1 - frac(K, N)) frac(N - n, N - 1)$],
+  [$"Hyp"(N, K, n)$], [${max(0, n + K - N), dots, min(n, K)}$], [$frac(binom(K, k) binom(N - K, n - k), binom(N, n))$], [$frac(n K, N)$], [$n frac(K, N) (1 - frac(K, N)) frac(N - n, N - 1)$ $(N > 1)$],
 )
 
 #remark[
 The discrete families are linked: $"Geo"(p) = "NegBin"(1, p)$; the binomial is the count $sum_i omega_i$ obtained by summing $n$ independent $"Ber"(p)$ trials; $"Poi"(lambda)$ is the $n -> infinity$ limit of $"Bin"(n, lambda\/n)$ (Chapter 3, law of rare events); and $"Hyp"(N, K, n) approx "Bin"(n, K\/N)$ when $N$ is large relative to $n$ (sampling with vs. without replacement barely differ).
+
+For $N=1$, the hypergeometric distribution is deterministic and its variance is $0$; the formula in the table applies for $N>1$.
 ]
 
 == Continuous distributions
 
-Parameters range over $a < b$, $mu in RR$, $sigma > 0$, $alpha, beta > 0$, $lambda > 0$, $k > 0$ and $nu > 0$. Each density is understood to be $0$ outside the stated support (the lecture notes write this explicitly with an indicator $bb(1)_Omega$). Two special functions appear in the densities below.
+Parameters range over $a < b$, $mu in RR$, $sigma > 0$, $alpha, beta > 0$, $lambda > 0$, $k in NN_(>0)$ and $nu > 0$. Each density is understood to be $0$ outside the stated support (the lecture notes write this explicitly with an indicator $bb(1)_Omega$). Two special functions appear in the densities below.
 
 #definition(title: "Gamma and Beta functions")[
 For $alpha, beta > 0$,
@@ -46,7 +48,7 @@ The Gamma function extends the factorial, $Gamma(n) = (n - 1)!$ for $n in NN_(>0
   [$Gamma(alpha, beta)$], [$(0, infinity)$], [$frac(beta^alpha, Gamma(alpha)) x^(alpha - 1) e^(-beta x)$], [$frac(alpha, beta)$], [$frac(alpha, beta^2)$],
   [$"Exp"(lambda)$], [$(0, infinity)$], [$lambda e^(-lambda x)$], [$frac(1, lambda)$], [$frac(1, lambda^2)$],
   [$chi_k^2$], [$(0, infinity)$], [$frac(1, 2^(k\/2) Gamma(k\/2)) x^(k\/2 - 1) e^(-x\/2)$], [$k$], [$2 k$],
-  [$t_nu$], [$RR$], [$frac(Gamma((nu + 1)\/2), sqrt(nu pi) Gamma(nu\/2)) (1 + x^2 \/ nu)^(-(nu + 1)\/2)$], [$0$ (if $nu > 1$)], [$frac(nu, nu - 2)$ (if $nu > 2$)],
+  [$t_nu$], [$RR$], [$frac(Gamma((nu + 1)\/2), sqrt(nu pi) Gamma(nu\/2)) (1 + x^2 \/ nu)^(-(nu + 1)\/2)$], [$0$ if $nu > 1$; undefined otherwise], [$frac(nu, nu - 2)$ if $nu > 2$; $oo$ if $1 < nu <= 2$; undefined otherwise],
   [$"Beta"(alpha, beta)$], [$[0, 1]$], [$frac(x^(alpha - 1) (1 - x)^(beta - 1), B(alpha, beta))$], [$frac(alpha, alpha + beta)$], [$frac(alpha beta, (alpha + beta)^2 (alpha + beta + 1))$],
 )
 
@@ -54,9 +56,36 @@ The Gamma function extends the factorial, $Gamma(n) = (n - 1)!$ for $n in NN_(>0
 The continuous families are also nested: $"Exp"(lambda) = Gamma(1, lambda)$; $chi_k^2 = Gamma(k\/2, 1\/2)$; $"Unif"(0, 1) = "Beta"(1, 1)$; and $t_nu$ is the law of $Z \/ sqrt(W \/ nu)$ for independent $Z ~ cal(N)(0, 1)$ and $W ~ chi_nu^2$. The Gamma family uses the #emph[rate] parameter $beta$ (so its mean is $alpha\/beta$, not $alpha beta$); for the mean of $t_nu$ to exist we need $nu > 1$, and for its variance $nu > 2$.
 ]
 
+== Distribution functions, quantiles, and conditioning
+
+For a real-valued random variable $X$ and $q in (0,1)$, its cdf and generalized inverse are
+$
+F_X(x)=PP(X <= x), quad F_X^(-1)(q)=inf {x in RR : F_X(x) >= q}.
+$
+Every cdf is increasing and right-continuous, tends to $0$ and $1$ at the two infinities, and has jump
+$
+F_X(x)-F_X(x^-)=PP(X=x).
+$
+The value $F_X^(-1)(q)$ is the standard choice of $q$-quantile; $F_X^(-1)(1\/2)$ is a median. For $Z ~ cal(N)(0,1)$, the standard notation
+$
+Phi(z):=PP(Z <= z)
+$
+denotes the standard normal cdf.
+
+#keyfact[
+The two total laws from Chapter 6 are
+$
+EE[Y]=EE[EE[Y|X]],
+$
+$
+"Var"(Y)=EE["Var"(Y|X)]+"Var"(EE[Y|X]).
+$
+The first averages conditional means; the second splits total variation into average within-group variation and variation between conditional means.
+]
+
 == Key formulas at a glance
 
-The identities you reach for when computing with the distributions above. All are stated and proved in the referenced chapters; here they are collected as one-liners. Expectation and variance are linear/quadratic operations, the two tail inequalities bound probabilities using only $EE$ and $"Var"$, and the two limit theorems describe the average $macron(X)_n = frac(1, n) sum_(i=1)^n X_i$ of iid samples.
+The identities you reach for when computing with the distributions above. All are stated or derived in the referenced chapters; here they are collected as one-liners. Expectation and variance are linear/quadratic operations, the two tail inequalities bound probabilities using only $EE$ and $"Var"$, and the two limit theorems describe the average $macron(X)_n = frac(1, n) sum_(i=1)^n X_i$ of i.i.d. samples.
 
 #table(
   columns: 3,
@@ -72,8 +101,8 @@ The identities you reach for when computing with the distributions above. All ar
   [Total probability], [$P(B) = sum_i P(B | A_i) P(A_i)$ for a partition ${A_i}$], [5],
   [Markov's inequality], [$P(X >= a) <= frac(EE[X], a)$ for $X >= 0$, $a > 0$], [7],
   [Chebyshev's inequality], [$P(|X - EE[X]| >= a) <= frac("Var"(X), a^2)$, $a > 0$], [7],
-  [(Weak) law of large numbers], [$macron(X)_n -> EE[X]$ in probability], [9],
-  [Central limit theorem], [$frac(macron(X)_n - mu, sigma \/ sqrt(n)) -> cal(N)(0, 1)$ in distribution], [9],
+  [(Weak) law of large numbers], [$macron(X)_n -> EE[X]$ in probability for i.i.d. integrable $X_i$], [9],
+  [Central limit theorem], [$frac(macron(X)_n - mu, sigma \/ sqrt(n)) -> cal(N)(0, 1)$ in distribution for i.i.d. $X_i$ with $0 < sigma^2 < oo$], [9],
 )
 
 #keyfact[

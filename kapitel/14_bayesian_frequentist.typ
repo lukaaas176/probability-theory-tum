@@ -36,7 +36,7 @@ The denominator
 $
 p(x) = integral_Theta p(x | theta) pi(theta) dif theta
 $
-is the *marginal likelihood* (or *evidence*) of the data. It does not depend on $theta$ and serves purely as a normalizing constant. Because it is often hard to evaluate, one usually works with the *unnormalized posterior*
+is the *marginal likelihood* (or *evidence*) of the data when $theta$ is continuous; for a discrete parameter space the integral is replaced by a sum. It does not depend on $theta$ and serves purely as a normalizing constant. Because it is often hard to evaluate, one usually works with the *unnormalized posterior*
 $
 pi(theta | x) prop p(x | theta) pi(theta) .
 $
@@ -57,12 +57,12 @@ The posterior is a whole distribution; a point estimate collapses it into a sing
 #definition(title: "Bayesian point estimators")[
 Common point estimates derived from the posterior $pi(theta | x)$ are:
 - the *posterior mean* $hat(theta)_"mean" = EE[theta | x] = integral theta pi(theta | x) dif theta$, which minimizes the posterior expected squared error;
-- the *posterior median* $hat(theta)_"med"$, the value with $PP(theta <= hat(theta)_"med" | x) = 1 \/ 2$, which minimizes the posterior expected absolute error;
+- a *posterior median* $hat(theta)_"med"$, a value satisfying $PP(theta <= hat(theta)_"med" | x) >= 1 \/ 2$ and $PP(theta >= hat(theta)_"med" | x) >= 1 \/ 2$, which minimizes the posterior expected absolute error;
 - the *maximum a posteriori (MAP)* estimate $hat(theta)_"map" = "arg max"_theta pi(theta | x) = "arg max"_theta p(x | theta) pi(theta)$, the mode of the posterior.
 ]
 
 #remark[
-The MAP estimate maximizes $p(x | theta) pi(theta)$. Dropping the prior — or using a flat prior $pi(theta) prop 1$ — makes this identical to maximizing the likelihood, so the MAP reduces to the maximum-likelihood estimate of Chapter 11. In this sense the MLE is the special case of the MAP estimate that arises under a non-informative prior; more generally, whenever the prior is informative, it is exactly the extra ingredient that regularizes the estimate toward the prior belief. This closeness to the familiar MLE is why the MAP is perhaps the most common Bayesian point estimate.
+The MAP estimate maximizes $p(x | theta) pi(theta)$. In a fixed parameterization, using a prior density that is constant on the relevant parameter space makes this identical to maximizing the likelihood, so the MAP reduces to the maximum-likelihood estimate of Chapter 11. A warning is essential: “flat” is not invariant under reparameterization and a constant density on an unbounded space is improper, so it is not automatically non-informative or even a probability distribution. More generally, an informative prior can regularize the estimate toward prior belief.
 ]
 
 == Conjugate priors and the Beta--Binomial model
@@ -150,7 +150,7 @@ The core disagreement is about two things at once: what a probability #emph[is],
   [Interval guarantee], [Coverage of the procedure over repetitions], [Probability $theta$ is inside, given the data],
 )
 
-Despite the sharp philosophical contrast, the two paradigms frequently agree in practice. For large samples the likelihood dominates any fixed prior, so the posterior concentrates around the MLE and Bayesian and frequentist point estimates become numerically close. Under non-informative priors this extends to intervals: the credible interval for a normal mean with a flat prior is #emph[identical] to the corresponding frequentist confidence interval — yet the interpretations stay distinct. The choice between the paradigms is usually driven by whether informative prior knowledge is available and by which interpretation the problem calls for, not by a decisive mathematical superiority of either.
+Despite the sharp philosophical contrast, the two paradigms frequently agree in regular, identifiable models. For large samples, if the prior assigns positive mass near the true parameter and standard asymptotic conditions hold, the likelihood dominates the local posterior shape, so the posterior concentrates around the MLE and Bayesian and frequentist point estimates become numerically close. In the normal-mean model with known variance, a constant prior density for $mu$ yields a credible interval numerically identical to the usual z-confidence interval — yet the interpretations stay distinct. The choice between the paradigms is usually driven by the model, available prior information and the desired guarantees, not by a decisive mathematical superiority of either.
 
 #quizblock(title: "Quiz — Bayesian vs. frequentist inference")[
 #question[State the single most fundamental difference between the frequentist and Bayesian views, and how it changes the meaning of the word "probability".]

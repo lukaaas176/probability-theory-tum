@@ -12,6 +12,10 @@ Picture two clouds. On the left sit #emph[general principles]: the assumed groun
 *Deductive inference (probability)* goes from a known distribution to the behaviour of data. *Inductive inference (statistics)* goes from observed data back to the unknown distribution — or to the parameters — that generated them. In statistics the data $x_1, dots, x_n$ are treated as #emph[realizations] of random variables $X_1, dots, X_n$, and inference is the attempt to reason from these realizations to the model behind them.
 ]
 
+#remark[
+The word *inference* is used differently in statistics and machine learning. Statistical inference learns unknown population or model properties from observed data, including uncertainty about those properties. In machine learning, “inference time” usually means applying an already trained model to new inputs — what statistics would ordinarily call *prediction*. Fitting model parameters is statistical inference but is usually called *training* in machine learning.
+]
+
 #example(title: "what we want from statistical inference")[
 Suppose we observe a sequence of $n$ coin flips $x_1, dots, x_n in {0, 1}$ (with $1$ = heads). Three natural questions already preview the next three chapters:
 - #emph[Point estimation] (Chapter 11): what is the probability $theta$ of heads for this coin — a single best guess?
@@ -88,9 +92,9 @@ The defining restriction — no dependence on $theta$ — is what makes a statis
 #example(title: "statistics")[
 For a real-valued sample $X_1, dots, X_n$:
 - the *sample mean* $accent(X, macron)_n := frac(1, n) sum_(i=1)^n X_i$;
-- the *sample variance* $S_n^2 := frac(1, n - 1) sum_(i=1)^n (X_i - accent(X, macron)_n)^2$ (the division by $n - 1$, rather than $n$, is #emph[Bessel's correction]);
+- for $n >= 2$, the *sample variance* $S_n^2 := frac(1, n - 1) sum_(i=1)^n (X_i - accent(X, macron)_n)^2$ (the division by $n - 1$, rather than $n$, is #emph[Bessel's correction]);
 - the *maximum* $X_((n)) := max(X_1, dots, X_n)$;
-- even a constant such as $T(X_1, dots, X_n) = pi$, or a single coordinate $T(X_1, dots, X_n) = X_6$, is technically a statistic.
+- even a constant such as $T(X_1, dots, X_n) = pi$, or (when $n >= 6$) a single coordinate $T(X_1, dots, X_n) = X_6$, is technically a statistic.
 
 The sample mean and sample variance are the data-side analogues of the expectation and variance of Chapter 6, and by the laws of large numbers (Chapter 9) they approach their theoretical counterparts as $n$ grows.
 ]
@@ -119,7 +123,7 @@ A *parameter of interest* is a function $gamma : Theta -> RR^k$. The goal of sta
 In the model $(RR, cal(B), (cal(N)(mu, sigma^2))_((mu, sigma^2) in RR times RR_(>0)))$ with $theta = (theta_1, theta_2) = (mu, sigma^2)$, we might be interested only in
 - the mean, $gamma(theta) = theta_1 = mu$; or
 - the variance, $gamma(theta) = theta_2 = sigma^2$; or
-- the *coefficient of variation* $gamma(theta) = sqrt(theta_2) \/ theta_1 = sigma \/ mu$.
+- when $mu > 0$, the *coefficient of variation* $gamma(theta) = sqrt(theta_2) \/ theta_1 = sigma \/ mu$.
 
 Most of the time we simply take $gamma = "id"$, so that the parameter of interest is all of $theta$.
 ]

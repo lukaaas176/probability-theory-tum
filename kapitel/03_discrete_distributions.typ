@@ -4,6 +4,8 @@
 
 Chapter 2 built the general apparatus — a sample space $Omega$, a $sigma$-algebra $cal(A)$ of events, and a probability measure $P$ — and warned that on uncountable spaces we cannot use the full power set as $cal(A)$ (the measure problem, the Vitali set). This chapter looks at the friendliest case, where that problem disappears completely: $Omega$ is *countable*. Here we may always take $cal(A) = cal(P)(Omega)$, and a single, elementary object — the probability mass function — encodes the entire measure. We then meet the handful of named discrete distributions (Bernoulli, binomial, geometric, negative binomial, Poisson, hypergeometric, and the discrete uniform) that model almost every counting experiment you will see in this course. Expectation $EE[X]$ and variance $"Var"(X)$, quoted in the summary table below, are defined in Chapter 6; the continuous counterpart (densities) follows in Chapter 4.
 
+We occasionally use the convenient notation $X ~ Q$ below to mean “the quantity $X$ is modelled with distribution $Q$”. Random variables and the induced law that make this notation formal are introduced in Chapter 4; no result in this chapter depends on that machinery.
+
 == Discrete probability spaces and the pmf
 
 #definition(title: "Discrete probability space, probability mass function (pmf)")[
@@ -29,6 +31,14 @@ $
 For (i), write $A = union.big_(omega in A) {omega}$ as a countable disjoint union. By $sigma$-additivity, $P(A) = sum_(omega in A) P({omega}) = sum_(omega in A) p(omega)$, so the values $p(omega)$ pin down $P$ on all of $cal(P)(Omega)$. For (ii) one checks Kolmogorov's axioms: $P(A) >= 0$ since $p >= 0$; $P(Omega) = sum_(omega in Omega) p(omega) = 1$; and for pairwise disjoint $A_1, A_2, dots$ rearranging the (absolutely convergent, non-negative) double sum gives $P(union.big_i A_i) = sum_i P(A_i)$. Finally $P({omega}) = p(omega)$, so $p$ is the pmf of $P$.
 ]
 
+#definition(title: "Support of a discrete distribution")[
+The *support* of a pmf $p$ is the set of values carrying positive mass,
+$
+"supp"(p) := {omega in Omega : p(omega) > 0}.
+$
+Values outside the support have probability zero. We often list only the support when specifying a named discrete distribution.
+]
+
 #keyfact[
 On a countable space, *a pmf and a probability measure are the same information*. To specify a discrete model you never manipulate $P$ directly: you just give a function $p : Omega -> [0, 1]$ with $sum_(omega in Omega) p(omega) = 1$. Everything else — the probability of any event — is the sum $P(A) = sum_(omega in A) p(omega)$.
 ]
@@ -38,7 +48,7 @@ The pmf also lets us place a discrete distribution on the real line. If $Omega s
 $
 P(A) = sum_(omega in Omega inter A) p(omega), quad F(x) = sum_(omega in Omega inter (-infinity, x]) p(omega)
 $
-define a discrete probability measure and its cumulative distribution function on $(RR, cal(B))$ (cf. Chapter 2). The cdf $F$ is then a step function: it jumps by $p(omega)$ at each atom $omega$ and is flat in between.
+define a discrete probability measure and its cumulative distribution function on $(RR, cal(B))$, using the cdf definition from Chapter 2. Its jump at each atom $omega$ is exactly $p(omega)$ by the cdf jump formula. If the support has gaps, $F$ is constant on those gaps; a countable support can also be dense, so there need not be an interval between consecutive atoms.
 ]
 
 == The Laplace model and counting
@@ -59,7 +69,7 @@ $
 Under a Laplace model, computing a probability reduces to *counting the sizes of two finite sets*, which is combinatorics. The four standard counting schemes are captured by drawing $k$ times from an urn of $n$ distinguishable objects.
 
 #lemma(name: "classical urn models")[
-Draw $k in NN_(>0)$ times from an urn with $n in NN_(>0)$ distinct objects, writing $[n] := {1, dots, n}$. The number of possible outcomes is:
+Draw $k in NN_(>0)$ times from an urn with $n in NN_(>0)$ distinct objects, writing $[n] := {1, dots, n}$. For schemes without replacement assume $k <= n$. The number of possible outcomes is:
 ]
 
 #table(
@@ -73,6 +83,10 @@ Draw $k in NN_(>0)$ times from an urn with $n in NN_(>0)$ distinct objects, writ
 )
 
 In the last row $a_i$ counts how often object $i$ was drawn. These four schemes cover a large range of sampling situations: generating a random password (ordered, with replacement), handing distinct prizes to distinct winners (ordered, without replacement), drawing lottery numbers (unordered, without replacement), and distributing identical resources among agents (unordered, with replacement).
+
+#remark[
+An urn description fixes a set of outcomes, but it does not by itself make those outcomes uniformly likely. For example, if six labelled people independently leave one mug in one of four rooms, the ordered choices form the natural uniform space $[4]^6$. The derived occupancy vectors $(a_1,a_2,a_3,a_4)$ are #emph[not] uniform: $(3,1,1,1)$ can arise from many more ordered choices than $(6,0,0,0)$. Treating all occupancy vectors as equally likely defines a different model. Always specify both the sample space and its probability measure.
+]
 
 #example(title: "at least one six in six dice")[
 Throw six fair dice at once and ask for $p = P("at least one six")$. Model the throw as an ordered draw with replacement: $Omega = [6]^6$, so $|Omega| = 6^6$, under $"Lap"_Omega$. It is easier to count the *complement* $A^c = {"no die shows a six"} = [5]^6$, with $|A^c| = 5^6$. Hence
@@ -93,13 +107,13 @@ For $p in [0, 1]$, the *Bernoulli distribution* $"Ber"(p)$ on $Omega = {0, 1}$ h
 $
 p_(("Ber"(p)))(omega) = cases(p & "if" omega = 1, (1 - p) & "if" omega = 0).
 $
-More generally, for $n in NN_(>0)$ the *Bernoulli process* $"Ber"(n, p)$ on $Omega = {0, 1}^n$ records the full sequence of $n$ independent trials:
+More generally, for $n in NN_(>0)$ the *Bernoulli process* $"Ber"(n, p)$ on $Omega = {0, 1}^n$ records the full sequence of $n$ trials whose pmf factorizes as
 $
 p_(("Ber"(n, p)))(omega) = p^(sum_(i=1)^n omega_i) (1 - p)^(n - sum_(i=1)^n omega_i), quad omega = (omega_1, dots, omega_n).
 $
 ]
 
-$"Ber"(p)$ models a single binary trial (a biased coin flip, or whether a part passes inspection); $"Ber"(n, p)$ models $n$ such trials while remembering the exact outcome pattern.
+$"Ber"(p)$ models a single binary trial (a biased coin flip, or whether a part passes inspection); $"Ber"(n, p)$ models $n$ such trials while remembering the exact outcome pattern. Chapter 5 formalizes this factorization by calling the coordinate trials *independent*. Repeating trials with more than two possible outcomes is the analogous *Bernoulli scheme*.
 
 === Binomial distribution
 
@@ -115,7 +129,7 @@ $"Bin"(n, p)$ counts the *number of successes* in $n$ independent trials with su
 === Geometric and negative binomial distributions
 
 #definition(title: "Geometric distribution")[
-For $p in [0, 1]$, the *geometric distribution* $"Geo"(p)$ on $Omega = NN_(>0)$ has pmf
+For $p in (0, 1]$, the *geometric distribution* $"Geo"(p)$ on $Omega = NN_(>0)$ has pmf
 $
 p_(("Geo"(p)))(k) = (1 - p)^(k - 1) p.
 $
@@ -123,7 +137,7 @@ It models the number of trials *up to and including the first success* (e.g. how
 ]
 
 #definition(title: "Negative binomial distribution")[
-For $p in [0, 1]$ and $r in NN_(>0)$, the *negative binomial distribution* $"NegBin"(r, p)$ on $Omega = NN_(>=r)$ has pmf
+For $p in (0, 1]$ and $r in NN_(>0)$, the *negative binomial distribution* $"NegBin"(r, p)$ on $Omega = NN_(>=r)$ has pmf
 $
 p_(("NegBin"(r, p)))(k) = binom(k - 1, r - 1) p^r (1 - p)^(k - r).
 $
@@ -140,10 +154,22 @@ $
 It approximates the count of *rare events at a fixed rate* $lambda$ in a fixed interval (e.g. calls per hour at a switchboard). It is the limit of $"Bin"(n, lambda\/n)$ as $n -> infinity$: many trials, each individually unlikely.
 ]
 
+#theorem(name: "Poisson limit theorem / law of rare events")[
+Let $p_n in [0,1]$ for every $n in NN_(>0)$ and suppose
+$
+n p_n -> lambda in RR_(>0).
+$
+Then for every fixed $k in NN$,
+$
+p_(("Bin"(n,p_n)))(k) -> p_(("Poi"(lambda)))(k) = e^(-lambda) frac(lambda^k, k!) .
+$
+Thus a binomial count is approximately Poisson when the number of trials is large, each success probability is small, and the expected count $n p_n$ remains close to a finite value $lambda$.
+]
+
 === Hypergeometric distribution
 
 #definition(title: "Hypergeometric distribution")[
-For $N in NN$, $K in {0, dots, N}$ and $n in {0, dots, N}$, the *hypergeometric distribution* $"Hyp"(N, K, n)$ on $Omega = {max(0, n + K - N), dots, min(n, K)}$ has pmf
+For $N in NN_(>0)$, $K in {0, dots, N}$ and $n in {0, dots, N}$, the *hypergeometric distribution* $"Hyp"(N, K, n)$ on $Omega = {max(0, n + K - N), dots, min(n, K)}$ has pmf
 $
 p_(("Hyp"(N, K, n)))(k) = (binom(K, k) binom(N - K, n - k)) / (binom(N, n)).
 $
@@ -179,11 +205,13 @@ The means and variances below are standard reference values; they are derived on
   [$"Geo"(p)$], [$(1 - p)^(k - 1) p$], [$1 / p$], [$(1 - p) / p^2$],
   [$"NegBin"(r, p)$], [$binom(k - 1, r - 1) p^r (1 - p)^(k - r)$], [$r / p$], [$r (1 - p) / p^2$],
   [$"Poi"(lambda)$], [$(e^(-lambda) lambda^k) / (k!)$], [$lambda$], [$lambda$],
-  [$"Hyp"(N, K, n)$], [$(binom(K, k) binom(N - K, n - k)) / binom(N, n)$], [$(n K) / N$], [$n (K / N) (1 - K / N) (N - n) / (N - 1)$],
+  [$"Hyp"(N, K, n)$], [$(binom(K, k) binom(N - K, n - k)) / binom(N, n)$], [$(n K) / N$], [$n (K / N) (1 - K / N) (N - n) / (N - 1)$ $(N > 1)$],
 )
 
+For the edge case $N=1$, a hypergeometric variable is deterministic and has variance $0$; the displayed finite-population correction is used only for $N>1$.
+
 #remark[
-A few relationships worth remembering. The binomial is the count obtained from $"Ber"(n, p)$; $"Geo"(p) = "NegBin"(1, p)$; $"Poi"(lambda)$ is the $n -> infinity$ limit of $"Bin"(n, lambda\/n)$ (the *law of rare events*); and $"Hyp"(N, K, n)$ approaches $"Bin"(n, K\/N)$ when $N$ is large compared to $n$, because sampling with and without replacement then barely differ. Independence — the notion that makes "independent trials" precise — is developed in Chapter 5.
+A few relationships worth remembering. The binomial is the count obtained from $n$ $"Ber"(p)$ trials; $"Geo"(p) = "NegBin"(1, p)$; $"Poi"(lambda)$ is the $n -> infinity$ limit of $"Bin"(n, lambda\/n)$ (the *law of rare events*); and $"Hyp"(N, K, n)$ approaches $"Bin"(n, K\/N)$ when $N$ is large compared to $n$, because sampling with and without replacement then barely differ. Independence — the notion that makes "independent trials" precise — is developed in Chapter 5.
 ]
 
 == Worked example
@@ -201,7 +229,7 @@ $
 P(Y = 4) = (0.9)^3 (0.1) = 0.0729.
 $
 
-*(c) Poisson approximation.* Across a large lot of $n = 200$ items with the same small per-item rate, the expected number of defectives is $lambda = n p = 20$; the count is well approximated by $"Poi"(20)$, and e.g. $P("no defective") approx e^(-20)$. This is the law of rare events in action.
+*(c) Poisson approximation.* Suppose instead that a large lot has $n = 200$ items and the per-item defect probability is $p = 0.01$. The expected number of defectives is $lambda = n p = 2$; the count is approximated by $"Poi"(2)$, and e.g. $P("no defective") = 0.99^200 approx e^(-2)$. This is the law of rare events in action.
 ]
 
 #quizblock(title: "Quiz — Discrete probability spaces & distributions")[

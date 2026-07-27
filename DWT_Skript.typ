@@ -88,8 +88,27 @@ Recommended approach per chapter:
 + Read the text once end to end to get the overall thread.
 + Work through definitions and theorems precisely; for every theorem, ask #emph[why] it holds.
 + At the end of each chapter, do the #emph[quiz] #emph[before] reading the green solution boxes. The
-  questions are phrased in the style of real exam and exercise problems.
+  questions are phrased in the style of real exam and exercise-sheet problems.
 + When unsure, reread the relevant section and repeat the question a few days later (spaced repetition).
+
+#heading(level: 2, numbering: none)[Acknowledgement]
+
+A heartfelt thank-you to Niki Kilbertus for the exceptional work invested in the lecture and
+the excellent official lecture notes. Those notes are a clear, comprehensive, self-contained
+resource and are fully sufficient for learning the course material. This supplementary script
+is not meant to replace them; it is simply an attempt to support learners who benefit from a
+more compact, chapter-oriented presentation with highlighted takeaways and quizzes.
+
+#heading(level: 2, numbering: none)[AI assistance and human review]
+
+This script was summarized and structured from N. Kilbertus's lecture notes, the exercise
+sheets, and past exams with substantial AI assistance. The current revision was prepared using
+#emph[GPT-5.6 Sol] via #emph[OpenCode]. AI-generated summaries can omit important nuance,
+misstate definitions or results, and contain other errors.
+
+Humans subsequently reviewed the material and corrected the issues they identified. However,
+human review does not guarantee that the script is complete or correct. When in doubt, consult
+the official course materials; they remain authoritative.
 
 #pagebreak()
 // In the web build a JS-generated sidebar handles navigation (see web/); Typst's

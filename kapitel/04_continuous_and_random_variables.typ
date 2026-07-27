@@ -41,12 +41,12 @@ Let $P$ be a probability measure on $(RR^n, cal(B)^n)$. The following are equiva
 When these hold, $(RR^n, cal(B)^n, P)$ is called a #emph[continuous probability space], and $p$ is the (Lebesgue) density of $P$.
 ]
 
-For $n = 1$ the density and the cumulative distribution function determine each other by integration and differentiation.
+For $n = 1$ the density and the cumulative distribution function from Chapter 2 determine each other by integration and differentiation.
 
 #lemma(name: "pdf and cdf")[
 Let $P$ be a probability measure on $(RR, cal(B))$ with cdf $F$.
 + If $p$ is a pdf of $P$, then $F(x) = integral_(-oo)^x p(y) dif y$.
-+ If $F$ is (weakly) differentiable, then $p := F'$ is a corresponding pdf of $P$.
++ If $F$ is absolutely continuous, then $p := F'$ (defined almost everywhere) is a corresponding pdf of $P$.
 ]
 
 #keyfact[
@@ -69,6 +69,8 @@ $
 If $(Omega, cal(A), P)$ is a probability space, such a measurable map $X$ is a #emph[random variable] on it. For $(Omega', cal(A)') = (RR, cal(B))$ we call $X$ a #emph[real-valued random variable] (RV); for $(RR^n, cal(B)^n)$ a #emph[random vector].
 ]
 
+Every continuous map between Euclidean spaces is measurable with respect to the corresponding Borel $sigma$-algebras. Consequently, the continuous transformations of random variables used later are again random variables.
+
 The measurability condition is exactly what we need so that "$X$ lands in $A'$" is an event we can assign a probability to. We write, increasing sloppiness as we go,
 $
 {X in A'} := {omega in Omega : X(omega) in A'} = X^(-1)(A'), quad {X <= c} := {omega in Omega : X(omega) <= c},
@@ -83,14 +85,22 @@ $
 is a probability measure on $(Omega', cal(A)')$, the #emph[(probability) distribution] (or #emph[law]) of $X$. We say $X$ #emph[follows] $P_X$ and write $X tilde P_X$ (e.g. $X tilde cal(N)(0, sigma^2)$).
 ]
 
+#definition(title: "Non-degenerate random variable")[
+A real-valued random variable or random vector $X$ is *non-degenerate* if it is not almost surely constant: there is no point $x$ such that
+$
+P(X = x) = 1.
+$
+Otherwise $X$ is *degenerate* at that point. This distinction matters whenever a variance or standard deviation appears in a denominator.
+]
+
 The distribution $P_X$ is the pushforward $P compose X^(-1)$ of $P$ along $X$. Two more notions we will use constantly:
 
 #definition(title: "identically distributed, cdf and pdf of an RV")[
-Random variables $(X_i)_(i in I)$ are #emph[identically distributed] if there is a single law $Q$ with $P_(X_i) = Q$ for all $i$ (their base spaces may differ). For a real-valued RV $X$, its #emph[cumulative distribution function] is $F_X (x) := P(X <= x)$ (i.e. the cdf of its law $P_X$), and if $F_X$ is (weakly) differentiable — so $P_X$ is continuous — its #emph[probability density function] is $p_X := F_X'$.
+Random variables $(X_i)_(i in I)$ are #emph[identically distributed] if there is a single law $Q$ with $P_(X_i) = Q$ for all $i$ (their base spaces may differ). For a real-valued RV $X$, its #emph[cumulative distribution function] is $F_X (x) := P(X <= x)$ (i.e. the cdf of its law $P_X$). If $F_X$ is absolutely continuous, then $P_X$ has #emph[probability density function] $p_X := F_X'$ (defined almost everywhere).
 ]
 
 #corollary[
-Real-valued random variables are identically distributed if and only if they have the same cdf (equivalently, when they exist, the same pdf).
+Real-valued random variables are identically distributed if and only if they have the same cdf (equivalently, when they exist, pdfs that agree Lebesgue-almost everywhere).
 ]
 
 #remark[
@@ -111,11 +121,11 @@ $Gamma$ extends the factorial: $Gamma(n) = (n - 1)!$ for $n in NN_(>0)$.
 
 #example(title: "the standard continuous distributions")[
 Each is given by its pdf on $Omega subset.eq RR$ (extended by $0$ outside $Omega$ via the indicator $chi_Omega$).
-- #emph[Uniform] $"Unif"(a, b)$, $a < b$, on $[a, b]$: $ p(x) = chi_([a,b])(x) dot 1 / (b - a). $ Every point in $[a, b]$ is equally likely (a random time between two deadlines).
+- #emph[Uniform] $"Unif"(a, b)$, $a < b$, on $[a, b]$: $ p(x) = chi_([a,b])(x) dot 1 / (b - a). $ Intervals of equal length inside $[a,b]$ have equal probability (a random time between two deadlines).
 - #emph[Normal / Gaussian] $cal(N)(mu, sigma^2)$, $sigma > 0$, on $RR$: $ p(x) = 1 / (sqrt(2 pi) sigma) exp(- (x - mu)^2 / (2 sigma^2)). $ Models natural variability and measurement noise; the most important continuous distribution.
-- #emph[Exponential] $"Exp"(lambda) = Gamma(1, lambda)$, $lambda > 0$, on $RR_(>0)$: $ p(x) = chi_(RR_(>0))(x) dot lambda e^(- lambda x). $ Time until the first event of a rate-$lambda$ Poisson process (next bus, length of a call).
-- #emph[Gamma] $Gamma(alpha, beta)$, $alpha, beta > 0$, on $RR_(>0)$: $ p(x) = chi_(RR_(>0))(x) dot beta^alpha / Gamma(alpha) x^(alpha - 1) e^(- beta x). $ Waiting time for $alpha$ events at rate $beta$.
-- #emph[Chi-squared] $chi_k^2 = Gamma(k/2, 1/2)$, $k > 0$ degrees of freedom, on $RR_(>0)$: sum of squares of $k$ independent standard normals; central in variance-based testing (Chapter 12).
+- #emph[Exponential] $"Exp"(lambda) = Gamma(1, lambda)$, $lambda > 0$, on $RR_(>0)$: $ p(x) = chi_(RR_(>0))(x) dot lambda e^(- lambda x). $ Time until the first event of a Poisson process, whose events arrive independently at constant rate $lambda$ (next bus, length of a call).
+- #emph[Gamma] $Gamma(alpha, beta)$, $alpha, beta > 0$, on $RR_(>0)$: $ p(x) = chi_(RR_(>0))(x) dot beta^alpha / Gamma(alpha) x^(alpha - 1) e^(- beta x). $ For integer $alpha$, the waiting time for the $alpha$-th event of a rate-$beta$ Poisson process.
+- #emph[Chi-squared] $chi_k^2 = Gamma(k/2, 1/2)$, $k in NN_(>0)$ degrees of freedom, on $RR_(>0)$: sum of squares of $k$ independent standard normals; central in variance-based testing (Chapter 12).
 - #emph[Student's $t$] $t_nu$, $nu > 0$, on $RR$: $ p(x) = (Gamma((nu + 1)/2)) / (sqrt(nu pi) Gamma(nu/2)) (1 + x^2 / nu)^(- (nu + 1) / 2). $ Heavier-tailed than the Gaussian; small-sample inference on a mean with unknown variance (Chapter 13).
 - #emph[Beta] $"Beta"(alpha, beta)$, $alpha, beta > 0$, on $[0, 1]$: $ p(x) = chi_([0,1])(x) dot (x^(alpha - 1) (1 - x)^(beta - 1)) / B(alpha, beta). $ Models random proportions; $"Unif"(0,1) = "Beta"(1, 1)$. It is the natural conjugate prior for a probability (Chapter 14).
 ]
@@ -129,7 +139,7 @@ All these densities are deliberately defined on all of $RR$, with the indicator 
 ]
 
 #example(title: "computing a probability")[
-For $X tilde cal(N)(mu, sigma^2)$ the probability of landing in $[a, b]$ is $P(a <= X <= b) = integral_a^b p_X (x) dif x$; there is no elementary closed form, so one standardizes to $Z = (X - mu) / sigma tilde cal(N)(0, 1)$ and reads $Phi$, the standard normal cdf, from a table: $P(a <= X <= b) = Phi((b - mu)/sigma) - Phi((a - mu)/sigma)$.
+For $X tilde cal(N)(mu, sigma^2)$ the probability of landing in $[a, b]$ is $P(a <= X <= b) = integral_a^b p_X (x) dif x$; there is no elementary closed form, so one standardizes to $Z = (X - mu) / sigma tilde cal(N)(0, 1)$ and reads $Phi$, the standard normal cdf, from a table: $P(a <= X <= b) = Phi((b - mu)/sigma) - Phi((a - mu)/sigma)$. The affine-normal rule used here is proved in Chapter 8; at this point it can also be checked directly from the change of variables in the integral.
 ]
 
 #quizblock(title: "Quiz — Continuous distributions and random variables")[

@@ -22,15 +22,11 @@ $
 ]
 
 #proof[
-We prove the non-negative special case; the general form follows by applying it to the non-negative variable $f(X)$, since monotonicity of $f$ guarantees $X >= epsilon ==> f(X) >= f(epsilon)$, i.e. ${X >= epsilon} subset.eq {f(X) >= f(epsilon)}$, hence $PP(X >= epsilon) <= PP(f(X) >= f(epsilon))$ by monotonicity of probability. Let $X >= 0$ have density $p_X$ (the discrete case is identical with sums replacing integrals). Splitting the defining integral of the mean at $epsilon > 0$ and discarding the part below $epsilon$,
+We prove the non-negative special case without assuming that $X$ has a density. Pointwise,
 $
-EE[X] = integral_0^oo x thin p_X (x) thin upright(d) x
-= integral_0^epsilon x thin p_X (x) thin upright(d) x + integral_epsilon^oo x thin p_X (x) thin upright(d) x
->= integral_epsilon^oo x thin p_X (x) thin upright(d) x
->= integral_epsilon^oo epsilon thin p_X (x) thin upright(d) x
-= epsilon thin PP(X >= epsilon) ,
+X >= epsilon chi_{X >= epsilon},
 $
-where the first inequality drops a non-negative integrand and the second uses $x >= epsilon$ throughout the range of integration. Dividing by $epsilon > 0$ gives the claim.
+so monotonicity and linearity of expectation give $EE[X] >= epsilon EE[chi_{X >= epsilon}] = epsilon PP(X >= epsilon)$. Dividing by $epsilon > 0$ proves the special case. The general form follows by applying it to the non-negative variable $f(X)$: monotonicity of $f$ gives ${X >= epsilon} subset.eq {f(X) >= f(epsilon)}$, and hence $PP(X >= epsilon) <= PP(f(X) >= f(epsilon)) <= EE[f(X)] / f(epsilon)$.
 ]
 
 Markov's bound is deliberately blunt: it needs hardly any assumption on $X$ and consumes only the mean, so it is rarely tight — but it is the right first move when the mean is all you have.
@@ -48,7 +44,7 @@ So a day with at least one hundred fifty hits occurs with probability at most $1
 Feeding the variance into Markov turns a one-sided tail bound into a two-sided #emph[deviation] bound: how likely is $X$ to land far from its mean in #emph[either] direction? This is Chebyshev's inequality, a direct corollary of Markov.
 
 #corollary(name: "Chebyshev's inequality")[
-Let $X$ be a random variable with finite mean $EE[X]$ and finite variance $"Var"(X) > 0$. Then for every $epsilon > 0$,
+Let $X$ be a random variable with finite variance. Then for every $epsilon > 0$,
 $
 PP(abs(X - EE[X]) >= epsilon) <= frac("Var"(X), epsilon^2) .
 $
@@ -99,7 +95,7 @@ that is, every chord of the graph lies on or above the graph. It is *concave* if
 ]
 
 #theorem(name: "Jensen's inequality")[
-Let $X$ be a random variable with finite mean $EE[X]$, taking values in an interval $I subset.eq RR$, and let $g : I -> RR$ be convex. Then
+Let $X$ be an integrable random variable taking values in an interval $I subset.eq RR$, and let $g : I -> RR$ be convex with $g(X)$ integrable. Then
 $
 g(EE[X]) <= EE[g(X)] .
 $
@@ -124,7 +120,7 @@ the expected logarithm never exceeds the logarithm of the expectation. Specializ
 $
 abs(mu - m) = abs(EE[X - m]) <= EE[abs(X - m)] <= EE[abs(X - mu)] <= sqrt(EE[(X - mu)^2]) = sigma .
 $
-The first inequality is Jensen for the convex map $abs(dot)$; the second is the fact that the median minimizes the expected absolute deviation; the third is Jensen for the concave map $sqrt(dot)$ applied to $(X - mu)^2$. So the mean and median can differ by at most one standard deviation.
+The first inequality is Jensen for the convex map $abs(dot)$; the second uses the median's absolute-error-minimizing property from Chapter 6; the third is Jensen for the concave map $sqrt(dot)$ applied to $(X - mu)^2$. So the mean and median can differ by at most one standard deviation.
 ]
 
 #keyfact[
@@ -136,7 +132,7 @@ The three tools at a glance. *Markov* needs only a finite mean and non-negativit
 Markov and Chebyshev both bound how far $X$ strays from a reference value, so they quantify how #emph[concentrated] the probability mass is. When the quantity of interest is a function — typically a sum or average — of #emph[many independent] random variables, none of which alone changes it much, one can do far better than these polynomial bounds.
 
 #remark[
-A large body of theory shows that such functions concentrate #emph[exponentially] tightly around their expectation. These #emph[concentration inequalities] carry names like *Chernoff*, *Hoeffding*, *Azuma*, *McDiarmid*, *Bennett* and *Bernstein*, and they are a cornerstone of modern statistics and machine learning. Where Markov and Chebyshev give bounds that decay only polynomially in the deviation $epsilon$, these give exponentially small tail probabilities for sums of independent bounded variables — the reason empirical averages over large samples are so reliable.
+A large body of theory shows that such functions can concentrate #emph[exponentially] tightly around their expectation under suitable boundedness, tail, independence or martingale assumptions. These #emph[concentration inequalities] carry names like *Chernoff*, *Hoeffding*, *Azuma*, *McDiarmid*, *Bennett* and *Bernstein*, and they are a cornerstone of modern statistics and machine learning. Where Markov and Chebyshev give bounds that decay only polynomially in the deviation $epsilon$, these can give exponentially small tail probabilities — the reason empirical averages over large samples are often so reliable.
 ]
 
 #quizblock(title: "Quiz — Basic probability inequalities")[

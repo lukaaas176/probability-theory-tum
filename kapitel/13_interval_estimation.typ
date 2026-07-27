@@ -123,7 +123,7 @@ The Wald interval is only #emph[approximately] valid, and the approximation degr
 Confidence intervals and two-sided tests are two views of a single inferential problem.
 
 #remark[
-A $100(1 - alpha)$% CI for $theta$ consists of exactly those values $theta_0$ for which the two-sided test of $H_0 : theta = theta_0$ would #emph[not] be rejected at significance level $alpha$. Conversely, if a level-$alpha$ test rejects $H_0 : theta = theta_0$, then $theta_0$ falls outside the $100(1 - alpha)$% CI. "Inverting" a whole family of tests is a general recipe for building confidence sets, and it lets us port every test of Chapter 12 into a corresponding interval.
+For a confidence set constructed by inverting a family of two-sided level-$alpha$ tests, the set consists exactly of those values $theta_0$ for which the corresponding test of $H_0 : theta = theta_0$ would #emph[not] be rejected. Conversely, a test family can be inverted to obtain a confidence set with the matching coverage. This duality applies to matched test/interval procedures; an arbitrary valid confidence interval need not coincide with an independently chosen test.
 ]
 
 This closes the frequentist inference toolkit assembled across Chapters 10–13: statistical models, point estimation, hypothesis testing, and now interval estimation. All of them treat $theta$ as a fixed unknown and let probability describe the random data-generating procedure. Chapter 14 restarts from a different premise — $theta$ itself is modelled as random — and the analogous object there, the *credible interval*, genuinely does carry the "probability that $theta$ lies inside" reading that the confidence interval must refuse.

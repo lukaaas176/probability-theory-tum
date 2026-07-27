@@ -39,7 +39,7 @@ Let $p_1, dots, p_n$ be pmfs on $Omega$. Their *product pmf* on $Omega^n$ is
 $
 p(omega) := product_(i in [n]) p_i (omega_i) quad "for" omega = (omega_i)_(i in [n]) in Omega^n .
 $
-Likewise, for pdfs $p_1, dots, p_n$ on $RR$ the *product pdf* on $RR^n$ is $p(x) := product_(i in [n]) p_i (x_i)$ for $x = (x_i)_(i in [n]) in RR^n$. Taking the joint of finitely many measures on the same space is thus represented by the product of the respective pmfs or pdfs.
+Likewise, for pdfs $p_1, dots, p_n$ on $RR$ the *product pdf* on $RR^n$ is $p(x) := product_(i in [n]) p_i (x_i)$ for $x = (x_i)_(i in [n]) in RR^n$. Thus the product measure, which models independent coordinates, is represented by the product of the respective pmfs or pdfs.
 ]
 
 #proposition(name: "computing marginals")[
@@ -78,7 +78,7 @@ Let $B in cal(A)$ with $PP(B) > 0$. Then the map
 $
 tilde(PP) : cal(A) -> [0, 1], quad A |-> tilde(PP)(A) := PP(A | B)
 $
-is a probability measure on $(Omega, cal(A))$. The probability space $(B, cal(A)|_B, tilde(PP)|_B)$ obtained by restricting to $B$ is called the *trace* of $(Omega, cal(A), PP)$ on $B$.
+is a probability measure on $(Omega, cal(A))$. The probability space $(B, cal(A)|_B, tilde(PP)|_B)$ obtained using the induced $sigma$-algebra $cal(A)|_B$ from Chapter 2 is called the *trace* of $(Omega, cal(A), PP)$ on $B$.
 ]
 
 #proof[
@@ -153,7 +153,7 @@ The same schema, written for a parameter $theta$ and data $cal(D)$, gives the wo
 $
 p(theta | cal(D)) = frac(p(cal(D) | theta) thin p(theta), p(cal(D))) prop p(cal(D) | theta) thin p(theta) ,
 $
-where $p(theta)$ is a prior over models, $p(cal(D) | theta)$ the likelihood of the data under model $theta$, and $p(cal(D))$ the model evidence. Computing $p(cal(D)) = integral p(cal(D) | theta) p(theta) thin d theta$ is often the hard part, which is exactly why the proportionality form is so useful. Chapter 14 contrasts this Bayesian view with the frequentist one.
+where $p(theta)$ is a prior over models, $p(cal(D) | theta)$ the likelihood (the data density viewed as a function of $theta$), and $p(cal(D))$ the model evidence. Likelihood is defined formally in Chapter 10 and Bayesian evidence in Chapter 14; here the formula is only a preview of Bayes' rule applied to parameters. Computing $p(cal(D)) = integral p(cal(D) | theta) p(theta) thin d theta$ is often the hard part, which is exactly why the proportionality form is so useful.
 ]
 
 The following worked example is the classic illustration that a highly accurate test can still leave you very uncertain when the condition is rare — the #emph[base-rate fallacy].
@@ -233,16 +233,21 @@ Let $X_1, dots, X_n$ be random variables on $(Omega, cal(A), PP)$.
 
 Comparing with the product-measure construction, independence of $(X_i)_(i in I)$ is exactly the statement that their joint distribution is the product of the marginals, $P_X = ⊗_(i in I) P_(X_i)$. Conditional distributions give a complementary bookkeeping device when variables are #emph[not] independent.
 
-#definition(title: "Conditional pmf and conditional pdf")[
-Let $X, Y$ be random variables with joint distribution $P$.
+#definition(title: "Conditional cdf, pmf, and pdf")[
+Let $X, Y$ be real-valued random variables with joint distribution $P$.
 + In the discrete case, if $PP(X = x) > 0$ the *conditional pmf of $Y$ given $X = x$* is
   $
   p_(Y | X = x)(y) = frac(PP(X = x, thin Y = y), PP(X = x)) = frac(p_(X,Y)(x, y), p_X (x)) .
+  $
+  Its conditional cdf is
+  $
+  F_(Y | X=x)(y) := PP(Y <= y | X=x) = sum_(t <= y) p_(Y | X=x)(t).
   $
 + In the continuous case, if $p_X (x) > 0$ the *conditional pdf of $Y$ given $X = x$* is
   $
   p_(Y | X = x)(y) = frac(p_(X,Y)(x, y), p_X (x)) .
   $
+  Its conditional cdf is $F_(Y | X=x)(y) := integral_(-oo)^y p_(Y | X=x)(t) dif t$.
 ]
 
 Independence of $X$ and $Y$ is then the statement that the conditional coincides with the marginal, $p_(Y | X = x) = p_Y$, mirroring $PP(A | B) = PP(A)$ for events. Finally, a frequently invoked relative of independence conditions on a third variable.
@@ -250,7 +255,7 @@ Independence of $X$ and $Y$ is then the statement that the conditional coincides
 #definition(title: "Conditional independence")[
 Let $X, Y, Z$ be random variables on the same probability space. Then $X$ and $Y$ are *conditionally independent given $Z$*, written $X perp perp Y | Z$, if the conditional joint distribution factorizes: whenever the densities exist,
 $
-p(x, y | z) = p(x | z) thin p(y | z) quad "for (Lebesgue-almost) all" x, y "and (Lebesgue-almost) all" z ,
+p(x, y | z) = p(x | z) thin p(y | z) quad "for almost all" (x, y) "and for" P_Z"-almost all" z ,
 $
 so that, once $Z$ is known, $X$ carries no further information about $Y$.
 ]
@@ -266,10 +271,10 @@ p(x_1, dots, x_n) = product_(i in [n]) p_X (x_i) .
 $
 ]
 
-An i.i.d. sequence is precisely what the product-space machinery of the first section produces from a single distribution: taking identical factors $(Omega, cal(A), P_X)$ and forming the product probability space $(Omega^n, cal(A)^(⊗ n), P_X^(⊗ n))$ realizes $n$ independent draws from $P_X$ as the coordinate variables. An infinite sequence of coin tosses or card draws, modelled on $Omega^NN$, is this construction with an infinite index set.
+An i.i.d. sequence is precisely what the product-space machinery of the first section produces from a single distribution: taking identical factors $(Omega, cal(A), P_X)$ and forming the product probability space $(Omega^n, cal(A)^(⊗ n), P_X^(⊗ n))$ realizes $n$ independent draws from $P_X$ as the coordinate variables. An infinite sequence of coin tosses or card draws with replacement, modelled on $Omega^NN$, is this construction with an infinite index set.
 
 #keyfact[
-For an i.i.d. sample $X_1, dots, X_n tilde^"i.i.d." P_X$, the joint density factorizes into a single repeated factor, so the *likelihood* of observed data is $L(theta | x_1, dots, x_n) = product_(i=1)^n p(x_i | theta)$ — a product, not a sum. This single fact is what makes maximum-likelihood estimation, the laws of large numbers, and the central limit theorem tractable; it is the default modelling assumption in statistics and machine learning.
+For an i.i.d. sample $X_1, dots, X_n tilde^"i.i.d." P_X$, the joint density factorizes into a single repeated factor. Consequently, once likelihood is defined in Chapter 10, observed i.i.d. data will have $L(theta | x_1, dots, x_n) = product_(i=1)^n p(x_i | theta)$ — a product, not a sum. This factorization is also what makes the laws of large numbers and the central limit theorem tractable; i.i.d. sampling is the default modelling assumption in classical statistics and much of machine learning.
 ]
 
 #remark[

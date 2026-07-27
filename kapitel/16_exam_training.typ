@@ -10,7 +10,7 @@ Each exam is presented as its own quiz block, and question numbering restarts in
 A short checklist that resolves most exam problems before any computation:
 - *Name the model first.* Decide whether you are counting with a Laplace space, or which named distribution fits ("fixed number of trials" $=>$ binomial; "wait for the $r$-th success" $=>$ geometric / negative binomial; "rare events at a rate" $=>$ Poisson; a density on $RR$ $=>$ continuous).
 - *"At least one" $=>$ complement.* Compute $1 - PP("none")$ instead of a hard union.
-- *Non-approximate bound $=>$ Chebyshev; approximate bound / large $n$ $=>$ CLT.* Chebyshev always holds but is loose; the CLT is only approximate but far sharper.
+- *Two-sided deviation bound from a known variance $=>$ Chebyshev; large-sample distributional approximation $=>$ CLT.* Chebyshev is non-asymptotic but often loose; the CLT is an approximation for finite $n$ but usually far sharper when its assumptions and sample size are appropriate.
 - *Estimator questions.* MLE: write the likelihood, take $ln$, differentiate, check the second derivative. Then check unbiasedness by taking an expectation, and use the CLT for the approximate sampling distribution.
 ]
 

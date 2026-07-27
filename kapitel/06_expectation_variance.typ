@@ -2,7 +2,7 @@
 
 = Expectation, variance, and moments
 
-Chapters 3 and 4 gave us the objects that describe a random variable completely: the probability mass function of a discrete $X$ and the probability density function of a continuous $X$. A full distribution is a lot of information, and in practice we rarely need all of it. This chapter introduces the #emph[numerical summaries] that compress a distribution into a few informative numbers: its #emph[expectation] (the "central tendency", or center of mass), its #emph[variance] and #emph[standard deviation] (the "spread"), and — for two variables at once — their #emph[covariance] and #emph[correlation] (the strength of their #emph[linear] relationship). The recurring theme is that each summary is a #emph[functional] of the distribution, and that the two most useful ones, expectation and covariance, obey an algebra (linearity and bilinearity) that turns otherwise painful computations into routine ones.
+Chapters 3 and 4 gave us the objects that describe a random variable completely: the probability mass function of a discrete $X$ and the probability density function of a continuous $X$. A full distribution is a lot of information, and in practice we rarely need all of it. This chapter develops its main numerical summaries: #emph[expectation], #emph[variance] and #emph[standard deviation]; #emph[covariance], #emph[correlation] and #emph[partial correlation] for relationships between variables; #emph[quantiles] and the #emph[median]; and conditional expectation and variance. The recurring theme is that these summaries turn full distributions into interpretable numbers while retaining enough algebra for efficient computation.
 
 == Expectation
 
@@ -74,7 +74,7 @@ Let $X, Y$ be real-valued random variables on the same probability space and $a,
 The single most important thing to notice is what property (i) does #emph[not] require. Linearity holds for #emph[any] two random variables on the same space, no matter how strongly dependent they are: $EE[X + Y] = EE[X] + EE[Y]$ always. Independence is needed only for the very different statement about the expectation of a #emph[product], property (v). Confusing the two is one of the most common mistakes in the exam.
 
 #keyfact[
-*Linearity of expectation is unconditional:* $EE[a X + b Y] = a thin EE[X] + b thin EE[Y]$ holds even when $X$ and $Y$ are dependent. In sharp contrast, $EE[X Y] = EE[X] thin EE[Y]$ requires $X$ and $Y$ to be #emph[independent] (Chapter 5). The converse of (v) fails: $EE[X Y] = EE[X] thin EE[Y]$ does not imply independence.
+*Linearity of expectation is unconditional:* $EE[a X + b Y] = a thin EE[X] + b thin EE[Y]$ holds even when $X$ and $Y$ are dependent. In sharp contrast, independence of $X$ and $Y$ guarantees $EE[X Y] = EE[X] thin EE[Y]$ (Chapter 5). Independence is sufficient but not necessary: the product identity alone does not imply independence.
 ]
 
 #example(title: "linearity without independence")[
@@ -143,7 +143,7 @@ Property (iii) is worth pausing on: shifting a distribution rigidly by $b$ leave
 Mean and variance are the first two members of a whole family of summaries built from powers of $X$.
 
 #remark[
-For $k in NN_(>0)$, the *$k$-th moment* of $X$ is $EE[X^k]$ (when it exists), and the *$k$-th central moment* is $EE[(X - EE[X])^k]$. In this language the mean is the first moment and the variance is the second central moment. Higher central moments carry finer shape information — the third describes #emph[asymmetry] (skewness) and the fourth the #emph[tail weight] (kurtosis) — but this course works almost exclusively with the first two. A single object that packages all moments at once, the moment generating function $EE[e^(t X)]$, is a standard tool in the wider literature but is not developed in these notes; mean and variance will be summary enough for everything that follows.
+For $k in NN_(>0)$, the *$k$-th moment* of $X$ is $EE[X^k]$ (when it exists), and the *$k$-th central moment* is $EE[(X - EE[X])^k]$. In this language the mean is the first moment and the variance is the second central moment. Higher central moments carry finer shape information — the third describes #emph[asymmetry] (skewness) and the fourth the #emph[tail weight] (kurtosis) — but this course works almost exclusively with the first two. Chapter 8 introduces the moment-generating function $EE[e^(t X)]$, which packages all finite moments into derivatives at $0$ when it exists near $0$.
 ]
 
 == Covariance and correlation
@@ -226,6 +226,83 @@ Let $X, Y$ be real-valued with $sigma_X > 0$, $sigma_Y > 0$. Then
 Correlation is a dimensionless, standardized measure of the *linear* relationship between $X$ and $Y$, with $abs("Corr"(X, Y)) <= 1$ and the extremes $plus.minus 1$ attained exactly for a perfect affine relationship $Y = a X + b$. #emph[Independent] $=>$ #emph[uncorrelated], but #emph[not] conversely: $"Corr"(X, Y) = 0$ rules out a linear trend, not dependence in general. Scatter-plots of data with a clearly curved but symmetric shape can have correlation exactly $0$ while being highly dependent.
 ]
 
+=== Partial correlation
+
+Ordinary correlation can be induced by a third variable that is linearly related to both variables of interest. Partial correlation removes that linear contribution before measuring what remains.
+
+#definition(title: "Partial correlation coefficient")[
+Let $X,Y$ be square-integrable, non-degenerate real-valued random variables and let $Z=(Z_1,dots,Z_k)$ be a square-integrable random vector. Let $hat(X)$ and $hat(Y)$ be their best affine least-squares predictors from $Z$, and define the residuals $X_"res" := X-hat(X)$ and $Y_"res" := Y-hat(Y)$. If both residuals have positive variance, the *partial correlation of $X$ and $Y$ given $Z$* is
+$
+rho_(X Y | Z) := "Corr"(X_"res",Y_"res").
+$
+When $Z$ is a single real-valued variable and $abs(rho_(X Z)), abs(rho_(Y Z)) < 1$,
+$
+rho_(X Y | Z) = frac(rho_(X Y) - rho_(X Z) rho_(Y Z), sqrt((1-rho_(X Z)^2)(1-rho_(Y Z)^2))).
+$
+If this value is $0$, $X$ and $Y$ are *partially uncorrelated given $Z$*.
+]
+
+#remark[
+Partial uncorrelatedness removes only #emph[linear] effects of $Z$ and is not the same as conditional independence $X perp perp Y | Z$ from Chapter 5. Neither property implies the other without additional assumptions; for jointly Gaussian variables the connection is much tighter.
+]
+
+== Quantiles and medians
+
+Means and variances summarize a distribution through moments. Quantiles instead locate specified fractions of its probability mass and remain meaningful even when moments do not exist.
+
+#definition(title: "Quantile, quantile function, median")[
+Let $X$ be a real-valued random variable with cdf $F_X$, and let $q in (0,1)$. A value $x_q in RR$ is a *$q$-quantile* if
+$
+PP(X <= x_q) >= q quad "and" quad PP(X >= x_q) >= 1-q.
+$
+Equivalently, $F_X(x_q) >= q$ and $F_X(x_q^-) <= q$. Quantiles need not be unique, especially when the cdf has flat regions; jumps also prevent use of an ordinary inverse. The standard single-valued convention is the generalized inverse, or *quantile function*,
+$
+F_X^(-1)(q) := inf {x in RR : F_X(x) >= q}.
+$
+The *median* is any $1\/2$-quantile. Quartiles correspond to $q=1\/4,1\/2,3\/4$, and percentiles express $q$ as a percentage.
+]
+
+#example(title: "quantiles of an exponential distribution")[
+For $X ~ "Exp"(lambda)$, $F_X(x)=1-e^(-lambda x)$ for $x >= 0$. Solving $F_X(x_q)=q$ gives
+$
+x_q = -frac(ln(1-q),lambda).
+$
+In particular the median is $ln(2)\/lambda$, whereas $EE[X]=1\/lambda$. Their difference reflects the exponential distribution's long right tail.
+]
+
+#remark[
+The mean and median describe different notions of center.
+- The mean uses every value and is sensitive to extreme tails; a median depends only on how probability is split and is robust to outliers.
+- A quantile, hence a median, exists for every real-valued distribution, even when the mean is undefined.
+- If $EE[X^2] < oo$, the mean is the unique minimizer of $c |-> EE[(X-c)^2]$.
+- Any median minimizes $c |-> EE[abs(X-c)]$.
+These optimization properties explain why squared-error regression targets a conditional mean while absolute-error regression targets a conditional median.
+]
+
+#theorem(name: "quantile transformation")[
+Let $F$ be a cdf and define its generalized inverse
+$
+Q_F(u) := inf {x in RR : F(x) >= u}, quad u in (0,1).
+$
+If $U ~ "Unif"(0,1)$, then $Q_F(U)$ has cdf $F$. Thus every probability distribution on $RR$ can be generated by transforming one uniform random variable.
+]
+
+#proof[
+By the definition of the generalized inverse and monotonicity of $F$,
+$
+Q_F(u) <= x quad <=> quad u <= F(x).
+$
+Therefore $PP(Q_F(U) <= x)=PP(U <= F(x))=F(x)$ for every $x$, which identifies the law by the cdf--measure correspondence from Chapter 2.
+]
+
+#example(title: "inverse-transform sampling")[
+The theorem gives an exact sampling recipe: generate $U ~ "Unif"(0,1)$ and return $F^(-1)(U)$. For the exponential cdf above,
+$
+F^(-1)(U) = -frac(ln(1-U),lambda) ~ "Exp"(lambda).
+$
+Since $1-U ~ "Unif"(0,1)$ too, implementations commonly use $-ln(U)\/lambda$. This procedure is called *inverse-transform sampling*.
+]
+
 == Variance of a sum
 
 Combining bilinearity of covariance with $"Cov"(X, X) = "Var"(X)$ yields the general formula for the variance of a linear combination — the identity that governs how uncertainties accumulate when random quantities are added.
@@ -250,6 +327,100 @@ $
 "Var"(X) = sum_(i=1)^n "Var"(X_i) = n p (1 - p) .
 $
 Decomposing a complicated variable into a sum of simple independent pieces, then applying linearity and the independent-sum rule, is the standard route to a mean and a variance.
+]
+
+== Conditional expectation and variance
+
+The conditional distributions from Chapter 5 let us recompute numerical summaries after learning the value of another variable.
+
+#definition(title: "Conditional expectation")[
+Let $X,Y$ be real-valued random variables and assume the relevant expectations exist. The *conditional expectation of $Y$ given $X=x$* is the expectation under the conditional law of $Y$ given $X=x$:
+$
+EE[Y | X=x] = cases(
+  sum_y y thin p_(Y|X=x)(y) & "in the discrete case",
+  integral_(-oo)^oo y thin p_(Y|X=x)(y) dif y & "in the continuous case".
+)
+$
+As a function $h(x):=EE[Y|X=x]$ of the conditioning value, it defines the random variable
+$
+EE[Y|X] := h(X),
+$
+called the *conditional expectation of $Y$ given $X$*.
+]
+
+#remark[
+When $Y$ is square-integrable, $EE[Y|X]$ is the mean-squared-error-optimal predictor of $Y$ based on $X$: among suitable functions $g$, it minimizes $EE[(Y-g(X))^2]$. The residual is orthogonal to every square-integrable function of $X$,
+$
+EE[(Y-EE[Y|X]) g(X)] = 0.
+$
+Thus a regression method trained with squared loss is, at population level, trying to learn a conditional mean.
+]
+
+#theorem(name: "law of total expectation / tower property")[
+For integrable $Y$,
+$
+EE[Y] = EE[EE[Y|X]].
+$
+Conditioning may therefore simplify a difficult expectation: compute it inside each value or group of $X$, then average those conditional means over $X$.
+]
+
+#proof[
+In the continuous-density case, $p_(Y|X=x)(y) p_X(x)=p_(X,Y)(x,y)$ for almost every $x$ with $p_X(x)>0$; the conditional can be defined arbitrarily on the remaining null set. Hence marginalization gives
+$
+EE[EE[Y|X]]
+&= integral_RR integral_RR y p_(Y|X=x)(y) p_X(x) dif y dif x \
+&= integral_RR y (integral_RR p_(X,Y)(x,y) dif x) dif y
+= integral_RR y p_Y(y) dif y = EE[Y].
+$
+The discrete proof is the same calculation with sums. The measure-theoretic theorem also covers laws without pmfs or pdfs.
+]
+
+#definition(title: "Conditional variance")[
+The *conditional variance of $Y$ given $X=x$* is
+$
+"Var"(Y|X=x) := EE[(Y-EE[Y|X=x])^2 | X=x]
+= EE[Y^2|X=x] - EE[Y|X=x]^2.
+$
+As $x$ varies this defines the random variable $"Var"(Y|X)$.
+]
+
+#theorem(name: "law of total variance")[
+For square-integrable $Y$,
+$
+"Var"(Y) = EE["Var"(Y|X)] + "Var"(EE[Y|X]).
+$
+The first term is the average variation #emph[within] the groups determined by $X$; the second is the variation #emph[between] their conditional means.
+]
+
+#proof[
+Write $m(X)=EE[Y|X]$ and insert it between $Y$ and $EE[Y]$:
+$
+Y-EE[Y] = (Y-m(X)) + (m(X)-EE[Y]).
+$
+After squaring and taking expectations, the cross term vanishes by the orthogonality property above. The tower property turns $EE[(Y-m(X))^2]$ into $EE["Var"(Y|X)]$, while the second square is $"Var"(m(X))$.
+]
+
+#example(title: "Poisson thinning via the total laws")[
+Let $N ~ "Poi"(lambda)$ be the number of customers and suppose each independently buys with probability $q in [0,1]$. If $K$ is the number of purchases, then $K|N=n ~ "Bin"(n,q)$, so
+$
+EE[K|N]=q N, quad "Var"(K|N)=q(1-q)N.
+$
+The total expectation and total variance give
+$
+EE[K]=q EE[N]=q lambda,
+$
+$
+"Var"(K)=q(1-q)EE[N]+q^2 "Var"(N)=q(1-q)lambda+q^2 lambda=q lambda.
+$
+In fact $K ~ "Poi"(q lambda)$, consistently with the mean and variance found here.
+]
+
+#remark[
+In the Bayesian models introduced in Chapter 14, conditioning on a random parameter $theta$ yields the decomposition
+$
+"Var"(Y)=EE["Var"(Y|theta)]+"Var"(EE[Y|theta]).
+$
+The within-parameter term is often called *aleatoric uncertainty* (irreducible outcome variation), while the between-parameter term is called *epistemic uncertainty* (variation due to uncertainty about the parameter).
 ]
 
 #quizblock(title: "Quiz — Expectation, variance, and moments")[

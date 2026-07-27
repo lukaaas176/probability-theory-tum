@@ -4,7 +4,7 @@
 
 Once a random variable $X$ has a distribution, we rarely leave it untouched. We feed it through a function to obtain $Y = g(X)$, we add several independent copies together, or we standardize it before comparing to a table. This chapter assembles the toolbox for such manipulations. Two operations are central. The first is #emph[transformation]: given the distribution of $X$ and a map $g$, what is the distribution of $Y = g(X)$? The answer for smooth, monotone $g$ is the #emph[change-of-variables formula], with its characteristic $abs("derivative")$ (in one dimension) or $abs("Jacobian determinant")$ (in several) correction factor. The second is #emph[addition of independent random variables], whose distribution is given by a #emph[convolution]. Both operations become dramatically easier through #emph[integral transforms] — the characteristic function and the moment-generating function — which turn the awkward convolution into an ordinary product and encode every moment (Chapter 6) in their derivatives. We close with the Gaussian family, where all of these computations collapse into linear algebra.
 
-Throughout we write $f_X$ for a density (pdf), $p_X$ for a probability mass function (pmf), and $F_X$ for the cumulative distribution function (cdf) introduced in Chapters 3 and 4. Densities live on continuous supports, pmfs on discrete ones; the two transformation stories run in parallel.
+Throughout we write $f_X$ for a density (pdf), $p_X$ for a probability mass function (pmf), and $F_X$ for a cumulative distribution function (cdf). Cdfs of measures were introduced in Chapter 2 and cdfs of random variables in Chapter 4. Densities live on continuous supports, pmfs on discrete ones; the two transformation stories run in parallel.
 
 == Transformations: the distribution of $Y = g(X)$
 
@@ -33,7 +33,7 @@ If $g$ is injective on the support of $X$, each $y$ has a unique preimage and th
 For continuous $X$ the discrete sum is replaced by a derivative, and a monotone smooth $g$ produces the celebrated Jacobian correction. The next result is the workhorse of the chapter.
 
 #proposition(name: "transformation of densities / change of variables")[
-Let $X$ be a continuous random variable with density $f_X$, let $S_X := {x in RR : f_X (x) > 0}$ be its support, and let $g : RR -> RR$ be continuously differentiable and strictly monotonic on $S_X$. Set $Y := g(X)$. Then the density of $Y$ is
+Let $X$ be a continuous random variable with density $f_X$, let $S_X := {x in RR : f_X (x) > 0}$, and let $g : RR -> RR$ be continuously differentiable and strictly monotonic on $S_X$, with $g'(x) eq.not 0$ there. Set $Y := g(X)$. Then the density of $Y$ is
 $
 f_Y (y) = f_X (g^(-1)(y)) abs((dif)/(dif y) g^(-1)(y)) quad "for" y in g(S_X) ,
 $
@@ -195,7 +195,7 @@ In particular, writing $Z ~ cal(N)(0, 1)$ for the standard normal, $phi_Z (t) = 
 A closely related transform trades the imaginary exponent for a real one.
 
 #remark[
-The *moment-generating function* (MGF) of $X$ is $M_X (t) = EE[e^(t X)]$, defined for those real $t$ where the expectation is finite (typically an interval around $0$). Like the cf it satisfies a product rule $M_(X + Y) (t) = M_X (t) M_Y (t)$ for independent $X, Y$, it generates moments via $EE[X^n] = M_X^((n)) (0)$, and — where it exists in a neighbourhood of $0$ — it determines the distribution uniquely. Its drawback is exactly that existence caveat: some distributions (for instance the Cauchy) have no MGF near $0$, whereas the characteristic function $phi_X (t) = EE[e^(i t X)]$ always exists. The two are formally related by $phi_X (t) = M_X (i t)$.
+The *moment-generating function* (MGF) of $X$ is $M_X (t) = EE[e^(t X)]$, defined for those real $t$ where the expectation is finite (typically an interval around $0$). Like the cf it satisfies a product rule $M_(X + Y) (t) = M_X (t) M_Y (t)$ for independent $X, Y$, it generates moments via $EE[X^n] = M_X^((n)) (0)$, and — where it exists in a neighbourhood of $0$ — it determines the distribution uniquely. Its drawback is exactly that existence caveat: some distributions (for instance the Cauchy) have no MGF near $0$, whereas the characteristic function $phi_X (t) = EE[e^(i t X)]$ always exists. Where the MGF has a suitable complex extension, the two are related by $phi_X (t) = M_X (i t)$.
 ]
 
 #remark[
@@ -243,14 +243,37 @@ $
 which is the cf of $cal(N)(mu + mu_2, sigma^2 + sigma_2^2)$; uniqueness finishes the proof.
 ]
 
-The same closure holds in $RR^d$. A multivariate Gaussian $X ~ cal(N)(mu, Sigma)$ with mean $mu in RR^d$ and covariance $Sigma in RR^(d times d)$ (symmetric positive definite) has density
+The same closure holds in $RR^d$. A non-degenerate multivariate Gaussian $X ~ cal(N)(mu, Sigma)$ with mean $mu in RR^d$ and symmetric positive-definite covariance $Sigma in RR^(d times d)$ has density
 $
 f_X (x) = 1/((2 pi)^(d \/ 2) (det Sigma)^(1 \/ 2)) exp(-1/2 (x - mu)^top Sigma^(-1) (x - mu)) ,
 $
-and for any matrix $A$ and vector $b$ the affine image is again Gaussian, $A X + b ~ cal(N)(A mu + b, A Sigma A^top)$.
+
+#lemma(name: "multivariate Gaussian computation rules")[
+Let $X in RR^(d_X)$ and $Y in RR^(d_Y)$ be jointly Gaussian with means $mu_X,mu_Y$ and covariance blocks $Sigma_(X X)$, $Sigma_(X Y)$ and $Sigma_(Y Y)$, where $Sigma_(Y X)=Sigma_(X Y)^top$.
++ *Independence:* $X perp perp Y$ if and only if $Sigma_(X Y)=0$. Thus uncorrelated jointly Gaussian vectors are independent.
++ *Marginals:* $X ~ cal(N)(mu_X,Sigma_(X X))$ and $Y ~ cal(N)(mu_Y,Sigma_(Y Y))$.
++ *Conditionals:* if $Sigma_(Y Y)$ is invertible, then
+  $
+  X | (Y=y) ~ cal(N)(mu_(X|y),Sigma_(X|y)),
+  $
+  where
+  $
+  mu_(X|y) &= mu_X + Sigma_(X Y) Sigma_(Y Y)^(-1)(y-mu_Y), \
+  Sigma_(X|y) &= Sigma_(X X) - Sigma_(X Y) Sigma_(Y Y)^(-1) Sigma_(X Y)^top.
+  $
++ *Affine maps and linear combinations:* for compatible matrices $A,B$ and vector $c$,
+  $
+  A X+B Y+c ~ cal(N)(A mu_X+B mu_Y+c, Sigma_L),
+  $
+  with
+  $
+  Sigma_L = A Sigma_(X X) A^top + A Sigma_(X Y) B^top + B Sigma_(X Y)^top A^top + B Sigma_(Y Y) B^top.
+  $
+The resulting covariance may be only positive semidefinite, in which case the Gaussian law is degenerate and has no density on the full ambient space.
+]
 
 #remark[
-For Gaussians, uncorrelated is equivalent to independent, and the family is closed under affine maps, marginalization, conditioning and linear combinations — so every such computation reduces to matrix arithmetic on the mean vector and covariance matrix. The full multivariate rules (marginals, conditionals and general linear combinations) are collected in the distribution reference of Chapter 15; here we only needed the scalar affine and additivity facts, which are direct applications of change of variables and the characteristic-function product rule.
+For jointly Gaussian variables, the family is closed under affine maps, marginalization, conditioning and linear combinations, so every such computation reduces to matrix arithmetic on means and covariance blocks. Chapter 15 collects the scalar distribution formulas for quick reference; the full multivariate rules are the lemma above.
 ]
 
 #quizblock(title: "Quiz — Computations with distributions")[

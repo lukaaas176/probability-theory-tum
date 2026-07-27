@@ -38,6 +38,12 @@ python3 web/build.py
 
 To deploy manually instead: `npx wrangler login`, then `bash web/cloudflare-build.sh && npx wrangler deploy`.
 
-## AI-assistance disclaimer
+## Acknowledgement
 
-This project — the Typst source's dual PDF/HTML build system, the interactive HTML layer (`web/style.css`, `web/app.js`, `web/build.py`), and the chapter content — was created with substantial AI assistance (Claude / Claude Code), based on the author's course material (N. Kilbertus's lecture notes, the exercise sheets, and past exams). Verify anything before relying on it for the exam.
+A heartfelt thank-you to Niki Kilbertus for the exceptional work invested in the lecture and the excellent official lecture notes. Those notes are a clear, comprehensive, self-contained resource and are fully sufficient for learning the course material. This supplementary script is not meant to replace them; it is simply an attempt to support learners who benefit from a more compact, chapter-oriented presentation with highlighted takeaways and quizzes.
+
+## AI assistance and human review
+
+This project was created with substantial AI assistance. The chapter material was summarized and structured from N. Kilbertus's lecture notes, the exercise sheets, and past exams. The current revision was prepared using **GPT-5.6 Sol via OpenCode**. The Typst dual PDF/HTML build system, the interactive HTML layer (`web/style.css`, `web/app.js`, `web/build.py`), and this README were also AI-assisted.
+
+AI-generated summaries can omit important context, misstate definitions or results, and contain other errors. Humans subsequently reviewed the material and corrected the issues they identified, but human review does not guarantee completeness or correctness. This remains an unofficial supplementary study aid: when in doubt, consult the official course materials, which remain authoritative.

@@ -111,11 +111,11 @@ Fix $alpha in [0, 1]$.
 The lecture's informal description of a test is: reduce the data to a statistic $T(x)$, work out how surprising the observed value is #emph[if the null were true], and reject when it is surprising beyond a pre-set threshold. The number that measures "how surprising" is the p-value.
 
 #definition(title: "p-value")[
-Let $T$ be a test statistic whose distribution under $H_0$ is known, with observed value $t_"obs" = T(x)$. The *p-value* is the probability, computed #emph[under the null $H_0$], of observing a value of $T$ at least as extreme as $t_"obs"$ in the direction of the alternative; write $P_(H_0)$ for this null probability (equal to $P_(theta_0)$ when $H_0$ is simple, i.e. $Theta_0 = {theta_0}$). For a one-sided alternative favoring large values of $T$,
+Let $T$ be a test statistic whose distribution under a simple null $H_0 : theta = theta_0$ is known, with observed value $t_"obs" = T(x)$. The *p-value* is the probability, computed under $P_(theta_0)$, of observing a value of $T$ at least as extreme as $t_"obs"$ in the direction of the alternative. For a one-sided alternative favoring large values of $T$,
 $
-"p-value" = P_(H_0)(T >= t_"obs") ,
+"p-value" = P_(theta_0)(T >= t_"obs") ,
 $
-and for a two-sided alternative $"p-value" = P_(H_0)(|T| >= |t_"obs"|)$. One rejects $H_0$ at level $alpha$ exactly when $"p-value" <= alpha$.
+and, when the null distribution of $T$ is symmetric about $0$, the usual two-sided p-value is $P_(theta_0)(|T| >= |t_"obs"|)$. For a composite null, a valid p-value must account for the worst-case null distribution (often attained at a boundary); one common construction takes the supremum of the relevant tail probability over $theta in Theta_0$. One rejects $H_0$ at level $alpha$ when $"p-value" <= alpha$.
 ]
 
 The p-value packages the test into a single comparison: it is the smallest significance level at which the observed data would already lead to rejection. Small p-value $=>$ the data are hard to reconcile with $H_0$.
@@ -160,7 +160,7 @@ Writing down the decision rule $phi$ directly is awkward. In practice one extrac
 
 #definition(title: "Recipe for constructing a test")[
 + Choose a real-valued *test statistic* $T : Omega^n -> RR$ that summarizes the sample (e.g. the sample mean when testing a mean, the sample variance when testing a variance).
-+ Determine, at least approximately, the *distribution of $T(X)$ under $H_0$* (its *null distribution*) — either exactly, or via the central limit theorem for large $n$.
++ Determine, at least approximately, the *distribution of $T(X)$ under $H_0$* (its *null distribution*) — exactly, via the central limit theorem for large $n$, or with a justified simulation method. A permutation test simulates the null by relabelling observations when the null law is unchanged by those relabellings (exchangeability); a parametric bootstrap simulates new data from a fitted null model.
 + Fix a level $alpha$ and define the *rejection region* $R$ through quantiles of the null distribution. The threshold is the *critical value* and $R$ the *critical region*. For a composite null the level is $alpha = sup_(theta in Theta_0) G_phi (theta)$; when the power function $G_phi$ is monotone in $theta$ on $Theta_0$ (as in the one-sided examples below), this supremum is attained at the boundary, so the level is governed by the *null boundary*.
 + Set $phi(x) = bb(1)_R (T(x))$, i.e. $phi(x) = 1$ if $T(x) in R$ (reject) and $0$ otherwise.
 ]
@@ -231,6 +231,34 @@ $
 *Step 4 — decision.* At $alpha = 0.05$ the two-sided critical value is $z_(alpha \/ 2) approx 1.96$. Since $|z_"obs"| = 2 > 1.96$, we #emph[reject $H_0$]: at the 5% level there is significant evidence that the mean lifetime has changed. At the much stricter $alpha = 0.001$ the cutoff is $z_(alpha \/ 2) approx 3.29$, and now $|z_"obs"| = 2 < 3.29$, so we #emph[fail to reject $H_0$].
 
 The two answers are not a contradiction. $alpha$ is the long-run rate of falsely rejecting a true null, not a probability that this particular rejection is correct; rejecting at 5% but not at 0.1% simply means the evidence is moderate — enough to clear a lenient bar, not a stringent one.
+]
+
+== Practical cautions and extensions
+
+The single-test framework above is the foundation, but real studies must also plan for power and for the number of analyses performed.
+
+#definition(title: "Power analysis")[
+A *power analysis* chooses the sample size before data collection so that, at a fixed significance level $alpha$, a proposed test reaches a desired power $1-beta$ against a scientifically relevant alternative or effect size. Power depends on the test, effect size, noise level and sample size. A non-significant result from an underpowered study is therefore especially uninformative.
+]
+
+#keyfact[
+*Multiple testing inflates false positives.* If $m$ null hypotheses are tested separately at level $alpha$, the union bound gives
+$
+PP("at least one type I error") <= m alpha,
+$
+and under independent true nulls the exact probability is $1-(1-alpha)^m$. The *Bonferroni correction* tests each hypothesis at level $alpha\/m$, guaranteeing family-wise error at most $alpha$ without requiring independence. Procedures controlling the *false discovery rate (FDR)* instead control the expected proportion of false rejections among all rejections and can be less conservative.
+]
+
+#remark[
+Trying many outcomes, subgroups, preprocessing choices or tests and reporting only a significant result is *p-hacking*. The unreported multiplicity makes the nominal p-value misleading and contributes to failures of replication. Preregistering hypotheses and analysis plans, reporting all analyses, and using appropriate multiple-testing corrections reduce this problem.
+]
+
+#remark[
+Bayesian hypothesis testing, previewing Chapter 14, can compare hypotheses through a *Bayes factor*. For hypotheses $H_0,H_1$,
+$
+"BF"_(1 0) := frac(p(x|H_1),p(x|H_0)),
+$
+where each term is the marginal likelihood of the data under that hypothesis, integrating over any parameters with their prior distributions. Unlike a p-value, a Bayes factor can quantify evidence in either direction; its value depends on the priors used within the hypotheses.
 ]
 
 #quizblock(title: "Quiz — Hypothesis testing")[

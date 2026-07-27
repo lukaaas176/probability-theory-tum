@@ -110,7 +110,7 @@ Finally, a pair of examples showing that unbiasedness and consistency are genuin
 #example(title: "biased-but-consistent vs. unbiased-but-inconsistent")[
 Let $X_1, dots, X_n$ be i.i.d. with mean $mu$ and variance $sigma^2 > 0$.
 - *Biased but consistent:* $hat(mu)_n := accent(X, macron)_n + frac(1, n)$ has $EE[hat(mu)_n] = mu + frac(1, n) != mu$, so it is biased for every finite $n$. Yet $accent(X, macron)_n attach(arrow.r.long, t: "P") mu$ and $frac(1, n) -> 0$, so $hat(mu)_n attach(arrow.r.long, t: "P") mu$ is consistent.
-- *Unbiased but not consistent:* $tilde(mu)_n := X_1$ (ignore all but the first observation) has $EE[tilde(mu)_n] = mu$, hence is unbiased for every $n$. But it never concentrates — $"Var"[tilde(mu)_n] = sigma^2 > 0$ does not vanish — so $tilde(mu)_n$ does #emph[not] converge to $mu$ and is inconsistent.
+- *Unbiased but not consistent:* $tilde(mu)_n := X_1$ (ignore all but the first observation) has $EE[tilde(mu)_n] = mu$, hence is unbiased for every $n$. Since $sigma^2 > 0$, $X_1$ is not almost surely equal to $mu$, so there is an $epsilon > 0$ with $PP(|X_1 - mu| >= epsilon) > 0$. This probability is the same for every $n$, hence $tilde(mu)_n$ does not converge in probability to $mu$ and is inconsistent.
 ]
 
 == The maximum-likelihood estimator
@@ -148,7 +148,7 @@ quad ==> quad
 quad ==> quad
 hat(p)_"mle" = frac(s, n) = frac(1, n) sum_(i=1)^n x_i = accent(x, macron)_n .
 $
-The second derivative $-s \/ p^2 - (n - s) \/ (1 - p)^2 < 0$ confirms a maximum. The MLE is simply the observed success frequency — and since the number of successes in $n$ i.i.d. Bernoulli trials is $"Bin"(n, p)$, this is exactly the MLE for the Binomial proportion as well.
+For $0 < s < n$, the second derivative $-s \/ p^2 - (n - s) \/ (1 - p)^2 < 0$ confirms the interior maximum; for $s = 0$ or $s = n$, direct inspection gives the boundary maxima $0$ or $1$. Thus the MLE is always the observed success frequency — and since the number of successes in $n$ i.i.d. Bernoulli trials is $"Bin"(n, p)$, this is exactly the MLE for the Binomial proportion as well.
 ]
 
 === Worked example: Poisson
@@ -166,7 +166,7 @@ frac(partial ell, partial lambda) = -n + frac(1, lambda) sum_(i=1)^n x_i = 0
 quad ==> quad
 hat(lambda)_"mle" = frac(1, n) sum_(i=1)^n x_i = accent(x, macron)_n .
 $
-Since $partial^2 ell \/ partial lambda^2 = - (sum_(i=1)^n x_i) \/ lambda^2 < 0$, this is a maximum. The MLE of the Poisson rate is the sample mean.
+If at least one count is positive, $partial^2 ell \/ partial lambda^2 = - (sum_(i=1)^n x_i) \/ lambda^2 < 0$, so this is a maximum. If all counts are zero and the parameter space is $lambda >= 0$, the maximum is the boundary value $hat(lambda) = 0$; if the model insists on $lambda > 0$, the likelihood has supremum at $0$ but no maximizer. Apart from that open-boundary convention, the Poisson-rate MLE is the sample mean.
 ]
 
 === Worked example: Gaussian mean and variance
@@ -188,7 +188,7 @@ hat(mu)_"mle" = frac(1, n) sum_(i=1)^n x_i = accent(x, macron)_n ,
 quad
 hat(sigma)^2_"mle" = frac(1, n) sum_(i=1)^n (x_i - accent(x, macron)_n)^2 .
 $
-At this critical point $partial^2 ell \/ partial mu^2 = -n \/ sigma^2 < 0$, $partial^2 ell \/ partial (sigma^2)^2 = -n \/ (2 (sigma^2)^2) < 0$, and the mixed partial vanishes, so the Hessian is negative definite there, confirming a maximum. The MLE of the mean coincides with the (unbiased) sample mean, but the MLE of the variance is the #emph[naive] estimator $hat(sigma)^2$ from before — it divides by $n$, not $n - 1$, and is therefore biased.
+Provided the observations are not all identical, this critical point has $hat(sigma)^2_"mle" > 0$; there $partial^2 ell \/ partial mu^2 = -n \/ sigma^2 < 0$, $partial^2 ell \/ partial (sigma^2)^2 = -n \/ (2 (sigma^2)^2) < 0$, and the mixed partial vanishes, so the Hessian is negative definite. The MLE of the mean coincides with the (unbiased) sample mean, but the MLE of the variance is the #emph[naive] estimator $hat(sigma)^2$ from before — it divides by $n$, not $n - 1$, and is therefore biased. If all observations coincide and the model requires $sigma^2 > 0$, the likelihood is unbounded as $sigma^2 -> 0$ from above, so no MLE exists in that open parameter space.
 ]
 
 The pattern across these derivations is summarized in the following table of maximum-likelihood estimators for the standard i.i.d. models (no closed form need exist in general — sometimes the MLE must be found numerically).

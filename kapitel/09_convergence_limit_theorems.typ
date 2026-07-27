@@ -52,13 +52,13 @@ Two examples show that the arrows cannot be reversed.
 #example(title: "convergence in probability but not almost surely")[
 Work on $([0, 1], cal(B)|_([0,1]), lambda|_([0,1]))$ with $lambda$ the uniform (Lebesgue) measure. Write each $n >= 1$ uniquely as $n = 2^k + j$ with $0 <= j < 2^k$, and define the #emph[travelling bump]
 $
-X_n = bb(1)_(I_n), quad quad I_n = [j\/2^k, (j+1)\/2^k] .
+X_n = bb(1)_(I_n), quad quad I_n = [j\/2^k, (j+1)\/2^k) .
 $
 The bump has width $1\/2^k$ and slides across $[0, 1]$, restarting narrower each time $k$ increases. For any $epsilon in (0, 1)$,
 $
 PP(|X_n - 0| >= epsilon) = PP(X_n = 1) = 1\/2^k -> 0 quad (n -> oo) ,
 $
-so $X_n ->^P 0$. Yet for #emph[every] fixed $omega$ there is, for each $k$, exactly one $j$ with $omega in I_n$, so $X_n (omega) = 1$ for infinitely many $n$ and the sequence $X_n (omega)$ never settles. Hence $PP(lim_(n -> oo) X_n = 0) = 0$: there is no almost sure convergence to $0$.
+so $X_n ->^P 0$. Yet for every fixed $omega in [0,1)$ there is, for each $k$, exactly one $j$ with $omega in I_n$, so $X_n (omega) = 1$ for infinitely many $n$ and the sequence $X_n (omega)$ never settles. The exceptional endpoint ${1}$ has probability zero, hence $PP(lim_(n -> oo) X_n = 0) = 0$: there is no almost sure convergence to $0$.
 ]
 
 #example(title: "convergence in distribution but not in probability")[
@@ -74,14 +74,14 @@ so $PP(|X_n - Y| >= 1) = 1$ never goes to $0$ and there is no convergence in pro
 With convergence defined, we can state the theorems that justify estimating an unknown mean by an observed average. Both concern the *sample mean* $accent(X, macron)_n := frac(1, n) sum_(i=1)^n X_i$.
 
 #theorem(name: "weak law of large numbers")[
-Let $X_1, X_2, dots$ be identically distributed random variables with finite mean $EE[X_i] = mu < oo$ that are pairwise uncorrelated. Then the sample mean converges in probability to the mean,
+Let $X_1, X_2, dots$ be identically distributed, pairwise uncorrelated random variables with finite mean $EE[X_i] = mu$ and finite variance $"Var"(X_i) = sigma^2 < oo$. Then the sample mean converges in probability to the mean,
 $
 accent(X, macron)_n ->^P mu .
 $
 ]
 
 #proof[
-(Finite-variance case.) Assume in addition $"Var"(X_i) = sigma^2 < oo$. By linearity of expectation $EE[accent(X, macron)_n] = frac(1, n) sum_(i=1)^n EE[X_i] = mu$, and since the $X_i$ are uncorrelated the variance of the sum is the sum of the variances, so
+By linearity of expectation $EE[accent(X, macron)_n] = frac(1, n) sum_(i=1)^n EE[X_i] = mu$, and since the $X_i$ are uncorrelated the variance of the sum is the sum of the variances, so
 $
 "Var"(accent(X, macron)_n) = frac(1, n^2) sum_(i=1)^n "Var"(X_i) = frac(n sigma^2, n^2) = frac(sigma^2, n) .
 $
@@ -159,7 +159,7 @@ To approximate $PP(S_(100) >= 60)$ we standardize and invoke the CLT:
 $
 PP(S_(100) >= 60) = PP(frac(S_(100) - 50, 5) >= frac(60 - 50, 5)) = PP(Z_(100) >= 2) approx 1 - Phi(2) ,
 $
-where $Phi$ is the standard normal cdf (Chapter 15). Since $Phi(2) approx 0.9772$, this gives $PP(S_(100) >= 60) approx 0.0228$, about $2.3%$. The same computation in the sample-mean form uses the standard error $sigma \/ sqrt(n) = 0.5 \/ 10 = 0.05$: the event $S_(100) >= 60$ is $accent(X, macron)_(100) >= 0.6$, and $(0.6 - 0.5) \/ 0.05 = 2$ reproduces the identical $z$-score — sum and mean are two views of the one standardized quantity. The exact binomial value is $0.0284$; a continuity correction (replacing $60$ by $59.5$, i.e. $z = 1.9$) sharpens the approximation to $1 - Phi(1.9) approx 0.0287$.
+where $Phi$ is the standard normal cdf introduced in Chapter 4. Since $Phi(2) approx 0.9772$, this gives $PP(S_(100) >= 60) approx 0.0228$, about $2.3%$. The same computation in the sample-mean form uses the standard error $sigma \/ sqrt(n) = 0.5 \/ 10 = 0.05$: the event $S_(100) >= 60$ is $accent(X, macron)_(100) >= 0.6$, and $(0.6 - 0.5) \/ 0.05 = 2$ reproduces the identical $z$-score — sum and mean are two views of the one standardized quantity. The exact binomial value is $0.0284$; a continuity correction (replacing $60$ by $59.5$, i.e. $z = 1.9$) sharpens the approximation to $1 - Phi(1.9) approx 0.0287$.
 ]
 
 #quizblock(title: "Quiz — Convergence and limit theorems")[
