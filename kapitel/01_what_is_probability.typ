@@ -49,7 +49,7 @@ Chapter 2 turns these intuitions into mathematics: a #emph[probability space], t
 #answer[Randomness is not a property of the finished sequence but of our knowledge about how it was generated. If it came from a pseudo-random generator with a known seed (or a language model with known weights/prompt), it is fully deterministic; without that knowledge it may serve as "random" for practical purposes. So the answer depends on what is known about its origin, not on the digits themselves.]
 
 #question[What does #emph[determinism] claim, and why do we still use probabilities even if it were true?]
-#answer[Determinism claims the universe's future is fully fixed by its present state (up to quantum effects). Even so, we almost never possess that complete knowledge, so in practice we cannot banish uncertainty — we encode our ignorance with probabilities, which is what the mathematical theory formalizes.]
+#answer[Determinism claims that the universe's complete state together with the laws of nature fixes every future event; genuine indeterminacy would make determinism false rather than constitute an exception to it. Even if determinism were true, we lack exact initial conditions, and chaotic or computationally complex systems remain impractical to predict. Probabilities therefore encode our uncertainty and summarize stable patterns without claiming that the underlying process is intrinsically random.]
 
 #question[Who gave probability theory its modern axiomatic foundation, and in what year?]
 #answer[Andrey Kolmogorov, in 1933. His axioms (a sample space, a $sigma$-algebra of events, and a normalized, countably additive measure) are the basis for the probability spaces introduced in the next chapter.]

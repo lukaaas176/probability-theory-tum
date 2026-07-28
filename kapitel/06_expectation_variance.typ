@@ -431,7 +431,7 @@ The within-parameter term is often called *aleatoric uncertainty* (irreducible o
 #answer[$EE[X] = 1 dot.op 0.5 + 2 dot.op 0.3 + 3 dot.op 0.2 = 1.7$. By LOTUS $EE[X^2] = 1 dot.op 0.5 + 4 dot.op 0.3 + 9 dot.op 0.2 = 3.5$. Then $"Var"(X) = EE[X^2] - (EE[X])^2 = 3.5 - 1.7^2 = 3.5 - 2.89 = 0.61$, and $sigma(X) = sqrt(0.61) approx 0.781$.]
 
 #question[True or false: $EE[X + Y] = EE[X] + EE[Y]$ requires $X$ and $Y$ to be independent. And what property does independence buy you?]
-#answer[False. Linearity of expectation is unconditional — $EE[a X + b Y] = a thin EE[X] + b thin EE[Y]$ holds for any $X, Y$ on the same space, dependent or not. Independence is needed for the #emph[product] rule $EE[X Y] = EE[X] thin EE[Y]$ (equivalently, for $"Cov"(X, Y) = 0$).]
+#answer[False. Linearity of expectation is unconditional — $EE[a X + b Y] = a thin EE[X] + b thin EE[Y]$ holds for any $X, Y$ on the same space, dependent or not. Independence is sufficient for the #emph[product] rule $EE[X Y] = EE[X] thin EE[Y]$ and hence for $"Cov"(X, Y) = 0$, but it is not necessary: uncorrelated variables satisfy the product rule without necessarily being independent.]
 
 #question[Prove the computational formula $"Var"(X) = EE[X^2] - (EE[X])^2$ from the definition.]
 #answer[Let $mu = EE[X]$. Then $"Var"(X) = EE[(X - mu)^2] = EE[X^2 - 2 mu X + mu^2] = EE[X^2] - 2 mu thin EE[X] + mu^2 = EE[X^2] - 2 mu^2 + mu^2 = EE[X^2] - mu^2$, using linearity of expectation and that $mu$ is a constant.]

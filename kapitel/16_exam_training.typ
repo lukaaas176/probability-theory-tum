@@ -36,17 +36,22 @@ A short checklist that resolves most exam problems before any computation:
 State (i) the strong law of large numbers with all required assumptions, and (ii) the full definition of the mode of convergence appearing in it.
 ]
 #answer[
-*(i) Strong law of large numbers.* Let $X_1, X_2, dots$ be a sequence of iid random variables with finite mean $EE[X_i] = mu < oo$, and let $accent(X, macron)_n = 1/n sum_(i=1)^n X_i$ be the sample mean. Then
+*(i) Strong law of large numbers.* Let $X_1, X_2, dots$ be i.i.d. random variables on a common probability space with $EE[abs(X_1)] < oo$, write $mu := EE[X_1]$, and let $accent(X, macron)_n = 1/n sum_(i=1)^n X_i$ be the sample mean. Then
 $
 accent(X, macron)_n ->^("a.s.") mu .
 $
-The essential hypotheses are: #emph[identically distributed], #emph[independent], and a #emph[finite (existing) mean]; the convergence is #emph[almost sure].
+The essential hypotheses are #emph[identical distribution], #emph[independence], and #emph[absolute integrability] $EE[abs(X_1)] < oo$; the convergence is #emph[almost sure].
 
 *(ii) Almost sure convergence.* A sequence $(X_n)_(n in NN)$ of random variables converges #emph[almost surely] to a random variable $X$, all defined on the same probability space $(Omega, cal(A), PP)$, if
 $
 PP({omega in Omega : lim_(n -> oo) X_n (omega) = X(omega)}) = 1 .
 $
-Note this is convergence to a random variable (or here the constant $mu$) on a common probability space, not merely convergence of numbers.
+Equivalently, expanding the ordinary pointwise limit,
+$
+PP(inter.big_(k=1)^oo union.big_(N=1)^oo inter.big_(n=N)^oo
+  {omega in Omega : abs(X_n(omega) - X(omega)) < 1/k}) = 1 .
+$
+Thus for almost every $omega$ and every $epsilon > 0$, some $N = N(omega, epsilon)$ makes $abs(X_n(omega) - X(omega)) < epsilon$ for every $n >= N$.
 ]
 
 #question[
@@ -89,7 +94,7 @@ A factory makes LEDs on two lines. Line A makes $70%$ of all LEDs with defect pr
 (iv) Testing a line-B batch one by one, the probability that the first defective is the $4$th LED tested.
 ]
 #answer[
-Let $A$, $B$ be the events "from line A / line B", so $PP(A) = 0.7$, $PP(B) = 0.3$, and let $K$ be the number of defectives among the $10$.
+For each sampled LED, let $A$, $B$ denote that its source is line A or line B, so $PP(A) = 0.7$, $PP(B) = 0.3$, and let $K$ be the number of defectives among the $10$.
 
 *(i)* By the law of total probability the defect probability of a randomly chosen LED is
 $
@@ -100,9 +105,9 @@ $
 PP(K = 1) = binom(10, 1) (0.08)(1 - 0.08)^9 = 0.8 (0.92)^9 .
 $
 
-*(ii)* Let $E$ be the event "exactly one defective and it is from line A". Then $PP(A | K = 1) = PP(E, K=1)/PP(K=1) = PP(E)/PP(K=1)$. For the numerator, the single defective can sit in any of the $10$ positions; that position holds a defective line-A LED (probability $PP(A) p_A = 0.7 dot 0.05 = 0.035$) and the other $9$ are non-defective (probability $(0.92)^9$). Thus
+*(ii)* Let $E$ be the event "exactly one LED is defective and that LED is from line A". Since $E subset.eq {K = 1}$, the requested probability is $PP(E | K = 1) = PP(E)/PP(K=1)$. For the numerator, the single defective can sit in any of the $10$ positions; that position holds a defective line-A LED (probability $PP(A) p_A = 0.7 dot 0.05 = 0.035$) and the other $9$ are non-defective (probability $(0.92)^9$). Thus
 $
-PP(A | K = 1) = (10 dot 0.035 (0.92)^9)/(0.8 (0.92)^9) = 0.35/0.8 = 7/16 .
+PP(E | K = 1) = (10 dot 0.035 (0.92)^9)/(0.8 (0.92)^9) = 0.35/0.8 = 7/16 .
 $
 
 *(iii)* Writing $K = sum_(i=1)^10 X_i$ with $X_i$ the indicator that LED $i$ is defective, the law of total expectation applied to each $X_i$ (conditioning on which line LED $i$ came from) and summed over the $10$ iid LEDs gives

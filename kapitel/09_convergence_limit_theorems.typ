@@ -93,7 +93,7 @@ Hence $accent(X, macron)_n ->^P mu$. The theorem in fact holds in the #emph[i.i.
 ]
 
 #theorem(name: "strong law of large numbers")[
-Let $X_1, X_2, dots$ be i.i.d. random variables with finite mean $EE[X_i] = mu < oo$. Then the sample mean converges almost surely to the mean,
+Let $X_1, X_2, dots$ be i.i.d. random variables with $EE[abs(X_1)] < oo$, and write $mu := EE[X_1]$. Then the sample mean converges almost surely to the mean,
 $
 accent(X, macron)_n ->^"a.s." mu .
 $
