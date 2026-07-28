@@ -147,13 +147,13 @@ Let $X = A + B$ with independent $A tilde cal(N)(mu_A, 1)$ and $B tilde cal(N)(m
 Identifiability tells us #emph[whether] the data can, in principle, reveal a parameter. The likelihood tells us #emph[how strongly] a given data set points to each candidate value. It is the bridge from "given the distribution, how probable are the data?" to "given the data, which distribution?".
 
 #definition(title: "Likelihood and log-likelihood")[
-Let $(X_1, dots, X_n)$ be a random sample from a statistical model $(Omega, cal(A), P_Theta)$ in which every $P_theta$ has a probability mass function or density $p_theta (dot) =: p(dot | theta)$. Given observed data $x = (x_1, dots, x_n)$, the *likelihood function* is
+Let $(X_1, dots, X_n)$ be an i.i.d. random sample from a statistical model $(Omega, cal(A), P_Theta)$. Assume that every $P_theta$ has density $p_theta := dif P_theta slash dif mu = p(dot | theta)$ with respect to one common single-observation dominating measure $mu$ (typically counting measure in a discrete model or Lebesgue measure in a continuous model). The joint law of the sample then has density
 $
-L(dot | x) : Theta -> RR_(>= 0), quad theta |-> L(theta | x) := p_theta (x) = p(x_1, dots, x_n | theta).
+product_(i=1)^n p_theta(x_i)
 $
-If $X_1, dots, X_n$ are i.i.d., the joint mass/density factorizes and
+with respect to $mu^(⊗ n)$. Given observed data $x = (x_1, dots, x_n)$, the *likelihood function* is
 $
-L(theta | x) = product_(i=1)^n p(x_i | theta).
+L(dot | x) : Theta -> RR_(>= 0), quad theta |-> L(theta | x) := product_(i=1)^n p_theta(x_i) = product_(i=1)^n p(x_i | theta).
 $
 The *log-likelihood function* is $ell(theta | x) := ln(L(theta | x))$, which for an i.i.d. sample turns the product into a sum, $ell(theta | x) = sum_(i=1)^n ln p(x_i | theta)$.
 ]
@@ -173,6 +173,7 @@ and the log-likelihood is
 $
 ell(theta | x) = k ln(theta) + (n - k) ln(1 - theta).
 $
+At $theta=0$ or $theta=1$, evaluate the likelihood directly using $0^0=1$. The compact log formula is interpreted in the extended reals: $0 ln(0):=0$, while a positive coefficient multiplying $ln(0)$ gives $-oo$.
 As a function of $theta$ this is maximized at $theta = k \/ n = accent(x, macron)_n$, the observed fraction of heads — the intuitive "best guess" for the coin's bias, and (as Chapter 11 will confirm) exactly its maximum-likelihood estimate.
 ]
 

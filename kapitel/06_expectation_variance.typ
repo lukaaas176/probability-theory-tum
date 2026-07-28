@@ -202,7 +202,7 @@ Let $W, X, Y, Z$ be real-valued random variables and $a, b, c, d in RR$. Assume 
 + *independence implies zero covariance:* if $X$ and $Y$ are independent, then $"Cov"(X, Y) = 0$ (the converse is false in general).
 ]
 
-Property (v) follows immediately from the product rule for independent expectations: $X$ and $Y$ independent give $EE[X Y] = EE[X] thin EE[Y]$, so $"Cov"(X, Y) = EE[X Y] - EE[X] thin EE[Y] = 0$. The warning attached to it is important: zero covariance means only the #emph[absence of a linear relationship]; two variables can be strongly dependent (e.g. $Y = X^2$ for $X$ symmetric about $0$, so that $EE[X] = EE[X^3] = 0$) yet have $"Cov"(X, Y) = 0$.
+Property (v) follows immediately from the product rule for independent expectations: $X$ and $Y$ independent give $EE[X Y] = EE[X] thin EE[Y]$, so $"Cov"(X, Y) = EE[X Y] - EE[X] thin EE[Y] = 0$. The warning attached to it is important: zero covariance means only the #emph[absence of a linear relationship]. For example, if $X ~ cal(N)(0,1)$ and $Y=X^2$, then $EE[X]=EE[X^3]=0$, both variances are positive, and $"Cov"(X,Y)=0$, yet $Y$ is determined by $X$.
 
 Covariance carries the units of $X$ times the units of $Y$, which makes its raw magnitude hard to interpret. Dividing out the two standard deviations produces a dimensionless number always lying in $[-1, 1]$.
 
@@ -446,5 +446,5 @@ The within-parameter term is often called *aleatoric uncertainty* (irreducible o
 #answer[$"Var"(X + Y) = "Var"(X) + "Var"(Y) + 2 "Cov"(X, Y)$. It reduces to $"Var"(X) + "Var"(Y)$ exactly when $"Cov"(X, Y) = 0$, i.e. when $X$ and $Y$ are uncorrelated — in particular whenever they are independent (which implies zero covariance).]
 
 #question[Does $"Corr"(X, Y) = 0$ imply that $X$ and $Y$ are independent? Justify.]
-#answer[No. Zero correlation means only the absence of a #emph[linear] relationship. A dependent pair can be uncorrelated: e.g. if $X$ is symmetric about $0$ with $EE[X] = EE[X^3] = 0$ and $Y = X^2$, then $"Cov"(X, Y) = EE[X^3] - EE[X] thin EE[X^2] = 0$, so $rho_(X Y) = 0$, yet $Y$ is a deterministic function of $X$. Independence implies uncorrelated, but not the reverse.]
+#answer[No. Zero correlation means only the absence of a #emph[linear] relationship. Let $X ~ cal(N)(0,1)$ and $Y=X^2$. Then $EE[X]=EE[X^3]=0$, $"Var"(X)=1$ and $"Var"(Y)=2$, so $"Cov"(X,Y)=EE[X^3]-EE[X]EE[X^2]=0$ and $rho_(X Y)=0$. Nevertheless $Y$ is a deterministic function of $X$, so they are dependent. Independence implies uncorrelated, but not the reverse.]
 ]

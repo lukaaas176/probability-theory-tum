@@ -154,7 +154,7 @@ For $0 < s < n$, the second derivative $-s \/ p^2 - (n - s) \/ (1 - p)^2 < 0$ co
 === Worked example: Poisson
 
 #example(title: "MLE for a Poisson rate")[
-Let $X_1, dots, X_n$ be i.i.d. $"Poi"(lambda)$ with pmf $p(x_i | lambda) = e^(-lambda) lambda^(x_i) \/ x_i !$. The likelihood and log-likelihood are
+Let $X_1, dots, X_n$ be i.i.d. $"Poi"(lambda)$ with $lambda >= 0$ and pmf $p(x_i | lambda) = e^(-lambda) lambda^(x_i) \/ x_i !$, using $0^0=1$. For $lambda>0$ the likelihood and log-likelihood are
 $
 L(lambda | x) = product_(i=1)^n e^(-lambda) frac(lambda^(x_i), x_i !) = e^(-n lambda) frac(lambda^(sum_(i=1)^n x_i), product_(i=1)^n x_i !) ,
 quad
@@ -166,7 +166,7 @@ frac(partial ell, partial lambda) = -n + frac(1, lambda) sum_(i=1)^n x_i = 0
 quad ==> quad
 hat(lambda)_"mle" = frac(1, n) sum_(i=1)^n x_i = accent(x, macron)_n .
 $
-If at least one count is positive, $partial^2 ell \/ partial lambda^2 = - (sum_(i=1)^n x_i) \/ lambda^2 < 0$, so this is a maximum. If all counts are zero and the parameter space is $lambda >= 0$, the maximum is the boundary value $hat(lambda) = 0$; if the model insists on $lambda > 0$, the likelihood has supremum at $0$ but no maximizer. Apart from that open-boundary convention, the Poisson-rate MLE is the sample mean.
+If at least one count is positive, $partial^2 ell \/ partial lambda^2 = - (sum_(i=1)^n x_i) \/ lambda^2 < 0$, so the positive sample mean is the unique maximum. If all counts are zero, $L(lambda|x)=e^(-n lambda)$ is maximized directly at the boundary $lambda=0$. Thus on $[0,oo)$ the Poisson-rate MLE is always the sample mean.
 ]
 
 === Worked example: Gaussian mean and variance
@@ -205,7 +205,7 @@ The pattern across these derivations is summarized in the following table of max
 
 === Properties of the MLE
 
-The MLE gives no free guarantees at finite $n$ (the Gaussian variance case shows it can be biased). Its appeal is asymptotic: under mild regularity conditions — which hold for the common models and which we assume throughout — it behaves optimally as $n -> oo$.
+The MLE gives no free guarantees at finite $n$ (the Gaussian variance case shows it can be biased). Its standard asymptotic theory requires model-specific regularity conditions, typically including an identifiable interior parameter and support that does not depend on the parameter. These conditions hold for many common interior models but exclude boundary cases and $"Unif"(0,theta)$: its sample-maximum MLE converges at rate $n$, not $sqrt(n)$, and has a non-Gaussian limit.
 
 #remark[
 Under regularity conditions, the maximum-likelihood estimator is
@@ -286,10 +286,10 @@ An unbiased estimator that #emph[attains] this bound is called *efficient*; an e
 #answer[By linearity $EE[accent(X, macron)_n] = mu$, so the bias is $0$. By independence $"Var"[accent(X, macron)_n] = sigma^2 \/ n$, and since it is unbiased $"MSE"[accent(X, macron)_n] = "Var"[accent(X, macron)_n] = sigma^2 \/ n$. The strong law of large numbers gives $accent(X, macron)_n attach(arrow.r.long, t: "a.s.") mu$, hence also convergence in probability, so $accent(X, macron)_n$ is strongly consistent.]
 
 #question[Derive the maximum-likelihood estimator of $p$ for an i.i.d. Bernoulli sample $X_1, dots, X_n ~ "Ber"(p)$.]
-#answer[With $s = sum_i x_i$, the likelihood is $L(p | x) = p^s (1 - p)^(n - s)$, so $ell(p | x) = s ln p + (n - s) ln(1 - p)$. Setting $frac(partial ell, partial p) = frac(s, p) - frac(n - s, 1 - p) = 0$ gives $(1 - p) s = p(n - s)$, i.e. $hat(p)_"mle" = s \/ n = accent(x, macron)_n$. The negative second derivative confirms a maximum, so the MLE is the observed success frequency.]
+#answer[With $s = sum_i x_i$, the likelihood is $L(p | x) = p^s (1 - p)^(n - s)$. For $0 < s < n$, the log-likelihood is $ell(p | x) = s ln p + (n - s) ln(1 - p)$, and setting $frac(partial ell, partial p) = frac(s, p) - frac(n - s, 1 - p) = 0$ gives $(1 - p) s = p(n - s)$, i.e. $p = s \/ n$; the negative second derivative confirms the interior maximum. If $s = 0$, direct inspection of $L(p | x) = (1 - p)^n$ gives the boundary maximizer $p = 0$, while if $s = n$, $L(p | x) = p^n$ is maximized at $p = 1$. Thus $hat(p)_"mle" = s \/ n = accent(x, macron)_n$ in all cases.]
 
 #question[For an i.i.d. Poisson sample, show that the maximum-likelihood estimator and the method-of-moments estimator of $lambda$ coincide.]
-#answer[MLE: $ell(lambda | x) = -n lambda + (sum_i x_i) ln lambda - sum_i ln(x_i !)$, and $frac(partial ell, partial lambda) = -n + frac(1, lambda) sum_i x_i = 0$ gives $hat(lambda)_"mle" = accent(x, macron)_n$. Method of moments: $EE[X] = lambda$, so equating to the first sample moment $accent(X, macron)_n$ gives $hat(lambda)_"mom" = accent(X, macron)_n$. Both equal the sample mean.]
+#answer[On the parameter space $lambda>=0$, if $sum_i x_i>0$ then differentiating $ell(lambda | x) = -n lambda + (sum_i x_i) ln lambda - sum_i ln(x_i !)$ gives the interior maximum $hat(lambda)_"mle"=accent(x, macron)_n>0$. If all observations are zero, $L(lambda|x)=e^(-n lambda)$ is maximized at the boundary $0$, again the sample mean. Method of moments uses $EE[X]=lambda$ and therefore gives $hat(lambda)_"mom"=accent(X, macron)_n$ as well.]
 
 #question[Why does the sample variance divide by $n - 1$? Show that $EE[S_n^2] = sigma^2$ while the naive estimator $hat(sigma)^2 = frac(1, n) sum_i (X_i - accent(X, macron)_n)^2$ is biased.]
 #answer[Using $sum_i (X_i - accent(X, macron)_n)^2 = sum_i (X_i - mu)^2 - n(accent(X, macron)_n - mu)^2$ and taking expectations, $EE[sum_i (X_i - accent(X, macron)_n)^2] = n sigma^2 - n(sigma^2 \/ n) = (n - 1)sigma^2$. Dividing by $n - 1$ gives $EE[S_n^2] = sigma^2$ (unbiased — Bessel's correction), whereas dividing by $n$ gives $EE[hat(sigma)^2] = frac(n - 1, n) sigma^2 < sigma^2$, so the naive estimator underestimates the variance.]

@@ -70,18 +70,18 @@ The two errors are not on an equal footing. In science we typically design a tes
 
 To quantify the two errors we look at the probability of rejection as a function of the true parameter.
 
-#definition(title: "Significance level (size) and power function")[
+#definition(title: "Size, significance level, and power function")[
 Let $phi$ be a test in the model $(Omega, cal(A), P_Theta)$.
 - The *power function* of $phi$ is
 $
 G_phi : Theta -> [0, 1], quad G_phi (theta) = EE_theta [phi(X)] ,
 $
 the probability of rejecting $H_0$ when the true parameter is $theta$. (For a non-randomized test this is just $P_theta (phi(X) = 1) = P_theta ("reject" H_0)$.)
-- The *significance level* or *size* of $phi$ is its worst-case type I error probability,
+- The *size* of $phi$ is its worst-case type I error probability,
 $
-alpha := sup_(theta in Theta_0) G_phi (theta) = sup_(theta in Theta_0) EE_theta [phi] .
+"size"(phi) := sup_(theta in Theta_0) G_phi (theta) = sup_(theta in Theta_0) EE_theta [phi] .
 $
-We say $phi$ is a *test at level $alpha$* if $sup_(theta in Theta_0) EE_theta [phi] <= alpha$.
+For a prescribed bound $alpha_0 in [0,1]$, we say $phi$ is a *test at significance level $alpha_0$* if $"size"(phi) <= alpha_0$. A conservative test may have size strictly below its nominal level.
 - For $theta in Theta_1$, the value $G_phi (theta)$ is the *power against the alternative $theta$* — the probability of correctly rejecting $H_0$. The *type II error probability* at $theta in Theta_1$ is
 $
 beta(theta) := 1 - G_phi (theta) .
@@ -121,7 +121,7 @@ and, when the null distribution of $T$ is symmetric about $0$, the usual two-sid
 The p-value packages the test into a single comparison: it is the smallest significance level at which the observed data would already lead to rejection. Small p-value $=>$ the data are hard to reconcile with $H_0$.
 
 #remark[
-The p-value is routinely misread. It is #emph[not] the probability that $H_0$ is true (that is not even a meaningful frequentist quantity — $H_0$ is either valid or not), nor the probability that the result arose "by chance", nor one minus the probability that $H_1$ is true. It is a statement about the data assuming $H_0$: the probability, over hypothetical repetitions of the experiment under $H_0$, of a test statistic as extreme as the one seen. Likewise $alpha$ is a long-run frequency of type I errors under repeated sampling from the null, not a measure of confidence in one particular decision. And if the null is in fact false, $alpha$ describes no real probability at all — it only bounds the rejection rate #emph[assuming] $H_0$ holds.
+The p-value is routinely misread. It is #emph[not] the probability that $H_0$ is true (that is not even a meaningful frequentist quantity — $H_0$ is either valid or not), nor the probability that the result arose "by chance", nor one minus the probability that $H_1$ is true. It is a statement about the data assuming $H_0$: the probability, over hypothetical repetitions of the experiment under $H_0$, of a test statistic as extreme as the one seen. Likewise $alpha$ is an upper bound on the long-run type I error probability under the null, not a measure of confidence in one particular decision. The actual rejection probability $G_phi(theta)$ can be smaller than $alpha$ and depend on the null parameter $theta in Theta_0$. If the null is in fact false, $alpha$ describes no real probability at all.
 ]
 
 == The Neyman–Pearson lemma
@@ -161,15 +161,15 @@ Writing down the decision rule $phi$ directly is awkward. In practice one extrac
 #definition(title: "Recipe for constructing a test")[
 + Choose a real-valued *test statistic* $T : Omega^n -> RR$ that summarizes the sample (e.g. the sample mean when testing a mean, the sample variance when testing a variance).
 + Determine, at least approximately, the *distribution of $T(X)$ under $H_0$* (its *null distribution*) — exactly, via the central limit theorem for large $n$, or with a justified simulation method. A permutation test simulates the null by relabelling observations when the null law is unchanged by those relabellings (exchangeability); a parametric bootstrap simulates new data from a fitted null model.
-+ Fix a level $alpha$ and define the *rejection region* $R$ through quantiles of the null distribution. The threshold is the *critical value* and $R$ the *critical region*. For a composite null the level is $alpha = sup_(theta in Theta_0) G_phi (theta)$; when the power function $G_phi$ is monotone in $theta$ on $Theta_0$ (as in the one-sided examples below), this supremum is attained at the boundary, so the level is governed by the *null boundary*.
++ Fix a level $alpha$ and define the *rejection region* $R$ through quantiles of the null distribution. The threshold is the *critical value* and $R$ the *critical region*. For a composite null the size is $sup_(theta in Theta_0) G_phi (theta)$ and must not exceed $alpha$; when $G_phi$ is monotone on $Theta_0$ (as in the one-sided examples below), the supremum is attained at the null boundary.
 + Set $phi(x) = bb(1)_R (T(x))$, i.e. $phi(x) = 1$ if $T(x) in R$ (reject) and $0$ otherwise.
 ]
 
 #definition(title: "One-sided and two-sided tests")[
 Let $Theta subset.eq RR$.
 - A *one-sided* (one-tailed) test is used for a directional alternative, $H_1 : theta > theta_0$ or $H_1 : theta < theta_0$; the rejection region sits entirely in one tail of the null distribution.
-- A *two-sided* (two-tailed) test is used for a non-directional alternative, $H_1 : theta != theta_0$; the rejection region is split between both tails, using the $alpha \/ 2$ and $1 - alpha \/ 2$ quantiles.
-For a given $alpha$, a one-sided test is more powerful for detecting an effect in its chosen direction, but its power against an effect in the opposite direction never exceeds $alpha$ itself — it is effectively blind to that side.
+- A *two-sided* (two-tailed) test is used for a non-directional alternative, $H_1 : theta != theta_0$; its rejection region uses both tails. In the standard symmetric-null procedures below, level $alpha$ is split equally using the $alpha \/ 2$ and $1 - alpha \/ 2$ quantiles; asymmetric null laws can require an unequal split.
+For the stochastically monotone families considered below, a one-sided level-$alpha$ test gains power in its chosen direction while its rejection probability in the opposite direction is at most $alpha$. This is a property of those models and rejection regions, not of the phrase "one-sided" alone.
 ]
 
 === The z-test for a normal mean
@@ -210,7 +210,7 @@ The same recipe, with a different statistic and null distribution, gives the sta
   [two means, equal variance (two-sample t)], [$mu_X = mu_Y$], [$T = frac(macron(X) - macron(Y), S_p sqrt(1 \/ n_X + 1 \/ n_Y))$], [$t_(n_X + n_Y - 2)$],
 )
 
-For the two-sample t-test, $S_p^2 = frac((n_X - 1) S_X^2 + (n_Y - 1) S_Y^2, n_X + n_Y - 2)$ is the pooled sample variance. When $n$ is large the central limit theorem lets us drop the normality assumption: for any distribution with finite variance, $(macron(X)_n - mu) \/ (sigma \/ sqrt(n))$ is approximately $cal(N)(0,1)$, so the z-test (and its relatives) remain approximately valid. Beyond these lies a large "testing zoo" of specialized tests for other questions and assumptions, all built from the same recipe.
+For the two-sample t-test, $S_p^2 = frac((n_X - 1) S_X^2 + (n_Y - 1) S_Y^2, n_X + n_Y - 2)$ is the pooled sample variance. For large samples, the central limit theorem supports approximate z-tests and suitably studentized mean tests under finite-variance conditions. It does #emph[not] make the displayed chi-squared variance test distribution-free: its chi-squared null law, and the exact finite-sample t laws in the table, rely on Gaussian sampling. Nonnormal variance inference requires a different asymptotic variance, bootstrap, or robust method.
 
 == A worked test with a decision
 
@@ -230,7 +230,7 @@ $
 
 *Step 4 — decision.* At $alpha = 0.05$ the two-sided critical value is $z_(alpha \/ 2) approx 1.96$. Since $|z_"obs"| = 2 > 1.96$, we #emph[reject $H_0$]: at the 5% level there is significant evidence that the mean lifetime has changed. At the much stricter $alpha = 0.001$ the cutoff is $z_(alpha \/ 2) approx 3.29$, and now $|z_"obs"| = 2 < 3.29$, so we #emph[fail to reject $H_0$].
 
-The two answers are not a contradiction. $alpha$ is the long-run rate of falsely rejecting a true null, not a probability that this particular rejection is correct; rejecting at 5% but not at 0.1% simply means the evidence is moderate — enough to clear a lenient bar, not a stringent one.
+The two answers are not a contradiction. $alpha$ is an upper bound on the long-run probability of falsely rejecting a true null; the actual rejection probability can be smaller and depend on the null parameter. It is not a probability that this particular rejection is correct; rejecting at 5% but not at 0.1% simply means the evidence is moderate — enough to clear a lenient bar, not a stringent one.
 ]
 
 == Practical cautions and extensions
@@ -242,11 +242,15 @@ A *power analysis* chooses the sample size before data collection so that, at a 
 ]
 
 #keyfact[
-*Multiple testing inflates false positives.* If $m$ null hypotheses are tested separately at level $alpha$, the union bound gives
+*Multiple testing inflates false positives.* If $m$ null hypotheses are tested separately at level $alpha$, let $I_0 subset.eq {1, dots, m}$ be the index set of true nulls and let $q_i <= alpha$ be the actual rejection probability for test $i in I_0$. The union bound gives
 $
-PP("at least one type I error") <= m alpha,
+PP("at least one type I error") <= sum_(i in I_0) q_i <= |I_0| alpha <= m alpha.
 $
-and under independent true nulls the exact probability is $1-(1-alpha)^m$. The *Bonferroni correction* tests each hypothesis at level $alpha\/m$, guaranteeing family-wise error at most $alpha$ without requiring independence. Procedures controlling the *false discovery rate (FDR)* instead control the expected proportion of false rejections among all rejections and can be less conservative.
+If the true-null rejection events are independent, then the exact probability is
+$
+PP("at least one type I error") = 1-product_(i in I_0)(1-q_i) <= 1-(1-alpha)^|I_0| <= 1-(1-alpha)^m,
+$
+For $0 < alpha < 1$, equality through the final bound holds only when the stated independence holds, all $m$ nulls are true, and $q_i = alpha$ for every $i in I_0$. The *Bonferroni correction* tests each hypothesis at level $alpha\/m$, guaranteeing family-wise error at most $alpha$ without requiring independence. Procedures controlling the *false discovery rate (FDR)* instead control the expected proportion of false rejections among all rejections and can be less conservative.
 ]
 
 #remark[
@@ -262,14 +266,14 @@ where each term is the marginal likelihood of the data under that hypothesis, in
 ]
 
 #quizblock(title: "Quiz — Hypothesis testing")[
-#question[Define the significance level (size) of a test $phi$ and the power function $G_phi$. Which one do we want small, and on which part of $Theta$?]
-#answer[The power function is $G_phi (theta) = EE_theta [phi(X)]$, the probability of rejecting $H_0$ when the true parameter is $theta$. The significance level (size) is $alpha = sup_(theta in Theta_0) G_phi (theta)$, the worst-case type I error probability over the null. We want $G_phi$ #emph[small] on $Theta_0$ (few type I errors, hence a small $alpha$) and #emph[large] on $Theta_1$ (high power, i.e. small type II error $beta(theta) = 1 - G_phi (theta)$).]
+#question[Define the size of a test $phi$, state what it means for $phi$ to have prescribed significance level $alpha$, and define the power function $G_phi$. Which rejection probabilities do we want small, and on which part of $Theta$?]
+#answer[The power function is $G_phi(theta)=EE_theta[phi(X)]$, the rejection probability at parameter $theta$. The actual size is $"size"(phi)=sup_(theta in Theta_0)G_phi(theta)$. A test has prescribed level $alpha$ when $"size"(phi)<=alpha$; equality need not hold. We want rejection probabilities small on $Theta_0$ and large on $Theta_1$, where $beta(theta)=1-G_phi(theta)$ is the type II error probability.]
 
 #question[Distinguish a type I from a type II error, and explain why "we fail to reject $H_0$" must not be reported as "we have shown $H_0$".]
 #answer[A type I error is rejecting $H_0$ when it is valid; a type II error is failing to reject $H_0$ when it is false. Failing to reject only means the data did not provide strong enough evidence against $H_0$ — absence of evidence is not evidence of absence. A low-power test (small $n$, or an alternative near the boundary) can easily fail to reject a false null, so a non-rejection never establishes the null.]
 
 #question[Is $H_0 : mu >= 10$ simple or composite? What about $H_0 : p = 0.5$? For the composite case, what is the "boundary" and why does it matter?]
-#answer[$H_0 : mu >= 10$ is composite ($Theta_0 = [10, oo)$ has more than one element); $H_0 : p = 0.5$ is simple ($|Theta_0| = 1$). For the composite one-sided null the boundary is $mu_0 = 10$. It matters because the size $alpha = sup_(theta in Theta_0) G_phi (theta)$ is attained at the boundary when the power function is monotone, so the boundary value determines the critical value.]
+#answer[$H_0 : mu >= 10$ is composite ($Theta_0 = [10, oo)$ has more than one element); $H_0 : p = 0.5$ is simple ($|Theta_0| = 1$). For the composite one-sided null the boundary is $mu_0 = 10$. For the monotone test family, $"size"(phi) = sup_(theta in Theta_0) G_phi (theta) <= alpha$, and the supremum is attained at the boundary; this boundary supremum calibrates the critical value.]
 
 #question[Light bulbs: $mu_0 = 1200$, known $sigma = 150$, $n = 36$, $macron(x)_n = 1250$, two-sided. Compute $z_"obs"$ and decide at $alpha = 0.05$ ($z_(alpha\/2) approx 1.96$) and at $alpha = 0.001$ ($z_(alpha\/2) approx 3.29$).]
 #answer[$z_"obs" = (1250 - 1200) \/ (150 \/ 6) = 50 \/ 25 = 2$. At $alpha = 0.05$: $|2| > 1.96$, so reject $H_0$. At $alpha = 0.001$: $|2| < 3.29$, so fail to reject. Moderate evidence: enough at 5%, not at 0.1%.]
@@ -284,7 +288,7 @@ where each term is the marginal likelihood of the data under that hypothesis, in
 #answer[For a simple-vs-simple test the most powerful level-$alpha$ test is the likelihood-ratio test rejecting when $L(theta_1 | x) \/ L(theta_0 | x) > k$, with $k$ set so the size is $alpha$. Here $Lambda(x) = (lambda_1 \/ lambda_0) e^(-(lambda_1 - lambda_0) x)$ is decreasing in $x$ (as $lambda_1 > lambda_0$), so $Lambda(x) > k'$ becomes $x < c$. Setting $alpha = P_(lambda_0)(X < c) = 1 - e^(-lambda_0 c)$ gives $c = -ln(1 - alpha) \/ lambda_0 > 0$.]
 
 #question[Explain what a p-value is and give two common misinterpretations of it.]
-#answer[The p-value is the probability, computed under $H_0$, of observing a test statistic at least as extreme as the one observed (in the alternative's direction); one rejects at level $alpha$ iff p-value $<= alpha$. It is a statement about the data #emph[assuming the null holds] — a long-run frequency over hypothetical repetitions under $H_0$ — not a statement about $theta$ or about $H_0$ itself. (Formally, if the null is simple and the test statistic's null law is continuous, the p-value is $"Unif"(0,1)$ under $H_0$, which is exactly why "reject iff p-value $<= alpha$" has type-I error rate $alpha$.)
+#answer[The p-value is the probability, computed under $H_0$, of observing a test statistic at least as extreme as the one observed (in the alternative's direction); one rejects at level $alpha$ iff p-value $<= alpha$. It is a statement about the data #emph[assuming the null holds] — a long-run frequency over hypothetical repetitions under $H_0$ — not a statement about $theta$ or about $H_0$ itself. (Formally, if the null is simple and the test statistic's null law is continuous, the p-value is $"Unif"(0,1)$ under $H_0$, so "reject iff p-value $<= alpha$" is exact in this special case. In general, level $alpha$ only guarantees a type I rejection probability at most $alpha$, which may be smaller and depend on the null parameter.)
 
 Two common misinterpretations:
 

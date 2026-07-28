@@ -98,7 +98,7 @@ Equivalently, if $X$ denotes the number of sixes, then $X ~ "Bin"(6, 1/6)$ and $
 
 == The key discrete distributions
 
-We now list the distributions you must recognize on sight. Throughout, $p in [0, 1]$ is a success probability, and we reuse the letter $p$ for both the parameter and the pmf; the meaning is clear from context. We write $NN = {0, 1, 2, dots}$.
+We now list the distributions you must recognize on sight. Throughout, $p in [0, 1]$ is a success probability, and we reuse the letter $p$ for both the parameter and the pmf; the meaning is clear from context. We write $NN = {0, 1, 2, dots}$. At boundary parameters, powers in pmfs are interpreted by continuity, with $0^0 := 1$. The displayed $Omega$ is a fixed state space; the positive-mass support may shrink at a boundary value such as $p=0$, $p=1$, or $lambda=0$.
 
 === Bernoulli and the Bernoulli process
 
@@ -147,17 +147,17 @@ Here $k$ is the *total number of trials needed to reach the $r$-th success* (e.g
 === Poisson distribution
 
 #definition(title: "Poisson distribution")[
-For $lambda in RR_(>0)$, the *Poisson distribution* $"Poi"(lambda)$ on $Omega = NN$ has pmf
+For $lambda in RR_(>=0)$, the *Poisson distribution* $"Poi"(lambda)$ on $Omega = NN$ has pmf
 $
 p_(("Poi"(lambda)))(k) = (e^(-lambda) lambda^k) / (k!).
 $
-It approximates the count of *rare events at a fixed rate* $lambda$ in a fixed interval (e.g. calls per hour at a switchboard). It is the limit of $"Bin"(n, lambda\/n)$ as $n -> infinity$: many trials, each individually unlikely.
+For $lambda=0$ this is the point mass at $0$. For $lambda>0$ it models the count of *rare events at a fixed rate* $lambda$ in a fixed interval (e.g. calls per hour at a switchboard). It is the limit of $"Bin"(n, lambda\/n)$ as $n -> infinity$: many trials, each individually unlikely.
 ]
 
 #theorem(name: "Poisson limit theorem / law of rare events")[
 Let $p_n in [0,1]$ for every $n in NN_(>0)$ and suppose
 $
-n p_n -> lambda in RR_(>0).
+n p_n -> lambda in RR_(>=0).
 $
 Then for every fixed $k in NN$,
 $
@@ -252,8 +252,8 @@ $
 #answer[Both count "special" items in a sample of size $n$. $"Bin"(n, p)$ assumes sampling *with* replacement (equivalently, an infinite/very large population), so the success probability $p$ stays constant across draws. $"Hyp"(N, K, n)$ assumes sampling *without* replacement from a finite batch of $N$ with $K$ special items, so the probability shifts after each draw. When $N$ is large relative to $n$, the depletion is negligible and $"Hyp"(N, K, n) approx "Bin"(n, K\/N)$.]
 
 #question[Give the pmf of $"Poi"(lambda)$, state one situation it models, and compute $P(X = 0)$.]
-#answer[$p(k) = e^(-lambda) lambda^k \/ k!$ for $k in NN$, with $lambda > 0$. It models the count of rare events occurring at a constant rate $lambda$ over a fixed interval (e.g. phone calls per hour). Then $P(X = 0) = e^(-lambda) lambda^0 \/ 0! = e^(-lambda)$.]
+#answer[$p(k) = e^(-lambda) lambda^k \/ k!$ for $k in NN$, with $lambda >= 0$ and $0^0=1$. For $lambda>0$ it models the count of rare events occurring at a constant rate over a fixed interval (e.g. phone calls per hour); $lambda=0$ is degenerate at $0$. In all cases $P(X = 0) = e^(-lambda)$.]
 
-#question[Quality control tests chips one by one until it finds the $r$-th defective; each chip is defective independently with probability $p$. Which distribution models the total number $X$ of chips tested, what is its support, and what is its expected value?]
-#answer[$X ~ "NegBin"(r, p)$ with pmf $p(k) = binom(k-1, r-1) p^r (1-p)^(k-r)$ and support $Omega = NN_(>=r)$ (you need at least $r$ trials to see $r$ successes). Its mean is $EE[X] = r\/p$. The probability of a "batch of at most $m$ chips" is the cdf value $P(X <= m) = sum_(k=r)^m binom(k-1, r-1) p^r (1-p)^(k-r)$.]
+#question[Quality control tests chips one by one until it finds the $r$-th defective; each chip is defective independently with probability $p in (0,1]$. Which distribution models the total number $X$ of chips tested, what are its fixed state space and positive-mass support, and what is its expected value?]
+#answer[$X ~ "NegBin"(r, p)$ on the fixed state space $Omega = NN_(>=r)$, with pmf $p(k) = binom(k-1, r-1) p^r (1-p)^(k-r)$. Its positive-mass support is $NN_(>=r)$ for $0<p<1$ and ${r}$ for $p=1$. Its mean is $EE[X] = r\/p$. The probability of a "batch of at most $m$ chips" is the cdf value $P(X <= m) = sum_(k=r)^m binom(k-1, r-1) p^r (1-p)^(k-r)$.]
 ]

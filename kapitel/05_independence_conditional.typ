@@ -141,7 +141,7 @@ For (i), the sets $(A inter B_i)_(i in I)$ are pairwise disjoint with union $A i
 Bayes' rule is deceptively simple algebra, yet it is the backbone of statistical inference. The reason is an interpretation in terms of updating beliefs.
 
 #keyfact[
-*Bayes' theorem, belief-updating form.* With event of interest $A$ and evidence $B$,
+*Bayes' theorem, belief-updating form.* With event of interest $A$, evidence $B$, $0<PP(A)<1$ and $PP(B)>0$,
 $
 underbrace(PP(A | B), "posterior") = frac(overbrace(PP(B | A), "likelihood") dot overbrace(PP(A), "prior"), underbrace(PP(B | A) thin PP(A) + PP(B | A^c) thin PP(A^c), "marginal likelihood / total evidence")) .
 $
@@ -169,7 +169,7 @@ Bayes' rule then yields
 $
 PP(D | +) = frac(PP(+ | D) thin PP(D), PP(+)) = frac(0.99 dot 0.001, 0.01098) = frac(0.00099, 0.01098) approx 0.090 .
 $
-Despite a $99%$-accurate test, a positive result means only about a $9%$ chance of actually being ill: the tiny prior $PP(D) = 0.001$ dominates, because among a large population the many healthy people generate far more false positives ($approx 0.999%$) than there are true positives ($approx 0.099%$). This is why rare-disease screening is followed by a second, independent confirmatory test.
+Despite a $99%$-accurate test, a positive result means only about a $9%$ chance of actually being ill: the tiny prior $PP(D) = 0.001$ dominates, because among a large population the many healthy people generate far more false positives ($approx 0.999%$) than there are true positives ($approx 0.099%$). This is why rare-disease screening is followed by a confirmatory test based on a distinct mechanism, often modelled as conditionally independent of the first test given disease status.
 ]
 
 == Independence of events
@@ -228,7 +228,7 @@ Let $X_1, dots, X_n$ be random variables on $(Omega, cal(A), PP)$.
   F_(X_1, dots, X_n)(x_1, dots, x_n) = product_(i in [n]) F_(X_i)(x_i) .
   $
 + Discrete $X_1, dots, X_n$ are *independent* iff the *pmf factorizes*: $p_(X_1, dots, X_n)(s) = product_(i in [n]) p_(X_i)(s_i)$ for all $s in product_(i in [n]) Omega_i$.
-+ Continuous $X_1, dots, X_n$ are *independent* iff the *pdf factorizes*: $p_X (x) = product_(i in [n]) p_(X_i)(x_i)$ for (Lebesgue-almost) all $x in RR^n$.
++ If the joint law of $X_1, dots, X_n$ admits a pdf, they are *independent* iff the *pdf factorizes*: $p_X (x) = product_(i in [n]) p_(X_i)(x_i)$ for Lebesgue-almost all $x in RR^n$.
 ]
 
 Comparing with the product-measure construction, independence of $(X_i)_(i in I)$ is exactly the statement that their joint distribution is the product of the marginals, $P_X = ⊗_(i in I) P_(X_i)$. Conditional distributions give a complementary bookkeeping device when variables are #emph[not] independent.
@@ -243,19 +243,23 @@ Let $X, Y$ be real-valued random variables with joint distribution $P$.
   $
   F_(Y | X=x)(y) := PP(Y <= y | X=x) = sum_(t <= y) p_(Y | X=x)(t).
   $
-+ In the continuous case, if $p_X (x) > 0$ the *conditional pdf of $Y$ given $X = x$* is
++ If the joint law admits a pdf and $p_X (x) > 0$, the *conditional pdf of $Y$ given $X = x$* is
   $
   p_(Y | X = x)(y) = frac(p_(X,Y)(x, y), p_X (x)) .
   $
   Its conditional cdf is $F_(Y | X=x)(y) := integral_(-oo)^y p_(Y | X=x)(t) dif t$.
 ]
 
-Independence of $X$ and $Y$ is then the statement that the conditional coincides with the marginal, $p_(Y | X = x) = p_Y$, mirroring $PP(A | B) = PP(A)$ for events. Finally, a frequently invoked relative of independence conditions on a third variable.
+When conditional pmfs or pdfs exist, independence of $X$ and $Y$ says that the conditional law coincides with the marginal law, for example $p_(Y | X = x) = p_Y$ for almost every relevant $x$. Finally, a frequently invoked relative of independence conditions on a third variable.
 
 #definition(title: "Conditional independence")[
-Let $X, Y, Z$ be random variables on the same probability space. Then $X$ and $Y$ are *conditionally independent given $Z$*, written $X perp perp Y | Z$, if the conditional joint distribution factorizes: whenever the densities exist,
+Let $X, Y, Z$ be real-valued random variables on the same probability space. Then $X$ and $Y$ are *conditionally independent given $Z$*, written $X perp perp Y | Z$, if for $P_Z$-almost every $z$ the conditional joint law of $(X,Y)$ given $Z=z$ is the product of the conditional laws of $X$ and $Y$ given $Z=z$. If conditional pmfs exist, this is equivalent to
 $
-p(x, y | z) = p(x | z) thin p(y | z) quad "for almost all" (x, y) "and for" P_Z"-almost all" z ,
+p_(X,Y | Z=z)(x, y) = p_(X | Z=z)(x) thin p_(Y | Z=z)(y) quad "for all" (x, y) "and for" P_Z"-almost every" z .
+$
+Whenever conditional densities exist, it is equivalent to
+$
+p_(X,Y | Z=z)(x, y) = p_(X | Z=z)(x) thin p_(Y | Z=z)(y) quad "for Lebesgue-almost all" (x, y) "and for" P_Z"-almost every" z ,
 $
 so that, once $Z$ is known, $X$ carries no further information about $Y$.
 ]
@@ -267,14 +271,15 @@ The most important special case of independence adds one ingredient: the variabl
 #definition(title: "Independent and identically distributed (i.i.d.)")[
 A collection $X_1, dots, X_n$ (or an infinite sequence $X_1, X_2, dots$) of random variables is *independent and identically distributed (i.i.d.)* if the variables are independent and each has the same distribution $P_X$. We write $X_i tilde^"i.i.d." P_X$. Equivalently, in the discrete or continuous case the joint pmf/pdf is the product of one common factor,
 $
-p(x_1, dots, x_n) = product_(i in [n]) p_X (x_i) .
+p(x_1, dots, x_n) = product_(i in [n]) p_X (x_i) ,
 $
+whenever the corresponding joint pmf or pdf exists.
 ]
 
 An i.i.d. sequence is precisely what the product-space machinery of the first section produces from a single distribution: taking identical factors $(Omega, cal(A), P_X)$ and forming the product probability space $(Omega^n, cal(A)^(⊗ n), P_X^(⊗ n))$ realizes $n$ independent draws from $P_X$ as the coordinate variables. An infinite sequence of coin tosses or card draws with replacement, modelled on $Omega^NN$, is this construction with an infinite index set.
 
 #keyfact[
-For an i.i.d. sample $X_1, dots, X_n tilde^"i.i.d." P_X$, the joint density factorizes into a single repeated factor. Consequently, once likelihood is defined in Chapter 10, observed i.i.d. data will have $L(theta | x_1, dots, x_n) = product_(i=1)^n p(x_i | theta)$ — a product, not a sum. This factorization is also what makes the laws of large numbers and the central limit theorem tractable; i.i.d. sampling is the default modelling assumption in classical statistics and much of machine learning.
+For an i.i.d. sample $X_1, dots, X_n tilde^"i.i.d." P_X$, the joint law is the product $P_X^(⊗ n)$. Whenever a common pmf or pdf exists, it factorizes into a single repeated factor. Consequently, once likelihood is defined in Chapter 10, observed i.i.d. data have $L(theta | x_1, dots, x_n) = product_(i=1)^n p(x_i | theta)$ — a product, not a sum. This factorization is also what makes the laws of large numbers and the central limit theorem tractable.
 ]
 
 #remark[
@@ -283,7 +288,7 @@ The i.i.d. assumption is a powerful idealization, not a law of nature, and it is
 
 #quizblock(title: "Quiz — Independence and conditional probability")[
 #question[Define the conditional probability $PP(A | B)$ and state the multiplication rule for two events. Under what condition is $PP(A | B)$ defined?]
-#answer[For $PP(B) > 0$, $PP(A | B) := PP(A inter B) \/ PP(B)$; it is undefined when $PP(B) = 0$. Rearranging gives the multiplication rule $PP(A inter B) = PP(B) PP(A | B) = PP(A) PP(B | A)$, which iterates to the chain rule $PP(inter.big_(i in [n]) A_i) = PP(A_1) PP(A_2 | A_1) dots.c PP(A_n | inter.big_(i in [n-1]) A_i)$.]
+#answer[For $PP(B) > 0$, $PP(A | B) := PP(A inter B) \/ PP(B)$; it is undefined by this ratio when $PP(B) = 0$. Rearranging gives $PP(A inter B) = PP(B) PP(A | B)$ and, when $PP(A)>0$, also $PP(A inter B)=PP(A)PP(B|A)$. Iterating the first identity gives the chain rule whenever every displayed conditioning event has positive probability.]
 
 #question[State the law of total probability and Bayes' rule for a countable measurable partition ${B_i}$ of $Omega$ with $PP(B_i) > 0$. Then a factory has two lines: line 1 makes $60%$ of items with a $2%$ defect rate, line 2 makes $40%$ with a $5%$ defect rate. An item is defective — what is the probability it came from line 1?]
 #answer[Law of total probability: $PP(A) = sum_i PP(A | B_i) PP(B_i)$. Bayes' rule: $PP(B_i | A) = PP(A | B_i) PP(B_i) \/ sum_j PP(A | B_j) PP(B_j)$. Here $PP("def") = 0.6 dot 0.02 + 0.4 dot 0.05 = 0.012 + 0.02 = 0.032$, so $PP("line 1" | "def") = 0.012 \/ 0.032 = 0.375$.]
@@ -294,7 +299,7 @@ The i.i.d. assumption is a powerful idealization, not a law of nature, and it is
 #question[Monty Hall: three doors, one hides a car. You pick door 1; the host, who knows the layout, opens a different door revealing a goat and offers a switch. Should you switch? Justify with probabilities.]
 #answer[Yes, switch. Let $C_i$ be "car behind door $i$", each with prior $1\/3$. If the car is behind your door 1 (prob $1\/3$), switching loses; if it is behind door 2 or 3 (combined prob $2\/3$), the host's forced reveal leaves the car on the other unopened door, so switching wins. Hence $PP("win by switching") = 2\/3$ versus $PP("win by staying") = 1\/3$. Conditioning on the host's action, which is informative because he never opens the car door, is what breaks the naive $1\/2$ intuition.]
 
-#question[Two cards lie in a box: one is red on both sides, the other red on one side and blue on the other. You draw one, place it down, and a red face shows. What is the probability the hidden face is also red?]
+#question[Two cards lie in a box: one is red on both sides, the other red on one side and blue on the other. Choose a card uniformly, then choose one of its two faces uniformly to face upward. Given that the visible face is red, what is the probability the hidden face is also red?]
 #answer[Condition on "a red face is showing". Of the three red faces in the box (two on the red/red card, one on the red/blue card), two belong to the red/red card, whose other side is also red. So $PP("other side red" | "red showing") = 2\/3$, not $1\/2$. Equivalently, by Bayes with prior $1\/2$ on each card and likelihoods $PP("red up" | "red/red") = 1$, $PP("red up" | "red/blue") = 1\/2$: $PP("red/red" | "red up") = (1 dot 1\/2) \/ (1 dot 1\/2 + 1\/2 dot 1\/2) = (1\/2)\/(3\/4) = 2\/3$.]
 
 #question[Events $A, B$ satisfy $PP(A) = 0.5$, $PP(B) = 0.4$ and are independent. Compute $PP(A inter B)$ and $PP(A union B)$. If instead $A$ and $B$ were disjoint with these probabilities, could they be independent?]
@@ -303,6 +308,6 @@ The i.i.d. assumption is a powerful idealization, not a law of nature, and it is
 #question[True or false, with justification: if $A, B, C$ are pairwise independent then they are mutually independent.]
 #answer[False. On $Omega = {circle.small, triangle, square, star}$ uniform, take $A = {circle.small, triangle}$, $B = {circle.small, square}$, $C = {circle.small, star}$. All pairwise intersections equal ${circle.small}$ with probability $1\/4 = (1\/2)(1\/2)$, so the events are pairwise independent; but $PP(A inter B inter C) = PP({circle.small}) = 1\/4 != 1\/8 = PP(A) PP(B) PP(C)$, so they are not mutually independent.]
 
-#question[What does it mean for real-valued random variables $X_1, dots, X_n$ to be i.i.d.? Write the joint pdf, and contrast independence with conditional independence given a variable $Z$.]
-#answer[i.i.d. means the $X_i$ are independent and share one distribution $P_X$; then the joint pdf factorizes into a single repeated factor, $p(x_1, dots, x_n) = product_(i=1)^n p_X (x_i)$. (Plain) independence of $X, Y$ means $p(x, y) = p_X (x) p_Y (y)$; #emph[conditional] independence given $Z$, written $X perp perp Y | Z$, means $p(x, y | z) = p(x | z) p(y | z)$ — the two need not hold together (variables can be dependent yet conditionally independent, and vice versa).]
+#question[What does it mean for real-valued random variables $X_1, dots, X_n$ to be i.i.d.? State the product-law criterion and its pmf/pdf form when available, and contrast independence with conditional independence given $Z$.]
+#answer[i.i.d. means the $X_i$ are independent and share one distribution $P_X$, so their joint law is $P_X^(⊗ n)$. When a joint pmf or pdf exists it factorizes as $p(x_1, dots, x_n) = product_(i=1)^n p_X (x_i)$. Plain independence of $X,Y$ means their joint law is $P_X ⊗ P_Y$; conditional independence given $Z$ means that for $P_Z$-almost every $z$, the conditional joint law given $Z=z$ is the product of the two conditional laws. With densities this becomes $p(x,y|z)=p(x|z)p(y|z)$.]
 ]

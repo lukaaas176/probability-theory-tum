@@ -41,7 +41,7 @@ Let $P$ be a probability measure on $(RR^n, cal(B)^n)$. The following are equiva
 When these hold, $(RR^n, cal(B)^n, P)$ is called a #emph[continuous probability space], and $p$ is the (Lebesgue) density of $P$.
 ]
 
-For $n = 1$ the density and the cumulative distribution function from Chapter 2 determine each other by integration and differentiation.
+For $n = 1$ the density and the cumulative distribution function from Chapter 2 determine each other by integration and almost-everywhere differentiation.
 
 #lemma(name: "pdf and cdf")[
 Let $P$ be a probability measure on $(RR, cal(B))$ with cdf $F$.
@@ -50,7 +50,7 @@ Let $P$ be a probability measure on $(RR, cal(B))$ with cdf $F$.
 ]
 
 #keyfact[
-In one dimension: #emph[the cdf is the integral of the pdf, and the pdf is the derivative of the cdf.] Probabilities of intervals are areas under the density,
+In one dimension: #emph[the cdf is the integral of the pdf, and the pdf agrees almost everywhere with the derivative of the cdf.] Probabilities of intervals are areas under the density,
 $
 P(a <= X <= b) = integral_a^b p(x) dif x,
 $
@@ -75,7 +75,7 @@ The measurability condition is exactly what we need so that "$X$ lands in $A'$" 
 $
 {X in A'} := {omega in Omega : X(omega) in A'} = X^(-1)(A'), quad {X <= c} := {omega in Omega : X(omega) <= c},
 $
-and eventually just $P(X <= c)$ instead of $P({X <= c})$ — but under the hood this is always the probability of an event $A subset.eq Omega$.
+and eventually just $P(X <= c)$ instead of $P({X <= c})$ — but under the hood this is always the probability of an admitted event $A in cal(A)$.
 
 #definition(title: "distribution of a random variable")[
 Let $X: Omega -> Omega'$ be a random variable on $(Omega, cal(A), P)$. Then
@@ -125,9 +125,9 @@ Each is given by its pdf on $Omega subset.eq RR$ (extended by $0$ outside $Omega
 - #emph[Normal / Gaussian] $cal(N)(mu, sigma^2)$, $sigma > 0$, on $RR$: $ p(x) = 1 / (sqrt(2 pi) sigma) exp(- (x - mu)^2 / (2 sigma^2)). $ Models natural variability and measurement noise; the most important continuous distribution.
 - #emph[Exponential] $"Exp"(lambda) = Gamma(1, lambda)$, $lambda > 0$, on $RR_(>0)$: $ p(x) = chi_(RR_(>0))(x) dot lambda e^(- lambda x). $ Time until the first event of a Poisson process, whose events arrive independently at constant rate $lambda$ (next bus, length of a call).
 - #emph[Gamma] $Gamma(alpha, beta)$, $alpha, beta > 0$, on $RR_(>0)$: $ p(x) = chi_(RR_(>0))(x) dot beta^alpha / Gamma(alpha) x^(alpha - 1) e^(- beta x). $ For integer $alpha$, the waiting time for the $alpha$-th event of a rate-$beta$ Poisson process.
-- #emph[Chi-squared] $chi_k^2 = Gamma(k/2, 1/2)$, $k in NN_(>0)$ degrees of freedom, on $RR_(>0)$: sum of squares of $k$ independent standard normals; central in variance-based testing (Chapter 12).
+- #emph[Chi-squared] $chi_k^2 = Gamma(k/2, 1/2)$, $k in RR_(>0)$ degrees of freedom, on $RR_(>0)$. When $k$ is a positive integer it is the sum of squares of $k$ independent standard normals; it is central in variance-based testing (Chapter 12).
 - #emph[Student's $t$] $t_nu$, $nu > 0$, on $RR$: $ p(x) = (Gamma((nu + 1)/2)) / (sqrt(nu pi) Gamma(nu/2)) (1 + x^2 / nu)^(- (nu + 1) / 2). $ Heavier-tailed than the Gaussian; small-sample inference on a mean with unknown variance (Chapter 13).
-- #emph[Beta] $"Beta"(alpha, beta)$, $alpha, beta > 0$, on $[0, 1]$: $ p(x) = chi_([0,1])(x) dot (x^(alpha - 1) (1 - x)^(beta - 1)) / B(alpha, beta). $ Models random proportions; $"Unif"(0,1) = "Beta"(1, 1)$. It is the natural conjugate prior for a probability (Chapter 14).
+- #emph[Beta] $"Beta"(alpha, beta)$, $alpha, beta > 0$, with support closure $[0, 1]$: $ p(x) = (x^(alpha - 1) (1 - x)^(beta - 1)) / B(alpha, beta) $ for $0 < x < 1$ and $0$ outside. Endpoint values may be assigned arbitrarily because they do not affect the law. It models random proportions; $"Unif"(0,1) = "Beta"(1, 1)$ and it is the natural conjugate prior for a probability (Chapter 14).
 ]
 
 #keyfact[
@@ -150,7 +150,7 @@ For $X tilde cal(N)(mu, sigma^2)$ the probability of landing in $[a, b]$ is $P(a
 #answer[$P(X = c) = 0$, because $P(X = c) = integral_c^c p_X (x) dif x = 0$. Probability comes only from intervals of positive length; individual points carry no mass. (This is why $P(a <= X <= b) = P(a < X < b)$ for continuous $X$.)]
 
 #question[State the relationship between the pdf $p_X$ and the cdf $F_X$ of a real-valued random variable.]
-#answer[$F_X (x) = integral_(-oo)^x p_X (y) dif y$ and, where $F_X$ is differentiable, $p_X = F_X'$. In words: the cdf is the integral of the pdf, and the pdf is the derivative of the cdf.]
+#answer[$F_X (x) = integral_(-oo)^x p_X (y) dif y$ and $F_X' = p_X$ Lebesgue-almost everywhere. In words: the cdf is the integral of a pdf, and its derivative recovers the pdf up to changes on null sets; an arbitrary density version need not equal $F_X'$ at every individual point.]
 
 #question[Precisely, what does it mean for a map $X: Omega -> Omega'$ to be a random variable, and what is its distribution $P_X$?]
 #answer[$X$ must be #emph[measurable]: $X^(-1)(A') in cal(A)$ for every $A' in cal(A)'$, so that ${X in A'}$ is always an event. Its distribution is the pushforward $P_X (A') = P(X^(-1)(A')) = P({X in A'})$, a probability measure on $(Omega', cal(A)')$.]

@@ -25,7 +25,7 @@ A short checklist that resolves most exam problems before any computation:
 #answer[
 *(i) True.* Every singleton ${k}$ is Borel (it is closed), so the countable union $NN = union.big_(k in NN) {k} in cal(B)$, and $cal(B)$ is closed under complements, hence $RR without NN = NN^c in cal(B)$. This is the closure argument from Chapter 2.
 
-*(ii) False.* Take $f(x) = x^2$. Then $EE[f(X - EE[X])] = EE[(X - EE[X])^2] = "Var"(X)$, which is not zero for any non-degenerate $X$. (The claim is only true for $f$ linear, via linearity of expectation.)
+*(ii) False.* Take the bounded continuous function $f(x)=1$. Then $EE[f(X-EE[X])]=EE[1]=1$, not $0$, under exactly the stated assumption that $EE[X]$ exists.
 
 *(iii) False.* An ordering of the random variables says nothing about the spread. Let $Y = 10$ be deterministic and $X ~ "Unif"(0,1)$. Then $X <= Y$ pointwise, yet $"Var"(X) = 1/12 > 0 = "Var"(Y)$.
 
@@ -199,7 +199,7 @@ Z_n = (S_n - EE[S_n])/sqrt("Var"(S_n)) = (S_n - n mu)/(sigma sqrt(n)) = (accent(
 $
 Equivalent standard forms are $S_n approx cal(N)(n mu, n sigma^2)$ and $accent(X, macron)_n approx cal(N)(mu, sigma^2 \/ n)$ (informal large-$n$ approximations only, since the right-hand side depends on $n$ and is therefore not a fixed limit law); the precise convergence-in-distribution statement is the standardized one, $sqrt(n)(accent(X, macron)_n - mu) ->^("d") cal(N)(0, sigma^2)$.
 
-*(b) Convergence in distribution.* A sequence $(X_n)_(n in NN)$ converges in distribution to $X$ (all on the same probability space) if
+*(b) Convergence in distribution.* A sequence $(X_n)_(n in NN)$ converges in distribution to $X$ if
 $
 lim_(n -> oo) F_(X_n)(x) = F_X (x)
 $
@@ -211,7 +211,7 @@ Let $X$ be continuous with density $p_X (x) = x/c$ for $x in [0, 2]$ and $0$ oth
 (a) Find $c$ so that $p_X$ is a valid density.
 (b) Determine the cdf $F_X$.
 (c) Compute the mean and median of $X$.
-(d) With $Y = ln(X)$, determine the density of $Y$. (You may use $p_Y (y) = p_X (g^(-1)(y)) |d/(d y) g^(-1)(y)|$.)
+(d) Define $Y = ln(X)$ on ${X>0}$ and assign an arbitrary finite value on ${X<=0}$; determine the density of $Y$. (You may use $p_Y (y) = p_X (g^(-1)(y)) |d/(d y) g^(-1)(y)|$.)
 ]
 #answer[
 *(a)* A density integrates to $1$:
@@ -232,7 +232,7 @@ EE[X] = integral_0^2 x (x/2) d x = integral_0^2 x^2/2 d x = [x^3/6]_0^2 = 8/6 = 
 $
 Median $m$ solves $F_X (m) = 1/2$: $m^2/4 = 1/2 => m^2 = 2 => m = sqrt(2)$.
 
-*(d)* Here $g(x) = ln(x)$, so $g^(-1)(y) = e^y$ with $d/(d y) g^(-1)(y) = e^y$. As $X$ ranges over $[0, 2]$, $Y$ ranges over $(-oo, ln(2)]$. For $y$ in that range,
+*(d)* Since $PP(X<=0)=0$, the arbitrary value assigned there does not affect the law. On ${X>0}$, $g(x) = ln(x)$, so $g^(-1)(y) = e^y$ with derivative $e^y$. The transformed law has support $(-oo, ln(2)]$. For $y$ in that range,
 $
 p_Y (y) = p_X (e^y) |e^y| = (e^y)/2 dot e^y = (e^(2 y))/2 ,
 $
@@ -240,7 +240,7 @@ and $p_Y (y) = 0$ otherwise.
 ]
 
 #question[
-Let $X_1, dots, X_n$ be iid $"Poi"(lambda)$ with unknown $lambda > 0$ (pmf $p(x) = e^(-lambda) lambda^x \/ x!$).
+Let $X_1, dots, X_n$ be iid $"Poi"(lambda)$ with unknown $lambda >= 0$ (pmf $p(x) = e^(-lambda) lambda^x \/ x!$, with $0^0=1$).
 (a) Derive the maximum-likelihood estimator $hat(lambda)_"mle"$.
 (b) Is it unbiased for $lambda$?
 (c) Use the CLT to give the approximate distribution of $hat(lambda)_"mle"$ for large $n$.
@@ -251,18 +251,19 @@ Let $X_1, dots, X_n$ be iid $"Poi"(lambda)$ with unknown $lambda > 0$ (pmf $p(x)
 $
 L(lambda | x) = product_(i=1)^n (e^(-lambda) lambda^(x_i))/(x_i !) = (e^(-n lambda) lambda^(sum_i x_i))/(product_i x_i !) ,
 $
-with log-likelihood $ell(lambda) = -n lambda + (sum_i x_i) ln(lambda) - ln(product_i x_i !)$. Setting the derivative to zero,
+and for $lambda>0$ its log-likelihood is $ell(lambda) = -n lambda + (sum_i x_i) ln(lambda) - ln(product_i x_i !)$. If $sum_i x_i>0$, setting the derivative to zero gives
 $
 (d ell)/(d lambda) = -n + 1/lambda sum_i x_i = 0 quad ==> quad lambda = 1/n sum_(i=1)^n x_i = accent(x, macron)_n .
 $
-The second derivative $-(sum_i x_i)\/lambda^2 < 0$ confirms a maximum, so $hat(lambda)_"mle" = accent(X, macron)_n$.
+The second derivative is then negative, confirming the interior maximum. If every $x_i=0$, $L(lambda|x)=e^(-n lambda)$ is instead maximized directly at the boundary $lambda=0$. Thus in every case $hat(lambda)_"mle"=accent(X, macron)_n$.
 
 *(b) Yes.* MLEs are not unbiased in general, but here the estimator is the sample mean, which is unbiased for $EE[X_i] = lambda$: $EE[accent(X, macron)_n] = lambda$.
 
-*(c)* Since $EE[X_i] = "Var"(X_i) = lambda$, the CLT gives, for large $n$,
+*(c)* For $lambda>0$, $EE[X_i] = "Var"(X_i) = lambda$, so the CLT gives, for large $n$,
 $
 accent(X, macron)_n approx cal(N)(EE[X_i], ("Var"(X_i))/n) = cal(N)(lambda, lambda\/n) .
 $
+At the boundary $lambda=0$, every observation and the sample mean equal $0$ almost surely, so the law is exactly degenerate rather than a non-degenerate CLT approximation.
 
 *(d)* Test $H_0 : lambda = 4$ against the one-sided $H_1 : lambda > 4$. Under $H_0$, $hat(lambda)_"mle" = accent(X, macron)_n approx cal(N)(4, 4\/n)$, so the standardized statistic is
 $
@@ -298,11 +299,11 @@ $
 "Var"(X) = m ((m-1)/m)^n + m(m-1) ((m-2)/m)^n - m^2 ((m-1)/m)^(2 n) .
 $
 
-*(c)* The requirement $PP(X in [EE[X] - k, EE[X] + k]) >= 0.9$ is $PP(|X - EE[X]| > k) < 0.1$, so it suffices to force the Chebyshev bound $PP(|X - EE[X]| >= k) <= "Var"(X)\/k^2$ down to $0.1$, i.e. $"Var"(X)\/k^2 = 0.1$, giving $k^2 = 10 "Var"(X)$. For $n = 2$ the variance above simplifies to $"Var"(X) = (m-1)\/m^2$, hence $k^2 = 10 (m-1)/m^2$ and
+*(c)* If $m=1$, both hunters target the only duck, so $X=0$ deterministically and $k=0$ gives coverage $1$. Now assume $m>=2$. The requirement $PP(X in [EE[X] - k, EE[X] + k]) >= 0.9$ is ensured by forcing the Chebyshev bound $PP(|X - EE[X]| >= k) <= "Var"(X)\/k^2$ down to $0.1$. For $n = 2$ the variance above simplifies to $"Var"(X) = (m-1)\/m^2>0$, so it is enough that
 $
-k = ceil(sqrt(10(m-1))/m) ,
+k^2 >= 10 (m-1)/m^2 .
 $
-rounding up so the guarantee still holds.
+A valid real choice is $k = sqrt(10(m-1))/m$. If an integer radius is required, one may instead take $k = ceil(sqrt(10(m-1))/m)$.
 ]
 ]
 
@@ -333,15 +334,15 @@ satisfy $P_1({1,2}) = P_2({1,2}) = P_1({2,3}) = P_2({2,3}) = 2/3$, yet $P_1 eq.n
 ]
 
 #question[
-Let $U ~ "Unif"(0, 1)$ and set $X = -1/lambda ln(U)$ for a fixed $lambda > 0$.
+Let $U ~ "Unif"(0, 1)$ and, on the probability-one event ${0<U<1}$, set $X = -1/lambda ln(U)$ for a fixed $lambda > 0$; give $X$ arbitrary finite measurable values on the null complement of this event.
 (a) Derive the density $p_X$ (state the support).
 (b) Model $X$ as a response time; the probability of waiting at least $5$ hours is $p in (0, 1)$. Having already waited $5$ hours, what is the probability of waiting at least $5$ more?
-(c) Given only that $X = -1/lambda ln(U)$, $U ~ "Unif"(0, 1)$, and $EE[X] = 1/lambda$, compute $integral_0^1 ln(u) d u$ without integrating.
+(c) Using the almost-sure transform identity $X = -1/lambda ln(U)$, $U ~ "Unif"(0, 1)$, and $EE[X] = 1/lambda$, compute $integral_0^1 ln(u) d u$ without integrating.
 ]
 #answer[
-*(a)* Here $p_U (u) = 1$ on $(0, 1)$. From $x = -1/lambda ln(u)$ we get $u = e^(-lambda x) = g^(-1)(x)$, with $d/(d x) g^(-1)(x) = -lambda e^(-lambda x)$, absolute value $lambda e^(-lambda x)$. As $u in (0, 1)$ gives $x in RR_(>=0)$, the change-of-variables formula yields
+*(a)* The arbitrary definition on the null complement does not affect the law because $PP(0<U<1)=1$. On $(0,1)$, $p_U(u)=1$. From $x = -1/lambda ln(u)$ we get $u=e^(-lambda x)=g^(-1)(x)$ and $abs((d)/(d x)g^(-1)(x))=lambda e^(-lambda x)$. Thus
 $
-p_X (x) = p_U (g^(-1)(x)) |d/(d x) g^(-1)(x)| = 1 dot lambda e^(-lambda x) = lambda e^(-lambda x) quad "for" x >= 0 ,
+p_X (x) = p_U (g^(-1)(x)) |d/(d x) g^(-1)(x)| = 1 dot lambda e^(-lambda x) = lambda e^(-lambda x) quad "for" x > 0 ,
 $
 and $0$ otherwise. So $X ~ "Exp"(lambda)$.
 
@@ -351,7 +352,7 @@ PP(X >= 10 | X >= 5) = (PP(X >= 10))/(PP(X >= 5)) = (e^(-10 lambda))/(e^(-5 lamb
 $
 The remaining wait has the same distribution regardless of how long you have already waited.
 
-*(c)* By the law of the unconscious statistician (LOTUS),
+*(c)* Since $X = -1/lambda ln(U)$ almost surely, replacing $X$ by this transform does not change its expectation. Applying the law of the unconscious statistician (LOTUS) to $U$,
 $
 1/lambda = EE[X] = EE[-1/lambda ln(U)] = integral_0^1 (-1/lambda ln(u)) dot 1 d u = -1/lambda integral_0^1 ln(u) d u .
 $
@@ -360,23 +361,23 @@ Multiplying by $-lambda$ gives $integral_0^1 ln(u) d u = -1$.
 
 #question[
 A rainfall amount is modelled by the density $p_theta (x) = 1/theta^2 x e^(-x\/theta)$ for $x >= 0$, with unknown $theta > 0$, based on iid measurements $X_1, dots, X_n$.
-(a) Show that the MLE is $hat(theta)_"mle" = 1/(2 n) sum_(i=1)^n X_i$.
+(a) On the probability-one event $A = inter_(i=1)^n {X_i>0}$, show that the MLE is $hat(theta)_"mle" = 1/(2 n) sum_(i=1)^n X_i$; assign the estimator an arbitrary positive value on the common null event $A^c$.
 (b) Give a Chebyshev bound on $PP(|hat(theta)_"mle" - theta| >= epsilon)$. (Use $EE[X_i] = 2 theta$, $"Var"(X_i) = 2 theta^2$.)
-(c) Use the CLT to approximate $PP(|hat(theta)_"mle" - theta| >= epsilon)$ in terms of $Phi$.
-(d) Contrast the results of (b) and (c).
+(c) For fixed $c>0$, use the CLT to approximate $PP(|hat(theta)_"mle" - theta| >= c theta\/sqrt(2n))$ in terms of $Phi$.
+(d) Contrast the Chebyshev and CLT conclusions, and explain why the CLT alone does not justify a fixed-$epsilon$ far-tail approximation as $n -> oo$.
 ]
 #answer[
-*(a)* The likelihood and log-likelihood are
+*(a)* Since $PP_theta(X_i>0)=1$, independence gives $PP_theta(A)=1$ for every $theta>0$. On $A$, all observed $x_i>0$ and $S = sum_(i=1)^n x_i>0$. The likelihood and log-likelihood are
 $
 L(theta | x) = product_(i=1)^n 1/theta^2 x_i e^(-x_i\/theta) = theta^(-2 n) (product_(i=1)^n x_i) exp(-1/theta sum_(i=1)^n x_i), quad ell(theta) = -2 n ln(theta) - 1/theta sum_(i=1)^n x_i + "const" .
 $
-Differentiating and setting to zero,
+Differentiating,
 $
-(d ell)/(d theta) = -(2 n)/theta + 1/theta^2 sum_i x_i = (-2 n theta + sum_i x_i)/theta^2 = 0 quad ==> quad hat(theta) = 1/(2 n) sum_(i=1)^n x_i .
+(d ell)/(d theta) = -(2 n)/theta + S/theta^2 = (S - 2 n theta)/theta^2 .
 $
-The second derivative $ell''(theta) = (2 n)/theta^2 - 2/theta^3 sum_i x_i = 2/theta^3 (n theta - sum_i x_i)$ is negative at $hat(theta)$ (there $n hat(theta) - sum_i x_i = 1/2 sum_i x_i - sum_i x_i = -1/2 sum_i x_i < 0$), so $hat(theta)$ is the maximizer.
+This derivative is positive for $0<theta<S/(2n)$ and negative for $theta>S/(2n)$. Hence $ell$ is strictly increasing below $S/(2n)$ and strictly decreasing above it, so $S/(2n)$ is the unique global maximizer. Define $hat(theta)_"mle"$ as any fixed positive value on $A^c$. Then the displayed estimator formula holds almost surely and is used as an almost-sure identity in parts (b)--(d).
 
-*(b)* With the given moments,
+*(b)* With the given moments and the almost-sure estimator formula,
 $
 EE[hat(theta)_"mle"] = 1/(2 n) dot n dot 2 theta = theta, quad "Var"(hat(theta)_"mle") = 1/(2 n)^2 dot n dot 2 theta^2 = theta^2/(2 n) .
 $
@@ -385,12 +386,16 @@ $
 PP(|hat(theta)_"mle" - theta| >= epsilon) <= ("Var"(hat(theta)_"mle"))/epsilon^2 = theta^2/(2 n epsilon^2) .
 $
 
-*(c)* By the CLT, $(hat(theta)_"mle" - theta)\/sqrt("Var"(hat(theta)_"mle")) = (hat(theta)_"mle" - theta)\/(theta\/sqrt(2 n)) ->^("d") cal(N)(0, 1)$, so
+*(c)* By the CLT,
 $
-PP(|hat(theta)_"mle" - theta| >= epsilon) approx 2 Phi(- (sqrt(2 n) epsilon)/theta) .
+frac(hat(theta)_"mle" - theta, theta\/sqrt(2n)) ->^("d") cal(N)(0,1),
+$
+so for fixed $c>0$,
+$
+PP(|hat(theta)_"mle"-theta| >= c theta\/sqrt(2n)) approx 2 Phi(-c).
 $
 
-*(d)* The Chebyshev bound in (b) uses only the variance and is #emph[always valid], but it is loose and decays only like $1\/n$. The CLT expression in (c) is only an #emph[approximation], but its Gaussian tail decays far faster, so it is typically much sharper. Chebyshev is a guarantee that may be pessimistic; the CLT is an accurate estimate that is not a strict bound.
+*(d)* At the same local threshold $c theta\/sqrt(2n)$, Chebyshev gives the guaranteed bound $1\/c^2$, whereas the CLT gives the usually sharper central-regime approximation $2 Phi(-c)$. For a fixed $epsilon>0$, Chebyshev still gives the valid bound $theta^2\/(2n epsilon^2)$. But substituting the diverging cutoff $sqrt(2n)epsilon\/theta$ into a normal tail is not justified by the CLT alone; accurate fixed-deviation tails require the exact Gamma law or a large-deviation method.
 ]
 
 #question[

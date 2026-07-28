@@ -195,11 +195,11 @@ In particular, writing $Z ~ cal(N)(0, 1)$ for the standard normal, $phi_Z (t) = 
 A closely related transform trades the imaginary exponent for a real one.
 
 #remark[
-The *moment-generating function* (MGF) of $X$ is $M_X (t) = EE[e^(t X)]$, defined for those real $t$ where the expectation is finite (typically an interval around $0$). Like the cf it satisfies a product rule $M_(X + Y) (t) = M_X (t) M_Y (t)$ for independent $X, Y$, it generates moments via $EE[X^n] = M_X^((n)) (0)$, and — where it exists in a neighbourhood of $0$ — it determines the distribution uniquely. Its drawback is exactly that existence caveat: some distributions (for instance the Cauchy) have no MGF near $0$, whereas the characteristic function $phi_X (t) = EE[e^(i t X)]$ always exists. Where the MGF has a suitable complex extension, the two are related by $phi_X (t) = M_X (i t)$.
+The *moment-generating function* (MGF) of $X$ is $M_X (t) = EE[e^(t X)]$, defined for those real $t$ where the expectation is finite. For independent $X,Y$, the product identity $M_(X+Y)(t)=M_X(t)M_Y(t)$ holds at every $t$ where the expectations are finite. If the MGF is finite on an open neighbourhood of $0$, then it generates moments via $EE[X^n]=M_X^((n))(0)$ and determines the distribution uniquely. The neighbourhood condition matters: a log-normal variable has all finite moments but no finite MGF for any $t>0$. Characteristic functions always exist; where the MGF has a suitable complex extension, $phi_X(t)=M_X(i t)$.
 ]
 
 #remark[
-Beyond the lecture notes, the discrete counterpart worth knowing is the *probability-generating function* (pgf) of an $NN$-valued $X$, $G_X (s) = EE[s^X] = sum_(k=0)^oo s^k p_X (k)$ for $s in [0, 1]$. It also multiplies under independence, $G_(X + Y) = G_X dot G_Y$, its derivatives at $s = 0$ recover the pmf ($p_X (k) = G_X^((k)) (0) \/ k!$) and at $s = 1$ the factorial moments — making it the transform of choice for sums of independent counting variables.
+Beyond the lecture notes, the discrete counterpart worth knowing is the *probability-generating function* (pgf) of an $NN$-valued $X$, $G_X (s) = EE[s^X] = sum_(k=0)^oo s^k p_X (k)$ for $s in [0, 1]$. It also multiplies under independence, $G_(X + Y) = G_X dot G_Y$, and its derivatives at $s = 0$ recover the pmf ($p_X (k) = G_X^((k)) (0) \/ k!$). Derivatives at $s=1$ recover factorial moments when the corresponding moments are finite, making the pgf the transform of choice for sums of independent counting variables.
 ]
 
 == Using transforms for sums

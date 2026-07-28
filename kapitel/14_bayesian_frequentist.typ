@@ -28,7 +28,7 @@ A (parametric) *Bayesian statistical model* consists of two ingredients.
 Once data $x$ are observed, Bayes' rule combines the two ingredients into a single updated distribution.
 
 #definition(title: "Posterior distribution")[
-Given observed data $x$, Bayes' rule updates the prior into the *posterior distribution*
+Given observed data $x$ with finite positive evidence $0 < p(x) < oo$, Bayes' rule updates the prior into the *posterior distribution*
 $
 pi(theta | x) = frac(p(x | theta) pi(theta), p(x)) = frac("likelihood" times "prior", "evidence") .
 $
@@ -55,14 +55,14 @@ The posterior $pi(theta | x)$ is #emph[the] object of Bayesian inference: a full
 The posterior is a whole distribution; a point estimate collapses it into a single representative number. The choice of representative corresponds to the loss one is willing to minimize.
 
 #definition(title: "Bayesian point estimators")[
-Common point estimates derived from the posterior $pi(theta | x)$ are:
-- the *posterior mean* $hat(theta)_"mean" = EE[theta | x] = integral theta pi(theta | x) dif theta$, which minimizes the posterior expected squared error;
+When the relevant summaries and risks are finite, common point estimates derived from the posterior $pi(theta | x)$ are:
+- the *posterior mean* $hat(theta)_"mean" = EE[theta | x] = integral theta pi(theta | x) dif theta$, which minimizes posterior expected squared error when the posterior second moment is finite;
 - a *posterior median* $hat(theta)_"med"$, a value satisfying $PP(theta <= hat(theta)_"med" | x) >= 1 \/ 2$ and $PP(theta >= hat(theta)_"med" | x) >= 1 \/ 2$, which minimizes the posterior expected absolute error;
-- the *maximum a posteriori (MAP)* estimate $hat(theta)_"map" = "arg max"_theta pi(theta | x) = "arg max"_theta p(x | theta) pi(theta)$, the mode of the posterior.
+- a *maximum a posteriori (MAP)* estimate, any maximizer $hat(theta)_"map" in "arg max"_theta pi(theta | x) = "arg max"_theta p(x | theta) pi(theta)$ when such a maximizer exists.
 ]
 
 #remark[
-The MAP estimate maximizes $p(x | theta) pi(theta)$. In a fixed parameterization, using a prior density that is constant on the relevant parameter space makes this identical to maximizing the likelihood, so the MAP reduces to the maximum-likelihood estimate of Chapter 11. A warning is essential: “flat” is not invariant under reparameterization and a constant density on an unbounded space is improper, so it is not automatically non-informative or even a probability distribution. More generally, an informative prior can regularize the estimate toward prior belief.
+The MAP estimate maximizes a chosen pointwise version of $p(x | theta) pi(theta)$ and therefore depends on both the parameterization and the chosen density version; changing density values on a null set leaves the probability law unchanged but can change its maximizers. In a fixed parameterization and density version, using a prior density that is constant on the relevant parameter space makes this identical to maximizing the likelihood, so the MAP reduces to the maximum-likelihood estimate of Chapter 11. A warning is essential: “flat” is not invariant under reparameterization and a constant density on an unbounded space is improper, so it is not automatically non-informative or even a probability distribution. More generally, an informative prior can regularize the estimate toward prior belief.
 ]
 
 == Conjugate priors and the Beta--Binomial model
@@ -82,9 +82,9 @@ p(x | theta) = binom(n, x) theta^x (1 - theta)^(n - x) prop theta^x (1 - theta)^
 $
 Encode the prior belief about the success probability $theta in [0, 1]$ by a *Beta* distribution with hyperparameters $a, b > 0$,
 $
-pi(theta) = frac(1, B(a, b)) theta^(a - 1) (1 - theta)^(b - 1) prop theta^(a - 1) (1 - theta)^(b - 1) ,
+pi(theta) = frac(1, B(a, b)) theta^(a - 1) (1 - theta)^(b - 1) prop theta^(a - 1) (1 - theta)^(b - 1) quad (0<theta<1),
 $
-where $B(a, b)$ is the normalizing Beta function. Multiplying likelihood and prior,
+where $B(a, b)$ is the normalizing Beta function. For the displayed prior and posterior densities, we fix the canonical version to equal $0$ at both endpoints. Changing endpoint values does not alter either probability law but can alter its pointwise MAP. Multiplying likelihood and prior,
 $
 pi(theta | x) prop theta^x (1 - theta)^(n - x) dot theta^(a - 1) (1 - theta)^(b - 1) = theta^(a + x - 1) (1 - theta)^(b + n - x - 1) .
 $
@@ -157,10 +157,10 @@ Despite the sharp philosophical contrast, the two paradigms frequently agree in 
 #answer[A frequentist treats the parameter $theta$ as a fixed unknown constant and interprets probability as a long-run frequency over (hypothetical) repeated experiments. A Bayesian treats $theta$ as a random variable equipped with a distribution and interprets probability as a degree of belief (a state of knowledge). Making $theta$ random is what allows one to speak of the "probability that $theta$ takes a certain value", which is meaningless in the frequentist picture.]
 
 #question[Write down Bayes' rule for the posterior, name each factor, and explain the role of the denominator $p(x)$.]
-#answer[$pi(theta | x) = frac(p(x | theta) pi(theta), p(x))$, i.e. posterior $=$ (likelihood $times$ prior) $\/$ evidence. Here $p(x | theta)$ is the likelihood, $pi(theta)$ the prior, and $pi(theta | x)$ the posterior. The denominator $p(x) = integral_Theta p(x | theta) pi(theta) dif theta$ is the marginal likelihood (evidence); it does not depend on $theta$ and only normalizes the posterior to integrate to $1$, which is why one often works with the unnormalized form $pi(theta | x) prop p(x | theta) pi(theta)$.]
+#answer[Provided $0<p(x)<oo$, $pi(theta | x) = frac(p(x | theta) pi(theta), p(x))$, i.e. posterior $=$ (likelihood $times$ prior) $\/$ evidence. The denominator $p(x) = integral_Theta p(x | theta) pi(theta) dif theta$ is the marginal likelihood; it does not depend on $theta$ and normalizes the posterior, which is why one often works with $pi(theta | x) prop p(x | theta) pi(theta)$.]
 
 #question[Define the posterior mean, posterior median, and MAP estimate. Under what prior does the MAP coincide with the maximum-likelihood estimate?]
-#answer[Posterior mean $hat(theta)_"mean" = EE[theta | x]$ (minimizes posterior expected squared error); posterior median $hat(theta)_"med"$ with $PP(theta <= hat(theta)_"med" | x) = 1 \/ 2$ (minimizes posterior expected absolute error); MAP $hat(theta)_"map" = "arg max"_theta pi(theta | x)$, the mode of the posterior. Under a flat (non-informative) prior $pi(theta) prop 1$, maximizing $p(x | theta) pi(theta)$ is the same as maximizing $p(x | theta)$, so the MAP equals the MLE.]
+#answer[If the posterior second moment $EE[theta^2|x] < oo$, the posterior mean is $EE[theta|x]$ and minimizes finite posterior squared-error risk; this finite second moment is required for the finite-risk statement. A posterior median satisfies both $PP(theta<=m|x)>=1\/2$ and $PP(theta>=m|x)>=1\/2$ and minimizes posterior absolute error. A MAP estimate is any maximizer of the chosen pointwise version of $pi(theta|x)$ when one exists. In a fixed parameterization and density version, a prior density constant on the relevant parameter space makes MAP maximization coincide with likelihood maximization; such a density may be improper on an unbounded space and is not invariantly "non-informative".]
 
 #question[What is a conjugate prior, and why is it convenient? Give the standard example.]
 #answer[A prior family is conjugate to a likelihood if the posterior always stays in the same family, so only the parameters update. This is convenient because it gives the posterior in closed form and avoids computing the evidence integral $p(x)$. The standard example: a $"Beta"(a, b)$ prior is conjugate to a Bernoulli/Binomial likelihood, giving posterior $"Beta"(a + x, b + n - x)$ after $x$ successes in $n$ trials.]
@@ -175,5 +175,5 @@ Despite the sharp philosophical contrast, the two paradigms frequently agree in 
 #answer[False. In the frequentist framework $theta$ is a fixed constant and the realized interval is fixed too, so $theta$ is either inside or outside — the probability is $0$ or $1$, we just do not know which. The $95%$ refers to the long-run coverage of the interval-constructing procedure, not to a specific interval. The $95%$-probability reading is valid only for a Bayesian credible interval.]
 
 #question[Under what circumstances do Bayesian and frequentist analyses tend to give numerically similar answers, even though their interpretations differ?]
-#answer[When the sample size is large and/or the prior is non-informative (flat). Then the likelihood dominates the prior, the posterior concentrates around the MLE, and point estimates and intervals from the two approaches nearly coincide — e.g. the credible interval for a normal mean under a flat prior equals the frequentist confidence interval. The interpretations (statement about the parameter vs. about the procedure) remain distinct regardless.]
+#answer[In a regular identifiable model with a large sample and a prior that is positive and sufficiently regular near the true parameter, the likelihood controls the local posterior shape, so Bayesian and frequentist estimates and intervals often become numerically close. Exact finite-sample agreement from a constant prior occurs only in special models, such as a normal mean with known variance. Their interpretations remain distinct regardless.]
 ]

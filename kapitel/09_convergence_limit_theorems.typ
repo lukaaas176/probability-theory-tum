@@ -9,7 +9,7 @@ The earlier chapters worked with a fixed collection of random variables. Statist
 For a sequence of real numbers there is only one notion of convergence. Random variables are functions on a sample space, so "$X_n$ gets close to $X$" can mean several inequivalent things depending on whether we track outcomes pointwise, control the probability of a gap, or only compare distributions.
 
 #definition(title: "Modes of convergence")[
-Let $(X_n)_(n in NN)$ be a sequence of real-valued random variables and let $X$ be another random variable (which may be a constant), all defined on the same probability space $(Omega, cal(A), PP)$.
+Let $(X_n)_(n in NN)$ be real-valued random variables and let $X$ be another random variable (which may be a constant). For convergence in probability and almost sure convergence, assume they are defined on the same probability space $(Omega, cal(A), PP)$. Convergence in distribution compares only their laws, so no common probability space is required.
 - $(X_n)$ *converges in probability* to $X$, written $X_n ->^P X$, if for every $epsilon > 0$
   $
   lim_(n -> oo) PP(|X_n - X| >= epsilon) = 0 .
@@ -44,7 +44,7 @@ For any sequence of random variables,
 $
 X_n ->^"a.s." X quad ==> quad X_n ->^P X quad ==> quad X_n ->^d X .
 $
-In words: almost sure convergence $=>$ convergence in probability $=>$ convergence in distribution. Neither implication reverses in general. Two partial converses do hold: if $X_n ->^P X$ then some #emph[subsequence] of $(X_n)$ converges almost surely to $X$; and if the limit is a #emph[constant] $c in RR$, then $X_n ->^d c$ already implies $X_n ->^P c$.
+In words: almost sure convergence $=>$ convergence in probability $=>$ convergence in distribution. Neither implication reverses in general. Two partial converses do hold: if $X_n ->^P X$ then some #emph[subsequence] of $(X_n)$ converges almost surely to $X$; and if the $X_n$ are realized on a common probability space with the #emph[constant] limit $c in RR$ there, then $X_n ->^d c$ already implies $X_n ->^P c$.
 ]
 
 Two examples show that the arrows cannot be reversed.
@@ -167,7 +167,7 @@ where $Phi$ is the standard normal cdf introduced in Chapter 4. Since $Phi(2) ap
 #answer[(i) #emph[In probability], $X_n ->^P X$: for every $epsilon > 0$, $lim_(n -> oo) PP(|X_n - X| >= epsilon) = 0$. (ii) #emph[Almost surely], $X_n ->^"a.s." X$: $PP({omega : lim_(n -> oo) X_n (omega) = X(omega)}) = 1$. (iii) #emph[In distribution], $X_n ->^d X$: $lim_(n -> oo) F_(X_n)(x) = F_X (x)$ at every continuity point $x$ of $F_X$ (equivalently, $phi_(X_n)(t) -> phi_X (t)$ for all $t$).]
 
 #question[Write the chain of implications between the three modes. Do any of the reverse implications hold?]
-#answer[$X_n ->^"a.s." X ==> X_n ->^P X ==> X_n ->^d X$. The reverse implications fail in general. Two partial converses hold: convergence in probability yields a subsequence converging almost surely; and convergence in distribution to a #emph[constant] $c$ implies convergence in probability to $c$.]
+#answer[$X_n ->^"a.s." X ==> X_n ->^P X ==> X_n ->^d X$. The reverse implications fail in general. Two partial converses hold: convergence in probability yields a subsequence converging almost surely; and if the $X_n$ are realized on a common probability space with the #emph[constant] limit $c$ there, convergence in distribution to $c$ implies convergence in probability to $c$.]
 
 #question[Give an example showing that convergence in distribution does not imply convergence in probability.]
 #answer[Let $U tilde.op "Ber"(1\/2)$, $X_n := U$ and $Y := 1 - U$. Then $F_(X_n) = F_Y$ so $X_n ->^d Y$, but $|X_n - Y| = |2U - 1| = 1$ always, so $PP(|X_n - Y| >= 1) = 1 arrow.not 0$ and $X_n$ does not converge to $Y$ in probability.]

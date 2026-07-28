@@ -26,10 +26,10 @@ Reshuffling after every draw and asking #emph[how many draws until the ace of he
 
 == Events
 
-For a finite or countable sample space, "the probability of drawing a King" is not the probability of a single outcome but of a whole #emph[collection] of outcomes (the four kings). Such a collection is called an event.
+For a finite or countable sample space, "the probability of drawing a King" is not the probability of a single outcome but of a whole #emph[collection] of outcomes (the four kings). Such a collection is a subset of the sample space and is a candidate event; once an event space is fixed, its admitted subsets are the events to which probabilities may be assigned.
 
-#definition(title: "Event")[
-An *event* is a subset $A subset.eq Omega$. An outcome $omega$ #emph[realizes] the event $A$ if $omega in A$. A singleton ${omega}$ is called an *elementary event*. The whole space $Omega$ is the *certain event* and the empty set $emptyset$ is the *impossible event*.
+#definition(title: "Candidate and admitted events")[
+A *candidate event* is a subset $A subset.eq Omega$. Once a measurable space $(Omega, cal(A))$ is fixed, an *(admitted) event* is a member $A in cal(A)$. For finite and countable spaces we commonly choose $cal(A)=cal(P)(Omega)$, in which case every candidate event is admitted. An outcome $omega$ #emph[realizes] $A$ if $omega in A$. A singleton ${omega}$ is an *elementary candidate event*; when admitted, it is an elementary event. The whole space $Omega$ is the *certain event* and the empty set $emptyset$ is the *impossible event*.
 ]
 
 Logical statements about outcomes translate directly into set operations on events — this dictionary is used constantly and worth memorizing:
@@ -41,7 +41,7 @@ Logical statements about outcomes translate directly into set operations on even
 - "$A$ but not $B$" corresponds to $A backslash B$;
 - "$A$ and $B$ are *mutually exclusive* (cannot co-occur)" corresponds to $A inter B = emptyset$.
 
-Note the three-level hierarchy that will run through the whole theory: an *outcome* $omega$ is an element of $Omega$; an *event* $A$ is an element of the power set $cal(P)(Omega)$ (i.e. a subset of $Omega$); and — as we will see next — the collection $cal(A)$ of #emph[all events we admit] is a subset of $cal(P)(Omega)$, hence an element of $cal(P)(cal(P)(Omega))$.
+Note the three-level hierarchy that will run through the whole theory: an *outcome* $omega$ is an element of $Omega$; a *candidate event* $A$ is an element of the power set $cal(P)(Omega)$; and the collection $cal(A)$ of #emph[admitted events] is a subset of $cal(P)(Omega)$, with an event satisfying $A in cal(A)$.
 
 #definition(title: "Set-theory notation (recap)")[
 We collect the notation used throughout the course, condensed here for quick reference.
@@ -289,9 +289,9 @@ On a finite space with the *uniform* (Laplace) measure, every computation collap
 #question[True or false? $cal(A) = {emptyset, {1,2}, {1,4}, {2,3}, {3,4}, {1,2,3,4}}$ is a $sigma$-algebra on $Omega = {1,2,3,4}$. Justify.]
 #answer[False. $Omega = {1,2,3,4} in cal(A)$, and $cal(A)$ is in fact closed under complementation — the complementary pairs present are exactly $emptyset <-> {1,2,3,4}$, ${1,2} <-> {3,4}$, ${1,4} <-> {2,3}$ — so that axiom causes no trouble. What fails is closure under unions: ${1,2}, {1,4} in cal(A)$ but
 $ {1,2} union {1,4} = {1,2,4} in.not cal(A) . $
-A single such counterexample already suffices to disprove the claim (further failures of the same kind: ${1,2} union {2,3} = {1,2,3} in.not cal(A)$ and ${1,4} union {3,4} = {1,3,4} in.not cal(A)$; only ${1,4} union {2,3} = Omega$ happens to stay inside $cal(A)$).
+A single such counterexample already suffices to disprove the claim (further non-complementary failures: ${1,2} union {2,3} = {1,2,3} in.not cal(A)$ and ${1,4} union {3,4} = {1,3,4} in.not cal(A)$). Unions of complementary pairs stay inside $cal(A)$ because each equals $Omega$, for example ${1,2} union {3,4} = Omega$ and ${1,4} union {2,3} = Omega$.
 
-As a consistency check: every finite algebra of sets on a 4-element $Omega$ has cardinality $2^k$ for some $k <= 4$, i.e. size in ${1,2,4,8,16}$. Here $|cal(A)| = 6$, which is not a power of $2$, confirming $cal(A)$ cannot even be an algebra — let alone a $sigma$-algebra.]
+As a consistency check: every finite algebra of sets on a non-empty 4-element $Omega$ has cardinality $2^k$ for some $1 <= k <= 4$, i.e. size in ${2,4,8,16}$. Here $|cal(A)| = 6$, which is not a power of $2$, confirming $cal(A)$ cannot even be an algebra — let alone a $sigma$-algebra.]
 
 #question[Prove the complement rule $PP(A^c) = 1 - PP(A)$ from the axioms.]
 #answer[$A$ and $A^c$ are disjoint and $A union A^c = Omega$. By finite additivity (a case of K3) and normalization, $1 = PP(Omega) = PP(A union A^c) = PP(A) + PP(A^c)$. Rearranging gives $PP(A^c) = 1 - PP(A)$.]

@@ -58,11 +58,11 @@ $
 the last step being the definition of the variance.
 ]
 
-Writing the threshold in units of the standard deviation $sigma = sqrt("Var"(X))$, i.e. $epsilon = k sigma$, gives the memorable form
+If $sigma = sqrt("Var"(X)) > 0$, writing the threshold as $epsilon = k sigma$ for $k>0$ gives the memorable form
 $
 PP(abs(X - EE[X]) >= k sigma) <= frac(1, k^2) ,
 $
-which holds for #emph[every] distribution with finite variance: no matter its shape, at most $1 \/ k^2$ of the mass lies beyond $k$ standard deviations from the mean.
+which holds for #emph[every] distribution with finite positive variance: no matter its shape, at most $1 \/ k^2$ of the mass lies beyond $k$ standard deviations from the mean. A zero-variance variable is constant and must be handled directly because the standardized threshold would be $0$.
 
 #example(title: "deviations in standard-deviation units")[
 Let $X$ have mean $mu_X = 10$ and variance $sigma_X^2 = 4$, so $sigma_X = 2$. The probability that $X$ strays more than three standard deviations from its mean is bounded by
@@ -140,22 +140,22 @@ A large body of theory shows that such functions can concentrate #emph[exponenti
 #answer[For $X >= 0$ almost surely and any $epsilon > 0$, $PP(X >= epsilon) <= EE[X] \/ epsilon$. It uses only the mean $EE[X]$ (plus non-negativity). Reach for it when you know essentially nothing beyond the mean and want a quick one-sided tail bound; expect a loose result.]
 
 #question[Prove the non-negative form of Markov's inequality by splitting the expectation at $epsilon$.]
-#answer[$EE[X] = integral_0^oo x thin p_X (x) thin upright(d) x = integral_0^epsilon x thin p_X (x) thin upright(d) x + integral_epsilon^oo x thin p_X (x) thin upright(d) x >= integral_epsilon^oo x thin p_X (x) thin upright(d) x >= integral_epsilon^oo epsilon thin p_X (x) thin upright(d) x = epsilon thin PP(X >= epsilon)$. Dividing by $epsilon > 0$ gives $PP(X >= epsilon) <= EE[X] \/ epsilon$. The first inequality drops a non-negative piece; the second uses $x >= epsilon$ on the integration range.]
+#answer[Split with indicators: $X=X chi_{X<epsilon}+X chi_{X>=epsilon}$. Since both terms are non-negative and $X chi_{X>=epsilon} >= epsilon chi_{X>=epsilon}$ pointwise, $EE[X] >= EE[X chi_{X>=epsilon}] >= epsilon EE[chi_{X>=epsilon}] = epsilon PP(X>=epsilon)$. Dividing by $epsilon>0$ gives Markov's inequality. This proof covers discrete, continuous and mixed laws.]
 
 #question[A server handles on average $EE[X] = 20$ requests per second. Bound the probability that it handles at least $100$ in a given second.]
 #answer[$X$ is non-negative, so Markov with $epsilon = 100$ gives $PP(X >= 100) <= 20 \/ 100 = 1 \/ 5$. At most a $20%$ chance.]
 
 #question[How is Chebyshev's inequality obtained from Markov's? Carry out the derivation.]
-#answer[Apply Markov with the monotone map $f(x) = x^2$ to the deviation $X - EE[X]$. Since $abs(X - EE[X]) >= epsilon$ iff $(X - EE[X])^2 >= epsilon^2$, we get $PP(abs(X - EE[X]) >= epsilon) = PP((X - EE[X])^2 >= epsilon^2) <= EE[(X - EE[X])^2] \/ epsilon^2 = "Var"(X) \/ epsilon^2$.]
+#answer[Apply ordinary Markov to the non-negative random variable $Y=(X-EE[X])^2$ at the positive threshold $epsilon^2$. Since ${abs(X-EE[X])>=epsilon}={Y>=epsilon^2}$, $PP(abs(X-EE[X])>=epsilon)=PP(Y>=epsilon^2)<=EE[Y]\/epsilon^2="Var"(X)\/epsilon^2$.]
 
 #question[A random variable $X$ has mean $10$ and variance $4$. Bound $PP(abs(X - 10) >= 6)$, and state the general $k$-standard-deviation bound.]
-#answer[Here $sigma = 2$ and $6 = 3 sigma$, so Chebyshev gives $PP(abs(X - 10) >= 6) <= "Var"(X) \/ 6^2 = 4 \/ 36 = 1 \/ 9$. In general $PP(abs(X - mu) >= k sigma) <= 1 \/ k^2$, valid for any distribution with finite variance.]
+#answer[Here $sigma = 2$ and $6 = 3 sigma$, so Chebyshev gives $PP(abs(X - 10) >= 6) <= "Var"(X) \/ 6^2 = 4 \/ 36 = 1 \/ 9$. In general, for $sigma>0$ and $k>0$, $PP(abs(X - mu) >= k sigma) <= 1 \/ k^2$.]
 
 #question[Use Jensen's inequality to show $EE[X^2] >= (EE[X])^2$, and say what this reveals about the variance.]
 #answer[The map $g(x) = x^2$ is convex, so $EE[g(X)] >= g(EE[X])$, i.e. $EE[X^2] >= (EE[X])^2$. Rearranged, $"Var"(X) = EE[X^2] - (EE[X])^2 >= 0$ — the variance is never negative.]
 
-#question[For a positive random variable $X$, is $EE[1 \/ X]$ at least, or at most, $1 \/ EE[X]$? Justify with Jensen.]
-#answer[The map $g(x) = 1 \/ x$ is convex on $(0, oo)$, so Jensen gives $EE[1 \/ X] >= 1 \/ EE[X]$ (with equality iff $X$ is almost surely constant). So it is at least $1 \/ EE[X]$.]
+#question[For a positive random variable $X$ with $EE[X]<oo$ and $EE[1\/X]<oo$, is $EE[1 \/ X]$ at least, or at most, $1 \/ EE[X]$? Justify with Jensen.]
+#answer[The map $g(x) = 1 \/ x$ is strictly convex on $(0, oo)$, so Jensen gives $EE[1 \/ X] >= 1 \/ EE[X]$. Thus it is at least $1\/EE[X]$, with equality if and only if $X$ is almost surely constant.]
 
 #question[Let $X_1, dots, X_n$ be independent and identically distributed with mean $mu$ and variance $sigma^2$, and let $M_n = frac(1, n) sum_(i=1)^n X_i$ be their sample mean. Bound $PP(abs(M_n - mu) >= epsilon)$ and give its limit as $n -> oo$. Which theorem does this establish?]
 #answer[Since $EE[M_n] = mu$ and $"Var"(M_n) = sigma^2 \/ n$, Chebyshev gives $PP(abs(M_n - mu) >= epsilon) <= sigma^2 \/ (n epsilon^2) -> 0$ as $n -> oo$. This is the weak law of large numbers (convergence of $M_n$ to $mu$ in probability), developed in Chapter 9.]

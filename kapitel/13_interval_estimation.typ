@@ -83,7 +83,7 @@ $
 where $t_(n-1, alpha/2)$ is the upper $alpha\/2$-quantile of the $t_(n-1)$ distribution.
 ]
 
-The $t$-distribution has *heavier tails* than the normal, so $t_(n-1, alpha/2) > z_(alpha/2)$ and the $t$-interval is wider — the price we pay for the extra uncertainty of having estimated $sigma$. As $n -> oo$ the estimate $S_n$ stabilizes, $t_(n-1)$ converges to $cal(N)(0, 1)$, and the two intervals coincide.
+The $t$-distribution has *heavier tails* than the normal, so $t_(n-1, alpha/2) > z_(alpha/2)$: the unknown-variance procedure uses a larger critical multiplier to account for estimating $sigma$. A particular realized t-interval need not be wider than the known-$sigma$ interval because the random $S_n$ can be smaller than $sigma$. As $n -> oo$, $S_n$ stabilizes and $t_(n-1)$ converges to $cal(N)(0, 1)$, so the procedures approach one another.
 
 === A worked computation
 
@@ -96,7 +96,7 @@ so the margin of error is $z_(alpha/2) sigma\/sqrt(n) = 1.96 dot 2 = 3.92$, and 
 $
 502 plus.minus 3.92 = [498.08, 505.92] "ml" .
 $
-Read it correctly: the #emph[rule] that produced $[498.08, 505.92]$ traps the true mean $mu$ in $95%$ of repeated experiments — not "$mu in [498.08, 505.92]$ with probability $0.95$". Had $sigma$ been unknown, we would use $S_n$ and the critical value $t_(15, 0.025) approx 2.131$ in place of $1.96$, yielding a slightly wider interval.
+Read it correctly: the #emph[rule] that produced $[498.08, 505.92]$ traps the true mean $mu$ in $95%$ of repeated experiments — not "$mu in [498.08, 505.92]$ with probability $0.95$". Had $sigma$ been unknown, we would use the observed $S_n$ and the larger critical multiplier $t_(15, 0.025) approx 2.131$ in place of $1.96$; the realized width would also depend on that observed $S_n$.
 ]
 
 == Confidence intervals for a proportion
@@ -141,12 +141,12 @@ This closes the frequentist inference toolkit assembled across Chapters 10–13:
 #question[Compute a $95%$ confidence interval for $mu$ from an i.i.d. $cal(N)(mu, sigma^2)$ sample with known $sigma = 8$, sample size $n = 16$, and observed sample mean $macron(x)_n = 502$. Use $z_(0.025) approx 1.96$.]
 #answer[The standard error is $sigma\/sqrt(n) = 8\/4 = 2$, so the margin of error is $1.96 dot 2 = 3.92$. The CI is $macron(x)_n plus.minus z_(alpha/2) sigma\/sqrt(n) = 502 plus.minus 3.92 = [498.08, 505.92]$.]
 
-#question[When the variance $sigma^2$ is unknown, how does the CI for a normal mean change, and why is the resulting interval wider?]
-#answer[Estimate $sigma^2$ by the sample variance $S_n^2$ and switch from the normal quantile to the $t$-quantile: the CI becomes $macron(X)_n plus.minus t_(n-1, alpha/2) S_n\/sqrt(n)$, using the pivot $T = (macron(X)_n - mu)\/(S_n\/sqrt(n)) ~ t_(n-1)$. The $t_(n-1)$ distribution has heavier tails than $cal(N)(0, 1)$, so $t_(n-1, alpha/2) > z_(alpha/2)$; this accounts for the extra uncertainty of estimating $sigma$. As $n -> oo$ the two intervals coincide.]
+#question[When the variance $sigma^2$ is unknown, how does the CI for a normal mean change, and how does it account for the extra uncertainty?]
+#answer[Estimate $sigma^2$ by $S_n^2$ and use the pivot $T=(macron(X)_n-mu)\/(S_n\/sqrt(n))~t_(n-1)$, giving $macron(X)_n plus.minus t_(n-1,alpha/2)S_n\/sqrt(n)$. The heavier-tailed t law has a larger critical multiplier than the normal, accounting for estimation of $sigma$. A particular realized t-interval is not guaranteed to be wider than the known-$sigma$ interval because $S_n$ is random; the two procedures approach one another as $n$ grows.]
 
 #question[Give an approximate $95%$ CI for a proportion $p$ from $n = 400$ i.i.d. $"Ber"(p)$ observations with $hat(p) = 0.6$, state the justification, and note one caveat.]
 #answer[By the central limit theorem, $(hat(p) - p)\/sqrt(p(1 - p)\/n) approx cal(N)(0, 1)$; plugging in $hat(p)$ gives the Wald interval $hat(p) plus.minus z_(alpha/2) sqrt(hat(p)(1 - hat(p))\/n)$. Here $sqrt(0.6 dot 0.4 \/ 400) = sqrt(0.0006) approx 0.0245$, so the margin is $1.96 dot 0.0245 approx 0.048$ and the CI is about $[0.552, 0.648]$. Caveat: the Wald approximation is poor for small $n$ or $p$ near $0$ or $1$; use the Wilson or Clopper–Pearson interval there.]
 
 #question[Explain the duality between two-sided hypothesis tests and confidence intervals.]
-#answer[A $100(1 - alpha)$% CI for $theta$ is exactly the set of values $theta_0$ that a two-sided level-$alpha$ test of $H_0 : theta = theta_0$ would fail to reject. Conversely, if such a test rejects $H_0 : theta = theta_0$, then $theta_0$ lies outside the CI. So a CI and the corresponding family of tests encode the same information — inverting the tests builds the interval.]
+#answer[For a confidence interval constructed by inverting a corresponding family of two-sided level-$alpha$ tests, the interval is exactly the set of values $theta_0$ whose test of $H_0:theta=theta_0$ does not reject. Conversely, inverting that matched test family builds a confidence set with the corresponding coverage. An arbitrary valid interval need not coincide with an independently chosen test.]
 ]
