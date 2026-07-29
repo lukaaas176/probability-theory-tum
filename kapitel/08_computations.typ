@@ -245,7 +245,7 @@ which is the cf of $cal(N)(mu + mu_2, sigma^2 + sigma_2^2)$; uniqueness finishes
 
 The same closure holds in $RR^d$. A non-degenerate multivariate Gaussian $X ~ cal(N)(mu, Sigma)$ with mean $mu in RR^d$ and symmetric positive-definite covariance $Sigma in RR^(d times d)$ has density
 $
-f_X (x) = 1/((2 pi)^(d \/ 2) (det Sigma)^(1 \/ 2)) exp(-1/2 (x - mu)^top Sigma^(-1) (x - mu)) ,
+f_X (x) = 1/((2 pi)^(d \/ 2) (det Sigma)^(1 \/ 2)) exp(-1/2 (x - mu)^top Sigma^(-1) (x - mu)) .
 $
 
 #lemma(name: "multivariate Gaussian computation rules")[

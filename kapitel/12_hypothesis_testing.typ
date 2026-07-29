@@ -248,7 +248,7 @@ PP("at least one type I error") <= sum_(i in I_0) q_i <= |I_0| alpha <= m alpha.
 $
 If the true-null rejection events are independent, then the exact probability is
 $
-PP("at least one type I error") = 1-product_(i in I_0)(1-q_i) <= 1-(1-alpha)^|I_0| <= 1-(1-alpha)^m,
+PP("at least one type I error") = 1-product_(i in I_0)(1-q_i) <= 1-(1-alpha)^|I_0| <= 1-(1-alpha)^m .
 $
 For $0 < alpha < 1$, equality through the final bound holds only when the stated independence holds, all $m$ nulls are true, and $q_i = alpha$ for every $i in I_0$. The *Bonferroni correction* tests each hypothesis at level $alpha\/m$, guaranteeing family-wise error at most $alpha$ without requiring independence. Procedures controlling the *false discovery rate (FDR)* instead control the expected proportion of false rejections among all rejections and can be less conservative.
 ]
