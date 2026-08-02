@@ -146,11 +146,11 @@
 #let qcounter = counter("quiz")
 #let quizstart() = qcounter.update(0)
 
-// Counts #quizblock() calls within a chapter. Reset to 0 at the start of every
+// Counts quiz and exam blocks within a chapter. Reset to 0 at the start of every
 // chapter by the level-1 heading show rule in DWT_Skript.typ so that quizid()
 // values stay chapter-local: adding a quiz block in one chapter no longer
 // shifts the IDs (and stored progress) of later chapters. Needed because a
-// single chapter (e.g. exam training) may contain several #quizblock() calls,
+// single chapter (e.g. exam training) may contain several blocks,
 // each restarting its own question numbering (qcounter) — without this second
 // counter two blocks in the same chapter would produce identical quizid()s.
 #let blockcounter = counter("quizblockindex")
@@ -159,10 +159,11 @@
 // Based on Typst's own heading counter and blockcounter (not a global question
 // counter) so inserting/removing questions in one chapter doesn't shift the IDs
 // of other chapters.
-#let quizid() = {
+#let quizid(question: none) = {
   let chnum = counter(heading).at(here()).first()
   let blockidx = blockcounter.at(here()).first()
-  "ch" + str(chnum) + "-b" + str(blockidx) + "-q" + str(qcounter.display())
+  let questionidx = if question == none { str(qcounter.display()) } else { str(question) }
+  "ch" + str(chnum) + "-b" + str(blockidx) + "-q" + questionidx
 }
 
 #let question(q) = {
@@ -176,9 +177,10 @@
   }
 }
 
-#let answer(body) = context {
+#let answer(body, qid: none) = context {
+  let answerid = if qid == none { quizid() } else { qid }
   if target() == "html" {
-    html.elem("div", attrs: (class: "quiz-answer", "data-qid": quizid()))[*Solution:* #body]
+    html.elem("div", attrs: (class: "quiz-answer", "data-qid": answerid))[*Solution:* #body]
   } else {
     block(
       fill: rgb("#eafbee"),
@@ -188,6 +190,21 @@
       width: 100%,
       breakable: true,
     )[*Solution:* #body]
+  }
+}
+
+#let subquestions(..items) = context {
+  let rows = items.pos()
+  if target() == "html" {
+    html.elem("span", attrs: (class: "quiz-subquestions"))[
+      #for item in rows {
+        html.elem("span", attrs: (class: "quiz-subquestion"))[#item]
+      }
+    ]
+  } else {
+    block(above: 0.45em, below: 0.2em)[
+      #stack(dir: ttb, spacing: 0.45em, ..rows)
+    ]
   }
 }
 
@@ -207,6 +224,50 @@
         #line(length: 100%, stroke: 0.6pt + gray)
         == #title
         #body
+      ]
+    }
+  }
+}
+
+#let examblock(title: "Exam", problems) = {
+  quizstart()
+  blockcounter.step()
+  context {
+    let chnum = counter(heading).at(here()).first()
+    let exambody = [
+      == #title
+      #for problem in problems {
+        question(problem.question)
+      }
+      #if target() == "html" {
+        html.elem("div", attrs: (class: "quiz-solutions"))[
+          === Solutions
+          #for (index, problem) in problems.enumerate() {
+            answer(
+              [*Question #(index + 1).* #problem.solution],
+              qid: quizid(question: index + 1),
+            )
+          }
+        ]
+      } else {
+        [
+          === Solutions
+          #for (index, problem) in problems.enumerate() {
+            answer(
+              [*Question #(index + 1).* #problem.solution],
+              qid: quizid(question: index + 1),
+            )
+          }
+        ]
+      }
+    ]
+    if target() == "html" {
+      html.elem("section", attrs: (class: "quiz-section", "data-chapter": str(chnum)))[#exambody]
+    } else {
+      block(breakable: true)[
+        #v(0.4em)
+        #line(length: 100%, stroke: 0.6pt + gray)
+        #exambody
       ]
     }
   }

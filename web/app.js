@@ -35,6 +35,7 @@
   // scroll-spy and mastery refresh so those don't have to re-query the DOM.
   var badgesByChapter = Object.create(null);
   var tocItemById = Object.create(null);
+  var quizAnswersByQid = Object.create(null);
 
   // Reading-progress state: a persisted high-water mark (0..1) per chapter —
   // how far into that chapter's text you have ever scrolled, not how many
@@ -371,23 +372,21 @@
   function buildQuizControls() {
     var questions = Array.prototype.slice.call(document.querySelectorAll('.quiz-question'));
 
-    questions.forEach(function (question, index) {
-      // Pairing is by DOM adjacency (next sibling), never by a data-qid
-      // lookup. A question and its answer deliberately share the SAME
-      // data-qid (question and answer both derive it from the same counter in
-      // vorlage.typ's quizid(), e.g. "ch16-b1-q1"), so a
-      // querySelector('[data-qid="…"]') would match the question element, not
-      // its paired answer. Chapter 16 (Exam training) is the one chapter with
-      // several quizblocks; nextElementSibling always lands on the right .quiz-answer.
-      var answer = question.nextElementSibling;
-      if (!answer || !answer.classList.contains('quiz-answer')) return;
+    quizAnswersByQid = Object.create(null);
+    document.querySelectorAll('.quiz-answer').forEach(function (answer) {
+      var qid = answer.getAttribute('data-qid');
+      if (qid) quizAnswersByQid[qid] = answer;
+    });
 
+    questions.forEach(function (question, index) {
       var qid = question.getAttribute('data-qid');
+      var answer = qid ? quizAnswersByQid[qid] : null;
+      if (!answer) return;
+
       var section = question.closest('.quiz-section');
       var chapterNumber = section ? section.getAttribute('data-chapter') : null;
 
-      // Unique per-element id for aria-controls — index-based, not qid-based,
-      // for the same duplicate-qid reason as above.
+      // Unique per-element id for the reveal control's aria-controls target.
       if (!answer.id) answer.id = 'quiz-answer-' + index;
 
       var revealBtn = document.createElement('button');
@@ -423,6 +422,14 @@
         var revealed = answer.classList.toggle('revealed');
         revealBtn.setAttribute('aria-expanded', String(revealed));
         revealBtn.textContent = revealed ? 'Hide answer' : 'Show answer';
+        if (revealed && answer.closest('.quiz-solutions')) {
+          var reduceMotion = window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          answer.scrollIntoView({
+            block: 'start',
+            behavior: reduceMotion ? 'auto' : 'smooth'
+          });
+        }
       });
     });
   }
@@ -495,8 +502,8 @@
       question.classList.add('rated');
       question.setAttribute('data-rating', ratingValue);
 
-      var answer = question.nextElementSibling;
-      if (!answer || !answer.classList.contains('quiz-answer')) return;
+      var answer = quizAnswersByQid[qid];
+      if (!answer) return;
       var ratingButtons = answer.querySelector('.rating-buttons');
       if (!ratingButtons) return;
 

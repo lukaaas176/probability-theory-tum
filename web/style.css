@@ -701,6 +701,30 @@ math[display="block"] {
   border-top: none;
 }
 
+.quiz-subquestions {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.quiz-subquestion {
+  display: block;
+}
+
+.quiz-solutions {
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.quiz-solutions > h4:first-child {
+  margin-top: 0;
+}
+
+.quiz-solutions .quiz-answer {
+  scroll-margin-top: calc(var(--topbar-h) + var(--space-4));
+}
+
 /* Rated indicator: mirrors saved progress WITHOUT auto-revealing the
    answer. Signalled by background tint + a leading glyph — never a
    border stripe — so color is always backed by a redundant non-color cue. */
