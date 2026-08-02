@@ -56,7 +56,7 @@
       #v(0.3cm)
       #text(size: 13pt)[Technical University of Munich · Summer Semester 2026 · Niki Kilbertus]
       #v(1.2cm)
-      #line(length: 40%, stroke: 1pt + accent)
+      #line(length: 40%, stroke: 1pt + blue)
       #v(1.2cm)
       #text(size: 13pt, style: "italic")[Compact study script to work through \ with exam-style chapter quizzes]
       #v(3.5cm)

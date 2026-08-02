@@ -15,7 +15,7 @@
 // that web/style.css and web/app.js port over unchanged. The Typst function
 // names are English; the class strings are a stable web contract, not prose.
 
-#let accent = rgb("#1d4e89")   // Blue:   definitions, headings, links
+#let blue = rgb("#1d4e89")     // Blue:   definitions, headings, links
 #let accent2 = rgb("#0f7a3d")  // Green:  solutions (quiz)
 #let accent3 = rgb("#b5560a")  // Orange: key facts
 #let accent4 = rgb("#6d28d9")  // Violet: theorems, lemmas, corollaries, propositions
@@ -30,7 +30,7 @@
   } else {
     block(
       fill: rgb("#eef4fb"),
-      stroke: (left: 3pt + accent),
+      stroke: (left: 3pt + blue),
       inset: 10pt,
       radius: 4pt,
       width: 100%,
@@ -215,7 +215,7 @@
 // -------------------- Part divider --------------------
 #let part(nr, title, desc) = {
   pagebreak(weak: true)
-  heading(numbering: none, outlined: true)[#text(fill: accent)[Part #nr — #title]]
+  heading(numbering: none, outlined: true)[#text(fill: blue)[Part #nr — #title]]
   context {
     if target() == "html" {
       html.elem("p", attrs: (class: "teil-desc"))[#desc]
